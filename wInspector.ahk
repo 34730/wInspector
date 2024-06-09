@@ -7,9 +7,9 @@
 #Requires AutoHotKey v2.0-
 #SingleInstance Force
 #DllLoad "Gdiplus.dll"
-#Include lib\SetSystemCursor.ahk
-#Include lib\Gdip_All.ahk
-#Include lib\_GuiCtlExt.ahk
+#Include <SetSystemCursor>
+#Include <Gdip_All>
+#Include <_GuiCtlExt>
 #Include lib\ObjectGui.ah2
 #Include lib\Toolbar.ah2
 
@@ -577,6 +577,7 @@ Gui_wInspector(*){
         for i, v in ["RoleText", "Role", "Value", "Name", "Location", "StateText", "State", "DefaultAction", "Description", "KeyboardShortcut", "Help", "ChildId"]
             ogLV_AccProps.Add(, v, "")
 
+        ogLV_AccProps.OnNotify(-3, NM_Copy)
         ogLV_AccProps.OnNotify(NM_RCLICK := -5, RClickAccList)
     }
     ; Mouse Section
@@ -742,6 +743,7 @@ Gui_wInspector(*){
     ogLV_ProcessList.ModifyCol(2, "Integer")
 
     ogLV_ProcessList.OnEvent("Click", DClickProcessList)
+    ogLV_ProcessList.OnNotify(-3, NM_Copy)
     ogLV_ProcessList.OnNotify(NM_RCLICK := -5, RClickProcessList)
     ogLV_ProcessList.LeftMargin := 5
     ogLV_ProcessList.BottomMargin := 8
@@ -781,6 +783,7 @@ Gui_wInspector(*){
     ogLV_WinList.ModifyCol(4, "SortDesc")
 
     ogLV_WinList.OnEvent("Click", DClickWinList)
+    ogLV_WinList.OnNotify(-3, NM_Copy)
     ogLV_WinList.OnNotify(NM_RCLICK := -5, RClickWinList)
     ogLV_WinList.LeftMargin := 5
     ogLV_WinList.BottomMargin := 8
@@ -810,6 +813,7 @@ Gui_wInspector(*){
         ogLV_CtrlList := oGuiControlList.AddListView("xm+4 y+7 r15 w" (myGui.Width-8*3)/2 " vCtrlList section AltSubmit", ["Class(NN)", "Hwnd", "Text", "Type", "X", "Y", "W", "H","Visible"])
         ogLV_CtrlList.Opt("Count100 -Multi")
         ogLV_CtrlList.OnEvent("Click", DClickCtrlList)
+        ogLV_CtrlList.OnNotify(-3, NM_Copy)
         ogLV_CtrlList.OnNotify(NM_RCLICK := -5, RClickCtrlList)
         ogLV_CtrlList.LeftMargin := 5
         ogLV_CtrlList.BottomMargin := 28
@@ -1316,10 +1320,13 @@ DClickCtrlList(LV, RowNumber) {
         GuiBox.MoveToControl(Hwnd_selected, "ahk_id " win_hwnd)
         GuiBox.Opt("+Owner" win_hwnd)
         GuiBox.Show()
+        WinActivate(MyGui)
     }
     SetSelectedControl(Hwnd_selected)
     WinMoveTop("ahk_id " win_hwnd)
 }
+
+NM_Copy(LV, lParam) => (rownumber := NumGet(lParam + (A_PtrSize * 3), 0, "Int") + 1) && A_Clipboard := LV.GetText(rownumber, NumGet(lParam + (A_PtrSize * 3), 4, "Int") + 1)
 
 SectionCorrections(){
     myGui.GetPos(&xWin,&yWin,&wWin,&hWin)
@@ -2679,6 +2686,7 @@ GuiAccViewer(Wintitle:="A", ControlHwnd:=""){
     ogCB_Visible.OnEvent("Click", (*) => (LVAcc_Update()))
 
     LVAcc := myAccGui.Add("ListView", "xm yp+21 r25 w800", ["Path","Name","RoleText","Role","x","y","w","h","Value", "StateText", "State", "Description", "KeyboardShortcut", "Help", "ChildId"])
+    LVAcc.OnNotify(-3, NM_Copy)
     LVAcc.OnEvent("ContextMenu", LVAcc_ContextMenu)
     ; Notify the script whenever the user double clicks a row:
     LVAcc.OnEvent("DoubleClick", LVAcc_DoubleClick)
