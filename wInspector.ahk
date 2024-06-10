@@ -456,13 +456,16 @@ if (oSet.Hotkey!=""){
     Hotkey(oSet.Hotkey, wInspector_Activate)
 }
 
+NM_CLICK := -2
+NM_DBLCLK := -3
+NM_RCLICK := -5
 
 SetTimer(Gui_wInspector, -1)
 
 Gui_wInspector(*){
     global
-    if (IsSet(MyGui) ){
-        Try{
+    if (IsSet(MyGui)) {
+        Try {
             MyGui.Show()
             return
         }
@@ -532,11 +535,11 @@ Gui_wInspector(*){
         oGuiWindow.AddText("x+5 yp+3", "H")
         ogEdit_wHeight := oGuiWindow.AddEdit("x+2 yp-3 Right Number vwHPos w40")
         ogButton_Move := oGuiWindow.AddButton("x258 yp-1 w40", "Move")
-        ogButton_Move.OnEvent("Click", (*) => (WinExist("ahk_id " ogEdit_wID.value) ? WinMove(ogEdit_wXPos.value, ogEdit_wYPos.value, ogEdit_wWidth.value, ogEdit_wHeight.value, "ahk_id " ogEdit_wID.value): ""))
+        ogButton_Move.OnEvent("Click", (*) => (WinExist("ahk_id" ogEdit_wID.value) ? WinMove(ogEdit_wXPos.value, ogEdit_wYPos.value, ogEdit_wWidth.value, ogEdit_wHeight.value, "ahk_id" ogEdit_wID.value): ""))
         oGuiWindow.AddText("x8 y+4", "Transparent:")
         oGuiWindow.Add('Slider', "xp+60 vTransparent Range0-255 ToolTip", 255)
         oGuiWindow['Transparent'].OnEvent("Change", (Slider, Info) => (WinExist("ahk_id" ogEdit_wID.value) && WinSetTransparent(Slider.Value, "ahk_id" ogEdit_wID.value), 0))
-        }
+    }
     ; Control Section
     {
         oGuiControl.posRef := oGuiWindow
@@ -577,8 +580,8 @@ Gui_wInspector(*){
         for i, v in ["RoleText", "Role", "Value", "Name", "Location", "StateText", "State", "DefaultAction", "Description", "KeyboardShortcut", "Help", "ChildId"]
             ogLV_AccProps.Add(, v, "")
 
-        ogLV_AccProps.OnNotify(-3, NM_Copy)
-        ogLV_AccProps.OnNotify(NM_RCLICK := -5, RClickAccList)
+        ogLV_AccProps.OnNotify(NM_DBLCLK, CopyLVITEMText)
+        ogLV_AccProps.OnNotify(NM_RCLICK, RClickAccList)
     }
     ; Mouse Section
     {
@@ -743,8 +746,8 @@ Gui_wInspector(*){
     ogLV_ProcessList.ModifyCol(2, "Integer")
 
     ogLV_ProcessList.OnEvent("Click", DClickProcessList)
-    ogLV_ProcessList.OnNotify(-3, NM_Copy)
-    ogLV_ProcessList.OnNotify(NM_RCLICK := -5, RClickProcessList)
+    ogLV_ProcessList.OnNotify(NM_DBLCLK, CopyLVITEMText)
+    ogLV_ProcessList.OnNotify(NM_RCLICK, RClickProcessList)
     ogLV_ProcessList.LeftMargin := 5
     ogLV_ProcessList.BottomMargin := 8
     UpdateProcessList()
@@ -782,9 +785,10 @@ Gui_wInspector(*){
     ogLV_WinList.ModifyCol(3, "Integer")
     ogLV_WinList.ModifyCol(4, "SortDesc")
 
-    ogLV_WinList.OnEvent("Click", DClickWinList)
-    ogLV_WinList.OnNotify(-3, NM_Copy)
-    ogLV_WinList.OnNotify(NM_RCLICK := -5, RClickWinList)
+    ;https://learn.microsoft.com/en-us/windows/win32/controls/nm-dblclk-list-view
+    ogLV_WinList.OnNotify(NM_CLICK, DClickWinList)
+    ogLV_WinList.OnNotify(NM_DBLCLK, DClickWinList)
+    ogLV_WinList.OnNotify(NM_RCLICK, RClickWinList)
     ogLV_WinList.LeftMargin := 5
     ogLV_WinList.BottomMargin := 8
 
@@ -812,9 +816,9 @@ Gui_wInspector(*){
         ogCB_FilterCtrlText.statusbar := "Filter on controls with text"
         ogLV_CtrlList := oGuiControlList.AddListView("xm+4 y+7 r15 w" (myGui.Width-8*3)/2 " vCtrlList section AltSubmit", ["Class(NN)", "Hwnd", "Text", "Type", "X", "Y", "W", "H","Visible"])
         ogLV_CtrlList.Opt("Count100 -Multi")
-        ogLV_CtrlList.OnEvent("Click", DClickCtrlList)
-        ogLV_CtrlList.OnNotify(-3, NM_Copy)
-        ogLV_CtrlList.OnNotify(NM_RCLICK := -5, RClickCtrlList)
+        ogLV_CtrlList.OnNotify(NM_CLICK, DClickCtrlList)
+        ogLV_CtrlList.OnNotify(NM_DBLCLK, DClickCtrlList)
+        ogLV_CtrlList.OnNotify(NM_RCLICK, RClickCtrlList)
         ogLV_CtrlList.LeftMargin := 5
         ogLV_CtrlList.BottomMargin := 28
     }
@@ -935,7 +939,7 @@ Gui_wInspector(*){
     Gui_Settings(*){
         ; Gui to set the hotkey, other settings can be added.
         Hotkey(oSet.Hotkey, "Off")
-        gSettings := Gui(, "Settings")
+        gSettings := Gui('+AlwaysOnTop', "Settings")
         ogHotKey := gSettings.AddHotkey("x16 y27", oSet.Hotkey)
         ogHotKey.ToolTip := "Define hotkey to activate wInspector"
         Grp1 := gSettings.AddGroupBox("x10 y8", "Hotkey")
@@ -1069,7 +1073,7 @@ GetSelectedWindow(*) {
 }
 
 SetSelectedWindow(win_id){
-    OutputDebug("SetSelectedWindow")
+    OutputDebug(A_ThisFunc '`n')
     if !WinExist(Win_id){
         UpdateWinList()
         return
@@ -1087,11 +1091,11 @@ SetSelectedWindow(win_id){
     ogEdit_wWidth.value := win_w
     ogEdit_wHeight.value := win_h
 
-    ogEdtWindow.text := (oSet.WindowPar = "Class") ? "ahk_class " WinGetClass(win_id) : (oSet.WindowPar = "hwnd") ? "ahk_id " win_id : (oSet.WindowPar = "Process") ? "ahk_exe " WinGetProcessName(win_id) : WinGetTitle(win_id)
+    ogEdtWindow.text := (oSet.WindowPar = "Class") ? "ahk_class" WinGetClass(win_id) : (oSet.WindowPar = "hwnd") ? "ahk_id" win_id : (oSet.WindowPar = "Process") ? "ahk_exe" WinGetProcessName(win_id) : WinGetTitle(win_id)
 }
 
 SetSelectedControl(ctrl_id){
-    OutputDebug("SetSelectedControl")
+    OutputDebug(A_ThisFunc '`n')
     if (ctrl_id=""){
         ogEdit_cText.value := ""
         ogEdit_cClass.value := ""
@@ -1147,22 +1151,29 @@ SetSelectedMouseGrid(MouseX, MouseY){
     WinRedraw(oGuiMouse)
 }
 
-RClickAccList(LV,lParam){
-    if 0 = rownumber := NumGet(lParam + (A_PtrSize * 3), 0, "Int") + 1 {
+RClickAccList(LV, lParam) {
+    idFrom := NumGet(lParam + A_PtrSize, 0, "Int")
+    rownumber := NumGet(lParam + (A_PtrSize * 3), 0, "Int") + 1
+    if idFrom = 0 || rownumber = 0
         return
-    }
     Property := LV.GetText(rownumber, 1)
     Value := LV.GetText(rownumber, 2)
     myMenu := Menu()
-    if (Value!=""){
+    if (Value != "") {
         myMenu.Add("Copy " Property, (*) => (A_Clipboard := Value, Tooltip2("Copied [" A_Clipboard "]")))
         myMenu.SetIcon("Copy " Property, "shell32.dll", 135)
     }
     myMenu.Show()
 }
 
-RClickProcessList(LV,lParam){
-    if 0 = rownumber := NumGet(lParam + (A_PtrSize * 3), 0, "Int") + 1 {
+RClickProcessList(LV, lParam) {
+    idFrom := NumGet(lParam + A_PtrSize, 0, "Int")
+    rownumber := NumGet(lParam + (A_PtrSize * 3), 0, "Int") + 1
+    if idFrom = 0 || rownumber = 0
+        return
+    if NumGet(lParam + (A_PtrSize * 8), 0, "Int") & 0x0001 {
+        A_Clipboard := LV.GetText(rownumber, NumGet(lParam + (A_PtrSize * 3), 4, "Int") + 1)
+        Tooltip2('Copied')
         return
     }
     Process := LV.GetText(rownumber, 1)
@@ -1185,53 +1196,64 @@ RClickProcessList(LV,lParam){
 }
 
 RClickWinList(LV, lParam) {
-    if 0 = rownumber := NumGet(lParam + (A_PtrSize * 3), 0, "Int") + 1 {
+    idFrom := NumGet(lParam + A_PtrSize, 0, "Int")
+    rownumber := NumGet(lParam + (A_PtrSize * 3), 0, "Int") + 1
+    if idFrom = 0 || rownumber = 0
+        return
+    if NumGet(lParam + (A_PtrSize * 8), 0, "Int") & 0x0001 {
+        A_Clipboard := LV.GetText(rownumber, NumGet(lParam + (A_PtrSize * 3), 4, "Int") + 1)
+        Tooltip2('Copied')
         return
     }
     win_hwnd := LV.GetText(RowNumber, 3) + 0
 
     myMenu := Menu()
-    myMenu.Add("Copy Title", (*) => (A_Clipboard := WinGetTitle('ahk_id ' win_hwnd), Tooltip2("Copied [" A_Clipboard "]")))
+    myMenu.Add("Copy Title", (*) => (A_Clipboard := WinGetTitle(win_hwnd), Tooltip2("Copied [" A_Clipboard "]")))
     myMenu.SetIcon("Copy Title", "shell32.dll", 135)
-    myMenu.Add("Copy Process", (*) => (A_Clipboard := WinGetProcessName('ahk_id ' win_hwnd), Tooltip2("Copied [" A_Clipboard "]")))
+    myMenu.Add("Copy Process", (*) => (A_Clipboard := WinGetProcessName(win_hwnd), Tooltip2("Copied [" A_Clipboard "]")))
     myMenu.SetIcon("Copy Process", "shell32.dll", 135)
-    myMenu.Add("Copy ProcessPath", (*) => (A_Clipboard := WinGetProcessPath('ahk_id ' win_hwnd), Tooltip2("Copied [" A_Clipboard "]")))
+    myMenu.Add("Copy ProcessPath", (*) => (A_Clipboard := WinGetProcessPath(win_hwnd), Tooltip2("Copied [" A_Clipboard "]")))
     myMenu.SetIcon("Copy ProcessPath", "shell32.dll", 135)
-    myMenu.Add("Copy WinClass", (*) => (A_Clipboard := WinGetClass('ahk_id ' win_hwnd), Tooltip2("Copied [" A_Clipboard "]")))
+    myMenu.Add("Copy WinClass", (*) => (A_Clipboard := WinGetClass(win_hwnd), Tooltip2("Copied [" A_Clipboard "]")))
     myMenu.SetIcon("Copy WinClass", "shell32.dll", 135)
     myMenu.Add("Styles", (*) => (GuiStyles_Create(win_hwnd, "Window")))
-    myMenu.Add("Acc Viewer", (*) => (GuiAccViewer("ahk_id " win_hwnd)))
+    myMenu.Add("Acc Viewer", (*) => (GuiAccViewer(win_hwnd)))
     myMenu.SetIcon("Acc Viewer", "shell32.dll", 85)
     myMenu.Add()
-    myMenu.Add("Activate", (*) => (WinActivate("ahk_id " win_hwnd), Tooltip2("WinActivate('ahk_id '" win_hwnd ")")))
-    State_AlwaysOnTop := WinGetExStyle('ahk_id' win_hwnd) & 0x8
-    myMenu.Add("AlwaysOnTop", (*) => (WinSetAlwaysOnTop(!State_AlwaysOnTop, "ahk_id " win_hwnd), Tooltip2('WinSetAlwaysOnTop(' (!State_AlwaysOnTop) '", ahk_id "' win_hwnd ')')))
+    myMenu.Add("Activate", (*) => (WinActivate(win_hwnd), Tooltip2("WinActivate(" win_hwnd ")")))
+    State_AlwaysOnTop := WinGetExStyle(win_hwnd) & 0x8
+    myMenu.Add("AlwaysOnTop", (*) => (WinSetAlwaysOnTop(!State_AlwaysOnTop, win_hwnd), WinMoveTop(MyGui)))
     myMenu.%State_AlwaysOnTop ? '' : 'un'%Check("AlwaysOnTop")
 
-    if (WinGetStyle("ahk_id " win_hwnd) & 0x10000000) {
-        myMenu.Add("Visible", (*) => (WinHide("ahk_id " win_hwnd), UpdateWinList(), Tooltip2("WinHide('ahk_id '" win_hwnd ")")))
+    if (WinGetStyle(win_hwnd) & 0x10000000) {
+        myMenu.Add("Visible", (*) => (WinHide(win_hwnd), UpdateWinList(), Tooltip2("WinHide(" win_hwnd ")")))
         myMenu.Check("Visible")
     } else {
-        myMenu.Add("Visible", (*) => (WinShow("ahk_id " win_hwnd), UpdateWinList(), Tooltip2("WinHide('ahk_id '" win_hwnd ")")))
+        myMenu.Add("Visible", (*) => (WinShow(win_hwnd), UpdateWinList(), Tooltip2("WinHide(" win_hwnd ")")))
     }
-    myMenu.Add("Close", (*) => (WinClose("ahk_id " win_hwnd), UpdateWinList(), Tooltip2("WinClose('ahk_id '" win_hwnd ")")))
+    myMenu.Add("Close", (*) => (WinClose(win_hwnd), UpdateWinList(), Tooltip2("WinClose(" win_hwnd ")")))
     myMenu.SetIcon("Close", "shell32.dll", 132)
-    ; myMenu.Add("GetPID", (*) => (Tooltip2(WinGetPID("ahk_id " win_hwnd))))
+    ; myMenu.Add("GetPID", (*) => (Tooltip2(WinGetPID(win_hwnd))))
 
     myMenu.Show()
 }
 
 RClickCtrlList(LV, lParam) {
-    if 0 = rownumber := NumGet(lParam + (A_PtrSize * 3), 0, "Int") + 1 {
+    idFrom := NumGet(lParam + A_PtrSize, 0, "Int")
+    rownumber := NumGet(lParam + (A_PtrSize * 3), 0, "Int") + 1
+    if idFrom = 0 || rownumber = 0
+        return
+    if NumGet(lParam + (A_PtrSize * 8), 0, "Int") & 0x0001 {
+        A_Clipboard := LV.GetText(rownumber, NumGet(lParam + (A_PtrSize * 3), 4, "Int") + 1)
+        Tooltip2('Copied')
         return
     }
-    ;Subitem := NumGet(lParam + (A_PtrSize * 3), 4, "Int")
     ctrl_hwnd := LV.GetText(rownumber, 2) + 0
     ctrl_ClassNN := ControlGetClassNN(ctrl_hwnd + 0)
     Ctrl_Visible := ControlGetVisible(ctrl_hwnd + 0)
     Ctrl_Enabled := ControlGetEnabled(ctrl_hwnd + 0)
     ObjectType := ControlGetType(ctrl_hwnd + 0)
-    win_hwnd := MyGui.win_hwnd
+    win_hwnd := MyGui.win_hwnd + 0
     myMenu := Menu()
     myMenu.Add("Copy Text", (*) => (A_Clipboard := ControlGetText(ctrl_hwnd + 0), Tooltip2("Copied [" A_Clipboard "]")))
     myMenu.SetIcon("Copy Text", "shell32.dll", 135)
@@ -1241,7 +1263,7 @@ RClickCtrlList(LV, lParam) {
         myMenu.Add("Copy ListViewGetContent", (*) => (A_Clipboard := ListViewGetContent(, ctrl_hwnd + 0), Tooltip2("Copied [" A_Clipboard "]")))
     }
     myMenu.Add("Styles", (*) => (GuiStyles_Create(ctrl_hwnd, ObjectType)))
-    myMenu.Add("Acc Viewer", (*) => (GuiAccViewer("ahk_id " win_hwnd, ctrl_hwnd)))
+    myMenu.Add("Acc Viewer", (*) => (GuiAccViewer(win_hwnd, ctrl_hwnd)))
     myMenu.SetIcon("Acc Viewer", "shell32.dll", 85)
     myMenu.Add()
     myMenu.Add("SendMessage", (*) => (SendMessage(0x0115, 0, 0, ctrl_hwnd)))
@@ -1262,7 +1284,7 @@ RClickCtrlList(LV, lParam) {
 }
 
 DClickProcessList(LV, RowNumber) {
-    if (RowNumber = 0) {
+    if (RowNumber <= 0) {
         return
     }
     MyGui.PID := LV.GetText(RowNumber, 2) + 0
@@ -1272,61 +1294,87 @@ DClickProcessList(LV, RowNumber) {
 
 }
 
-DClickWinList(LV, RowNumber) {
-    if (RowNumber = 0) {
+DClickWinList(LV, lParam) {
+    ;https://learn.microsoft.com/en-us/windows/win32/api/commctrl/ns-commctrl-nmitemactivate
+    ;hwndFrom := NumGet(lParam, 0, "Int")
+    idFrom := NumGet(lParam + A_PtrSize, 0, "Int")
+    rownumber := NumGet(lParam + (A_PtrSize * 3), 0, "Int") + 1
+    if idFrom = 0 || rownumber = 0
         return
-    }
 
-    if !WinExist("ahk_id" MyGui.win_hwnd := LV.GetText(RowNumber, 3) + 0) {
-        (IsSet(GuiBox) && WinExist(GuiBox) && GuiBox.Hide())
-        UpdateWinList()
-        UpdateProcessList()
-        UpdateCtrlList()
-    } else {
-        winPID := MyGui.win_hwnd != 0 and WinExist("ahk_id" MyGui.win_hwnd) ? WinGetPID("ahk_id " MyGui.win_hwnd) : 0
-        Loop ogLV_ProcessList.GetCount() {
-            rowPID := ogLV_ProcessList.GetText(A_Index, 2)
-            if (rowPID = winPID)
-                ogLV_ProcessList.Modify(A_Index, "Select Vis")
-        }
-        SetSelectedWindow(MyGui.win_hwnd)
-        UpdateCtrlList()
-        win_style := WinGetStyle(MyGui.win_hwnd)
-        if (win_style & 0x10000000) {
+    MyGui.win_hwnd := LV.GetText(RowNumber, 3) + 0
+
+    switch code := NumGet(lParam + A_PtrSize * 2, 0, "Int") {
+        case -2:
+            if !WinExist(MyGui.win_hwnd) {
+                (IsSet(GuiBox) && WinExist(GuiBox) && GuiBox.Hide())
+                UpdateWinList()
+                UpdateProcessList()
+                UpdateCtrlList()
+                return
+            }
+            winPID := MyGui.win_hwnd != 0 and WinExist(MyGui.win_hwnd) ? WinGetPID(MyGui.win_hwnd) : 0
+            Loop ogLV_ProcessList.GetCount() {
+                rowPID := ogLV_ProcessList.GetText(A_Index, 2)
+                if (rowPID = winPID)
+                    ogLV_ProcessList.Modify(A_Index, "Select Vis")
+            }
+            SetSelectedWindow(MyGui.win_hwnd)
+            UpdateCtrlList()
+        case -3:
+            if true || (WinGetStyle(MyGui.win_hwnd) & 0x10000000) {
+                ;WinMoveTop(MyGui.win_hwnd)
+                WinActivate(MyGui.win_hwnd)
+                if oSet.WinHighlight {
+                    GuiBox := GuiRectangle()
+                    GuiBox.MoveToWindow(MyGui.win_hwnd)
+                    ;GuiBox.Opt("+Owner" MyGui.win_hwnd)
+                    GuiBox.Show()
+                }
+                ControlFocus(LV)
+                WinMoveTop(GuiBox)
+            } else {
+                (IsSet(GuiBox) && WinExist(GuiBox) && GuiBox.Hide())
+            }
+    }
+}
+
+DClickCtrlList(LV, lParam) {
+    idFrom := NumGet(lParam + A_PtrSize, 0, "Int")
+    rownumber := NumGet(lParam + (A_PtrSize * 3), 0, "Int") + 1
+    if idFrom = 0 || rownumber = 0
+        return
+
+    MyGui.ctrl_hwnd := Hwnd_selected := LV.GetText(RowNumber, 2) + 0 ; convert to number
+
+    switch code := NumGet(lParam + A_PtrSize * 2, 0, "Int") {
+        case -2:
+            ;text := ControlGetText(Hwnd_selected)
+            SetSelectedControl(Hwnd_selected)
+        case -3:
+            win_hwnd := MyGui.win_hwnd + 0
+            ;WinMoveTop(win_hwnd)
+            WinActivate(win_hwnd)
             if oSet.WinHighlight {
                 GuiBox := GuiRectangle()
-                GuiBox.MoveToWindow(MyGui.win_hwnd)
-                GuiBox.Opt("+Owner" MyGui.win_hwnd)
+                GuiBox.MoveToControl(Hwnd_selected, win_hwnd)
+                ;GuiBox.Opt("+Owner" win_hwnd)
                 GuiBox.Show()
             }
-            WinMoveTop(MyGui.win_hwnd)
-            WinActivate(MyGui)
-        } else {
-            (IsSet(GuiBox) && WinExist(GuiBox) && GuiBox.Hide())
-        }
+            ControlFocus(LV)
+            WinMoveTop(GuiBox)
     }
-
 }
 
-DClickCtrlList(LV, RowNumber) {
-    if (RowNumber = 0) {
+CopyLVITEMText(LV, lParam) {
+    idFrom := NumGet(lParam + A_PtrSize, 0, "Int")
+    rownumber := NumGet(lParam + (A_PtrSize * 3), 0, "Int") + 1
+    if idFrom = 0 || rownumber = 0
         return
-    }
-    win_hwnd := MyGui.win_hwnd
-    Hwnd_selected := MyGui.ctrl_hwnd := LV.GetText(RowNumber, 2) + 0 ; convert to number
-    ;text := ControlGetText(Hwnd_selected)
-    if oSet.WinHighlight {
-        GuiBox := GuiRectangle()
-        GuiBox.MoveToControl(Hwnd_selected, "ahk_id " win_hwnd)
-        GuiBox.Opt("+Owner" win_hwnd)
-        GuiBox.Show()
-        WinActivate(MyGui)
-    }
-    SetSelectedControl(Hwnd_selected)
-    WinMoveTop("ahk_id " win_hwnd)
+    ;uKeyFlags := NumGet(lParam + (A_PtrSize * 8), 0, "Int")
+    A_Clipboard := LV.GetText(rownumber, NumGet(lParam + (A_PtrSize * 3), 4, "Int") + 1)
+    Tooltip2('Copied')
 }
-
-NM_Copy(LV, lParam) => (rownumber := NumGet(lParam + (A_PtrSize * 3), 0, "Int") + 1) && A_Clipboard := LV.GetText(rownumber, NumGet(lParam + (A_PtrSize * 3), 4, "Int") + 1)
 
 SectionCorrections(){
     myGui.GetPos(&xWin,&yWin,&wWin,&hWin)
@@ -1404,7 +1452,7 @@ UpdateProcessList(p*){
     ogLV_ProcessList.Opt("-Redraw")
     oProcessList := ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Process")
 
-    winPID := MyGui.win_hwnd !=0 and WinExist("ahk_id " MyGui.win_hwnd) ? WinGetPID("ahk_id " MyGui.win_hwnd) : 0
+    winPID := MyGui.win_hwnd !=0 and WinExist("ahk_id" MyGui.win_hwnd) ? WinGetPID("ahk_id" MyGui.win_hwnd) : 0
     index:=0
     for oProcess in oProcessList{
         index++
@@ -1506,17 +1554,20 @@ UpdateCtrlList(*){
     ogLV_CtrlList.Delete()
     ogLV_CtrlList.SetImageList(ImageCtrlList)
 
-    win_hwnd := MyGui.win_hwnd
+    win_hwnd := MyGui.win_hwnd + 0
     ogLV_CtrlList.Opt("-Redraw")
     selectedCtrl_hwnd := MyGui.ctrl_hwnd
-    if WinExist("ahk_id " win_hwnd){
-        for n, ctrl_hwnd in WinGetControlsHwnd("ahk_id " win_hwnd){
+    if WinExist(win_hwnd){
+        for n, ctrl_hwnd in WinGetControlsHwnd(win_hwnd){
             if (A_Index=1){
                 Hwnd_selected := ctrl_hwnd
             }
             ctrl_text := ControlGetText(ctrl_hwnd)
             ControlGetPos(&ctrl_x, &ctrl_y, &ctrl_w, &ctrl_h, ctrl_hwnd)
-            ctrl_ClassNN := ControlGetClassNN(ctrl_hwnd)
+            ctrl_ClassNN := ''
+            try {
+                ctrl_ClassNN := ControlGetClassNN(ctrl_hwnd)
+            }
             ; ctrl_AhkName := TranslateClassName(ctrl_ClassNN)
             ; ControlType := ControlGetStyle(ctrl_hwnd) & 0xF
 
@@ -1701,12 +1752,12 @@ Gui_Size(thisGui, MinMax:=1, Width:= 1, Height:= 1) {
 }
 
 GuiStyles_Create(hwnd, ObjectType) {
-    object_Style := WinGetStyle("ahk_id " hwnd)
-    object_ExStyle := WinGetExStyle("ahk_id " hwnd)
+    object_Style := WinGetStyle(hwnd)
+    object_ExStyle := WinGetExStyle(hwnd)
     Try{
         Object_ClassNN := ControlGetClassNN(hwnd)
     }Catch{
-        Object_ClassNN := WinGetTitle("ahk_id " hwnd)
+        Object_ClassNN := WinGetTitle(hwnd)
     }
 
     ObjectType := (ObjectType="Edit" and object_Style & 0x4) ? "editmultiLine" : ObjectType
@@ -1982,9 +2033,8 @@ WinGetHIcon(Wintitle){
     return IconHwnd
 }
 
-Tooltip2(Text:="" , X:= "", Y:= "", WhichToolTip:= "1"){
-    ; ToolTip(Text, X, Y, WhichToolTip)
-    ToolTip(Text)
+Tooltip2(Params*) {
+    ToolTip(Params*)
     SetTimer () => ToolTip(), -3000
 }
 
@@ -2006,12 +2056,15 @@ GetButtonType(hwndButton){
         , "CommandLink"	;BS_COMMANDLINK    (vista+) 15
         , "CommandLink"]	;BS_DEFCOMMANDLINK (vista+) 16
 
-    btnStyle := WinGetStyle("ahk_id " hwndButton)
+    btnStyle := WinGetStyle(hwndButton)
     return types[1 + (btnStyle & 0xF)]
 }
 
 ControlGetType(ctrl_hwnd){
-    ctrl_ClassNN := ControlGetClassNN(ctrl_hwnd)
+    ctrl_ClassNN := ''
+    try {
+        ctrl_ClassNN := ControlGetClassNN(ctrl_hwnd)
+    }
     ctrl_text := ControlGetText(ctrl_hwnd)
     ctrl_AhkName := TranslateClassName(ctrl_ClassNN)
     ControlType := ControlGetStyle(ctrl_hwnd) & 0xF
@@ -2686,7 +2739,7 @@ GuiAccViewer(Wintitle:="A", ControlHwnd:=""){
     ogCB_Visible.OnEvent("Click", (*) => (LVAcc_Update()))
 
     LVAcc := myAccGui.Add("ListView", "xm yp+21 r25 w800", ["Path","Name","RoleText","Role","x","y","w","h","Value", "StateText", "State", "Description", "KeyboardShortcut", "Help", "ChildId"])
-    LVAcc.OnNotify(-3, NM_Copy)
+    LVAcc.OnNotify(NM_DBLCLK, CopyLVITEMText)
     LVAcc.OnEvent("ContextMenu", LVAcc_ContextMenu)
     ; Notify the script whenever the user double clicks a row:
     LVAcc.OnEvent("DoubleClick", LVAcc_DoubleClick)
@@ -2727,7 +2780,7 @@ GuiAccViewer(Wintitle:="A", ControlHwnd:=""){
             if (ControlID!="" and ogCB_Control.Value){
                 ControlClass := ControlGetClassNN(ControlID)
                 Title := (ControlClass = "" ? "Control" : ControlClass) "] - [" Title
-                oAcc := Acc.ObjectFromWindow("ahk_id " ControlID)
+                oAcc := Acc.ObjectFromWindow(ControlID)
             } else {
                 oAcc := Acc.ObjectFromWindow(WinTitle)
             }
@@ -2849,8 +2902,8 @@ GuiAccViewer(Wintitle:="A", ControlHwnd:=""){
             }
 
             SetSystemCursor("Default")
-            ; LVAcc_Update("ahk_id " MouseWinHwnd)
-            LVAcc_Update("ahk_id " MouseWinHwnd, MouseControlHwnd)
+            ; LVAcc_Update(MouseWinHwnd)
+            LVAcc_Update(MouseWinHwnd, MouseControlHwnd)
             ogButton_AccSelector.text := "+"
         }
     }
