@@ -1768,7 +1768,7 @@ GuiStyles_Create(hwnd, ObjectType) {
     defaultStyle :=aoDefaultStyles.%ObjectType%.style
     defaultExStyle :=aoDefaultStyles.%ObjectType%.exStyle
 
-    GuiStyles := Gui("Resize", "Styles - " Object_ClassNN " - " ObjectType " - " format("0x{:X}",object_Style))
+    GuiStyles := Gui("Resize +AlwaysOnTop", "Styles - " Object_ClassNN " - " ObjectType " - " format("0x{:X}",object_Style))
     GuiStyles.OnEvent("Size",GuiSection_Size)
     ogTab := GuiStyles.AddTab3("w400 h400",["Styles","Extended Styles"])
     ogTab.LeftMargin := 10
@@ -2713,7 +2713,7 @@ GuiAccViewer(Wintitle:="A", ControlHwnd:=""){
     ; Setting the Icon seems not to work
     hIcon := LoadPicture("shell32.dll", "Icon85 w32 h32" , &imgtype)
     ; Create the window:
-    myAccGui := Gui(,"Acc Viewer")
+    myAccGui := Gui('+AlwaysOnTop',"Acc Viewer")
     SendMessage(0x0080, 1, hIcon, myAccGui)
     myAccGui.Opt("+Resize")
     myAccGui.OnEvent("Size", GuiAcc_Size)
