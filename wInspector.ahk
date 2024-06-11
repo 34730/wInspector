@@ -855,12 +855,26 @@ Gui_wInspector(*){
     }
     SettingsMenu.Add("Control", ControlMenu)
 
+    if !IsSet(aLastMenuPos) {
+        aLastMenuPos := []
+        OnMessage(0x201, __aLastMenuPosFunc)
+        __aLastMenuPosFunc(wParam, lParam, msg, hwnd) {
+            global aLastMenuPos
+            if WinGetPID(hwnd) = DllCall('GetCurrentProcessId') && WinGetClass(hwnd) = '#32768' {
+                WinGetPos(&x, &y, , , hwnd)
+                aLastMenuPos.Length := 0
+                aLastMenuPos.Push(x, y)
+            }
+        }
+    }
+
     WindowMenu := Menu()
     WindowMenuItemFunc(ItemName, ItemPos, ItemMenu) {
         oSet.WindowPar.%ItemName% ^= 1
         ItemMenu.%(oSet.WindowPar.%ItemName% ? '' : 'Un')%Check(ItemName)
         if GetKeyState('Shift') {
-            WindowMenu.Show()
+            CoordMode('Menu', 'Screen')
+            WindowMenu.Show(aLastMenuPos*)
         }
     }
     for ItemName, v in oSet.WindowPar.OwnProps() {
@@ -1544,7 +1558,7 @@ UpdateWinList(p*){
         win_PID := WinGetPID(win_id)
         WinGetClientPos(&win_x, &win_y, &win_w, &win_h, win_id)
 
-        win_visible := WinGetStyle(win_id) & 0x10000000 "" ? "Visible" : "Hidden"
+        win_visible := WinGetStyle(win_id) & 0x10000000 ? "Visible" : "Hidden"
         if (ogCB_FilterWinTitle.value=1 and win_title=""){
             continue
         }
