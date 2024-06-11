@@ -12,6 +12,7 @@
 #Include <_GuiCtlExt>
 #Include lib\ObjectGui.ah2
 #Include lib\Toolbar.ah2
+#Include <JSON>
 
 
 DetectHiddenWindows true
@@ -45,7 +46,7 @@ oSettings_Default.MainGui := {
     SectControlList: true,
     SectProcessList: true,
     ControlPar: "ClassNN",
-    WindowPar: "Title",
+    WindowPar: { Class: 0, hwnd: 0, ProcessID: 0, ProcessName: 0, Title: 1, },
     MouseGrid: 1,
     Function: "ControlClick",
     IDHex: true,
@@ -662,7 +663,13 @@ Gui_wInspector(*){
     DDLFunction := oGuiFunction.AddComboBox("x60 yp+15 w130 Choose", aFunctionList)
     DDLFunction.AutoComplete := true
     DDLFunction.text := oSet.Function
-    DDLFunction.OnEvent("Change", (*)=> (UpdateFunctionControls(), Gui_Autosize(), Gui_Size(MyGui)))
+    DDLFunction.OnEvent("Change",
+        (*) => (
+            UpdateFunctionControls()
+            ;,Gui_Autosize()
+            ;,Gui_Size(MyGui)
+        )
+    )
 
     BtnRun := oGuiFunction.AddPicButton("x+8 yp-1 w23 h23", "mmcndmgr.dll","icon33 w16 h16")
     BtnRun.StatusBar := "Run the selected function"
@@ -837,23 +844,29 @@ Gui_wInspector(*){
     oSet.WinHighlight=1 ? SettingsMenu.Check("Highlight") : ""
     SettingsMenu.Add()
     ControlMenu := Menu()
-    ControlMenu.Add("ClassNN", (ItemName, ItemPos, ItemMenu) => (ItemMenu.Check(ItemName),ItemMenu.UnCheck("hwnd"), ItemMenu.UnCheck("Text"), oSet.ControlPar := "ClassNN"))
-    ControlMenu.Add("hwnd", (ItemName, ItemPos, ItemMenu) => (ItemMenu.Check(ItemName), ItemMenu.UnCheck("ClassNN"), ItemMenu.UnCheck("Text"), oSet.ControlPar := "hwnd"))
-    ControlMenu.Add("Text", (ItemName, ItemPos, ItemMenu) => (ItemMenu.Check(ItemName), ItemMenu.UnCheck("hwnd"), ItemMenu.UnCheck("ClassNN"), oSet.ControlPar := "Text"))
-    (oSet.ControlPar = "ClassNN") ? ControlMenu.Check("ClassNN") : ""
-    (oSet.ControlPar = "hwnd") ? ControlMenu.Check("hwnd") : ""
-    (oSet.ControlPar = "Text") ? ControlMenu.Check("Text") : ""
+    ControlMenuItemFunc(ItemName, ItemPos, ItemMenu) {
+        oSet.ControlPar := ItemName
+        for , vItemName in ItemMenu[]
+            ItemMenu.%ItemName = vItemName ? '' : 'Un'%Check(vItemName)
+    }
+    for , ItemName in ControlMenu.__Item:=['hwnd','Text','ClassNN'] {
+        ControlMenu.Add(ItemName, ControlMenuItemFunc)
+        ControlMenu.%oSet.ControlPar = ItemName ? '' : 'un'%Check(ItemName)
+    }
     SettingsMenu.Add("Control", ControlMenu)
 
     WindowMenu := Menu()
-    WindowMenu.Add("Class", (ItemName, ItemPos, ItemMenu) => (ItemMenu.Check(ItemName),ItemMenu.UnCheck("hwnd"), ItemMenu.UnCheck("Title"), ItemMenu.UnCheck("Process"), oSet.WindowPar := "Class"))
-    WindowMenu.Add("hwnd", (ItemName, ItemPos, ItemMenu) => (ItemMenu.Check(ItemName), ItemMenu.UnCheck("Class"), ItemMenu.UnCheck("Title"), ItemMenu.UnCheck("Process"), oSet.WindowPar := "hwnd"))
-    WindowMenu.Add("Title", (ItemName, ItemPos, ItemMenu) => (ItemMenu.Check(ItemName), ItemMenu.UnCheck("hwnd"), ItemMenu.UnCheck("Class"), ItemMenu.UnCheck("Process"), oSet.WindowPar := "Title"))
-    WindowMenu.Add("Process", (ItemName, ItemPos, ItemMenu) => (ItemMenu.Check(ItemName), ItemMenu.UnCheck("hwnd"), ItemMenu.UnCheck("Class"), ItemMenu.UnCheck("Title"), oSet.WindowPar := "Process"))
-    (oSet.WindowPar = "Class") ? WindowMenu.Check("Class") : ""
-    (oSet.WindowPar = "hwnd") ? WindowMenu.Check("hwnd") : ""
-    (oSet.WindowPar = "Title") ? WindowMenu.Check("Title") : ""
-    (oSet.WindowPar = "Process") ? WindowMenu.Check("Process") : ""
+    WindowMenuItemFunc(ItemName, ItemPos, ItemMenu) {
+        oSet.WindowPar.%ItemName% ^= 1
+        ItemMenu.%(oSet.WindowPar.%ItemName% ? '' : 'Un')%Check(ItemName)
+        if GetKeyState('Shift') {
+            WindowMenu.Show()
+        }
+    }
+    for ItemName, v in oSet.WindowPar.OwnProps() {
+        WindowMenu.Add(ItemName, WindowMenuItemFunc)
+        WindowMenu.%v ? '' : 'un'%Check(ItemName)
+    }
     SettingsMenu.Add("Window", WindowMenu)
 
     HelpMenu := Menu()
@@ -1072,9 +1085,9 @@ GetSelectedWindow(*) {
         return MyGui.win_hwnd := ogLV_WinList.GetText(RowNumber, 3)
 }
 
-SetSelectedWindow(win_id){
+SetSelectedWindow(win_id) {
     OutputDebug(A_ThisFunc '`n')
-    if !WinExist(Win_id){
+    if !WinExist(Win_id) {
         UpdateWinList()
         return
     }
@@ -1082,16 +1095,35 @@ SetSelectedWindow(win_id){
     ogEdit_wClass.text := WinGetClass(win_id)
     ogEdit_wID.text := format("{:#x}", win_id)
     ogEdit_wProcess.text := WinGetProcessName(win_id)
-    ogEdit_wPID.text := format("{:#x}",WinGetPID(win_id))
+    ogEdit_wPID.text := format("{:#x}", WinGetPID(win_id))
     Win_Transparent := WinGetTransparent(win_id)
-    oGuiWindow['Transparent'].value := Win_Transparent="" ? 255 : Win_Transparent
+    oGuiWindow['Transparent'].value := Win_Transparent = "" ? 255 : Win_Transparent
     WinGetClientPos(&win_x, &win_y, &win_w, &win_h, win_id)
     ogEdit_wXPos.value := win_x
     ogEdit_wYPos.value := win_y
     ogEdit_wWidth.value := win_w
     ogEdit_wHeight.value := win_h
 
-    ogEdtWindow.text := (oSet.WindowPar = "Class") ? "ahk_class" WinGetClass(win_id) : (oSet.WindowPar = "hwnd") ? "ahk_id" win_id : (oSet.WindowPar = "Process") ? "ahk_exe" WinGetProcessName(win_id) : WinGetTitle(win_id)
+    ogEdtWindow.text := ''
+    for n, v in oSet.WindowPar.OwnProps() {
+        if v {
+            if ogEdtWindow.text != ''
+                ogEdtWindow.text .= ' '
+            switch n {
+                case 'hwnd':
+                    ogEdtWindow.text .= "ahk_id" win_id
+                    continue
+                case 'Class':
+                    ogEdtWindow.text .= "ahk_class"
+                case 'ProcessID':
+                    ogEdtWindow.text .= "ahk_pid" WinGetPID(win_id)
+                    continue
+                case 'ProcessName':
+                    ogEdtWindow.text .= "ahk_exe"
+            }
+            ogEdtWindow.text .= WinGet%n%(win_id)
+        }
+    }
 }
 
 SetSelectedControl(ctrl_id){
@@ -2192,8 +2224,9 @@ WriteINI(&Array2D, INI_File :="") {	; write 2D-array to INI-file
     for SectionName, Entry in Array2D.OwnProps() {
         Pairs := ""
 
-        for Key, Value in Entry.OwnProps()
-            Pairs .= Key "=" Value "`n"
+        for Key, Value in Entry.OwnProps() {
+            Pairs .= Key "=" (Type(Value) = 'Object' ? 'JSON' RegExReplace(JSON.stringify(Value), '`n *') : Value) "`n"
+        }
         IniWrite(Pairs, INI_File, SectionName)
     }
 }
@@ -2214,7 +2247,10 @@ ReadINI(INI_File:="", oResult := "") {	; return 2D-array from INI-file
         for each, Haystack in StrSplit(OutputVar_Section, "`n"){
             RegExMatch(Haystack, "(.*?)=(.*)", &match)
             ArrayProperty := match[1]
-            oResult.%Section%.%ArrayProperty% := match[2]
+            Value := RegExReplace(match[2], '^JSON(?=\{)', , &oc)
+            if oc
+                Value := JSON.parse(Value, , false)
+            oResult.%Section%.%ArrayProperty% := Value
         }
     }
     return oResult
@@ -2250,8 +2286,8 @@ ReadINI(INI_File:="", oResult := "") {	; return 2D-array from INI-file
                 aPar.Push(ogEdtVar3.text)
             }
         }
-        if (oFunct.HasProp("Control") and oFunct.Control){
-            aPar.Push(ogEdtControl.text)
+        if (oFunct.HasProp("Control") and oFunct.Control) {
+            aPar.Push(oSet.ControlPar = "hwnd" ? Number(ogEdtControl.text) : ogEdtControl.text)
         }
 
         if !WinExist(ogEdtWindow.text){
