@@ -1111,15 +1111,15 @@ SetSelectedWindow(win_id) {
                 ogEdtWindow.text .= ' '
             switch n {
                 case 'hwnd':
-                    ogEdtWindow.text .= "ahk_id" win_id
+                    ogEdtWindow.text .= "ahk_id " win_id
                     continue
                 case 'Class':
-                    ogEdtWindow.text .= "ahk_class"
+                    ogEdtWindow.text .= "ahk_class "
                 case 'ProcessID':
-                    ogEdtWindow.text .= "ahk_pid" WinGetPID(win_id)
+                    ogEdtWindow.text .= "ahk_pid " WinGetPID(win_id)
                     continue
                 case 'ProcessName':
-                    ogEdtWindow.text .= "ahk_exe"
+                    ogEdtWindow.text .= "ahk_exe "
             }
             ogEdtWindow.text .= WinGet%n%(win_id)
         }
