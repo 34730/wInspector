@@ -1379,7 +1379,8 @@ DClickWinList(LV, lParam) {
                     GuiBox.Show()
                 }
                 ControlFocus(LV)
-                WinMoveTop(GuiBox)
+                if oSet.WinHighlight
+                    WinMoveTop(GuiBox)
             } else {
                 (IsSet(GuiBox) && WinExist(GuiBox) && GuiBox.Hide())
             }
@@ -1409,7 +1410,8 @@ DClickCtrlList(LV, lParam) {
                 GuiBox.Show()
             }
             ControlFocus(LV)
-            WinMoveTop(GuiBox)
+            if oSet.WinHighlight
+                WinMoveTop(GuiBox)
     }
 }
 
