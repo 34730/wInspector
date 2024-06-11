@@ -875,6 +875,7 @@ Gui_wInspector(*){
         if GetKeyState('Shift') {
             CoordMode('Menu', 'Screen')
             WindowMenu.Show(aLastMenuPos*)
+            aLastMenuPos.Length := 0
         }
     }
     for ItemName, v in oSet.WindowPar.OwnProps() {
