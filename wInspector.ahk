@@ -1370,17 +1370,17 @@ DClickWinList(LV, lParam) {
             UpdateCtrlList()
         case -3:
             if true || (WinGetStyle(MyGui.win_hwnd) & 0x10000000) {
-                ;WinMoveTop(MyGui.win_hwnd)
-                WinActivate(MyGui.win_hwnd)
                 if oSet.WinHighlight {
                     GuiBox := GuiRectangle()
                     GuiBox.MoveToWindow(MyGui.win_hwnd)
                     ;GuiBox.Opt("+Owner" MyGui.win_hwnd)
                     GuiBox.Show()
                 }
-                ControlFocus(LV)
+                ;ControlFocus(LV)
                 if oSet.WinHighlight
                     WinMoveTop(GuiBox)
+                ;WinMoveTop(MyGui.win_hwnd)
+                WinActivate(MyGui.win_hwnd)
             } else {
                 (IsSet(GuiBox) && WinExist(GuiBox) && GuiBox.Hide())
             }
@@ -1401,17 +1401,17 @@ DClickCtrlList(LV, lParam) {
             SetSelectedControl(Hwnd_selected)
         case -3:
             win_hwnd := MyGui.win_hwnd + 0
-            ;WinMoveTop(win_hwnd)
-            WinActivate(win_hwnd)
             if oSet.WinHighlight {
                 GuiBox := GuiRectangle()
                 GuiBox.MoveToControl(Hwnd_selected, win_hwnd)
                 ;GuiBox.Opt("+Owner" win_hwnd)
                 GuiBox.Show()
             }
-            ControlFocus(LV)
+            ;ControlFocus(LV)
             if oSet.WinHighlight
                 WinMoveTop(GuiBox)
+            ;WinMoveTop(win_hwnd)
+            ControlFocus(Hwnd_selected)
     }
 }
 
