@@ -15,6 +15,7 @@
 #Include <JSON>
 #Include <Menu>
 
+_Menu.SetBase()
 
 DetectHiddenWindows true
 SendMode "Input"  ; Recommended for new scripts due to its superior speed and reliability.
@@ -848,8 +849,19 @@ Gui_wInspector(*) {
     ControlMenu := Menu()
     ControlMenuItemFunc(ItemName, ItemPos, ItemMenu) {
         oSet.ControlPar := ItemName
+        /*
+        loop Menu_GetItemCount(ItemMenu.handle) {
+            vItemName := Menu_GetItemInfo(ItemMenu.handle,A_Index).Name
+            ItemMenu.%ItemName = vItemName ? '' : 'Un'%Check(vItemName)
+        }
+        /*
         loop (mm := _Menu(ItemMenu)).ItemCount {
             vItemName := mm.GetItemInfo(A_Index).Name
+            ItemMenu.%ItemName = vItemName ? '' : 'Un'%Check(vItemName)
+        }
+        */
+        loop ItemMenu.ItemCount {
+            vItemName := ItemMenu.GetItemInfo(A_Index).Name
             ItemMenu.%ItemName = vItemName ? '' : 'Un'%Check(vItemName)
         }
     }
