@@ -20,7 +20,7 @@ SendMode "Input"  ; Recommended for new scripts due to its superior speed and re
 SetWorkingDir A_ScriptDir  ; Ensures a consistent starting directory.
 
 ; Set the tray icon
-TraySetIcon("imageres.dll",145)
+TraySetIcon("imageres.dll", 145)
 
 A_TrayMenu.Add()  ; Creates a separator line.
 A_TrayMenu.Add("Inspect", Gui_wInspector)  ; Creates a new menu item.
@@ -66,15 +66,15 @@ Global oImageControls := {
     GroupBox: -15,
     Hotkey: -16,
     Link: -17,
-    ListBox:  -18,
-    ListView:  -19,
-    MonthCal:  -21,
+    ListBox: -18,
+    ListView: -19,
+    MonthCal: -21,
     Picture: -22,
     Progress: -23,
     Radio: -24,
     Separator: -25,
     Slider: -26,
-    StatusBar:27,
+    StatusBar: 27,
     Tab3: -28,
     Text: -29,
     ToolBar: -30,
@@ -86,15 +86,15 @@ Global oImageControls := {
     ScrollBar: -32
 }
 index := 1
-for property, value in oImageControls.OwnProps(){
+for property, value in oImageControls.OwnProps() {
     index++
 }
 
-ImageCtrlList := IL_Create(index+1)
+ImageCtrlList := IL_Create(index + 1)
 mILControls := Map()
 IconIndex1 := IL_Add(ImageCtrlList, "shell32.dll", 50) ; add empty image
 index := 1
-for property, value in oImageControls.OwnProps(){
+for property, value in oImageControls.OwnProps() {
     index++
     mILControls[Property] := IL_Add(ImageCtrlList, "Images.icl", value)
 }
@@ -102,7 +102,7 @@ for property, value in oImageControls.OwnProps(){
 ; Styles data
 {
     Class Styles {
-        __New(Style, Hex, Description, OptionText:="",SkipHex := "", Skip := "") {
+        __New(Style, Hex, Description, OptionText := "", SkipHex := "", Skip := "") {
             this.Style := Style
             this.Hex := Hex
             this.OptionText := OptionText
@@ -112,35 +112,35 @@ for property, value in oImageControls.OwnProps(){
         }
     }
     Global aoWinStyles := Array()
-    aoWinStyles.Push(Styles("WS_BORDER", "0x800000","+/-Border. Creates a window that has a thin-line border.", "Border","0xC00000"))
-    aoWinStyles.Push(Styles("WS_POPUP", "0x80000000","Creates a pop-up window. This style cannot be used with the WS_CHILD style."))
-    aoWinStyles.Push(Styles("WS_CAPTION", "0xC00000","+/-Caption. Creates a window that has a title bar. This style is a numerical combination of WS_BORDER and WS_DLGFRAME.", "Caption","-Border -0x400000 +E0x10000 -E0x100"))
-    aoWinStyles.Push(Styles("WS_CLIPSIBLINGS", "0x4000000","Clips child windows relative to each other; that is, when a particular child window receives a WM_PAINT message, the WS_CLIPSIBLINGS style clips all other overlapping child windows out of the region of the child window to be updated. If WS_CLIPSIBLINGS is not specified and child windows overlap, it is possible, when drawing within the client area of a child window, to draw within the client area of a neighboring child window."))
-    aoWinStyles.Push(Styles("WS_DISABLED", "0x8000000","+/-Disabled. Creates a window that is initially disabled.","Disabled"))
-    aoWinStyles.Push(Styles("WS_DLGFRAME", "0x400000","Creates a window that has a border of a style typically used with dialog boxes."))
+    aoWinStyles.Push(Styles("WS_BORDER", "0x800000", "+/-Border. Creates a window that has a thin-line border.", "Border", "0xC00000"))
+    aoWinStyles.Push(Styles("WS_POPUP", "0x80000000", "Creates a pop-up window. This style cannot be used with the WS_CHILD style."))
+    aoWinStyles.Push(Styles("WS_CAPTION", "0xC00000", "+/-Caption. Creates a window that has a title bar. This style is a numerical combination of WS_BORDER and WS_DLGFRAME.", "Caption", "-Border -0x400000 +E0x10000 -E0x100"))
+    aoWinStyles.Push(Styles("WS_CLIPSIBLINGS", "0x4000000", "Clips child windows relative to each other; that is, when a particular child window receives a WM_PAINT message, the WS_CLIPSIBLINGS style clips all other overlapping child windows out of the region of the child window to be updated. If WS_CLIPSIBLINGS is not specified and child windows overlap, it is possible, when drawing within the client area of a child window, to draw within the client area of a neighboring child window."))
+    aoWinStyles.Push(Styles("WS_DISABLED", "0x8000000", "+/-Disabled. Creates a window that is initially disabled.", "Disabled"))
+    aoWinStyles.Push(Styles("WS_DLGFRAME", "0x400000", "Creates a window that has a border of a style typically used with dialog boxes."))
     aoWinStyles.Push(Styles("WS_HSCROLL", "0x100000", "Creates a window that has a horizontal scroll bar."))
     aoWinStyles.Push(Styles("WS_MAXIMIZE", "0x1000000", "Creates a window that is initially maximized."))
-    aoWinStyles.Push(Styles("WS_MAXIMIZEBOX", "0x10000", "+/-MaximizeBox. Creates a window that has a maximize button. Cannot be combined with the WS_EX_CONTEXTHELP style. The WS_SYSMENU style must also be specified.","MaximizeBox"))
+    aoWinStyles.Push(Styles("WS_MAXIMIZEBOX", "0x10000", "+/-MaximizeBox. Creates a window that has a maximize button. Cannot be combined with the WS_EX_CONTEXTHELP style. The WS_SYSMENU style must also be specified.", "MaximizeBox"))
     aoWinStyles.Push(Styles("WS_MINIMIZE", "0x20000000", "Creates a window that is initially minimized."))
-    aoWinStyles.Push(Styles("WS_MINIMIZEBOX", "0x20000", "+/-MinimizeBox. Creates a window that has a minimize button. Cannot be combined with the WS_EX_CONTEXTHELP style. The WS_SYSMENU style must also be specified.","MinimizeBox"))
+    aoWinStyles.Push(Styles("WS_MINIMIZEBOX", "0x20000", "+/-MinimizeBox. Creates a window that has a minimize button. Cannot be combined with the WS_EX_CONTEXTHELP style. The WS_SYSMENU style must also be specified.", "MinimizeBox"))
     aoWinStyles.Push(Styles("WS_OVERLAPPED", "0x0", "Creates an overlapped window. An overlapped window has a title bar and a border. Same as the WS_TILED style."))
-    aoWinStyles.Push(Styles("WS_OVERLAPPEDWINDOW", "0xCF0000", "Creates an overlapped window with the WS_OVERLAPPED, WS_CAPTION, WS_SYSMENU, WS_THICKFRAME, WS_MINIMIZEBOX, and WS_MAXIMIZEBOX styles. Same as the WS_TILEDWINDOW style.",,, true))
-    aoWinStyles.Push(Styles("WS_POPUPWINDOW", "0x80880000", "Creates a pop-up window with WS_BORDER, WS_POPUP, and WS_SYSMENU styles. The WS_CAPTION and WS_POPUPWINDOW styles must be combined to make the window menu visible.",,,true))
-    aoWinStyles.Push(Styles("WS_SIZEBOX", "0x40000", "+/-Resize. Creates a window that has a sizing border. Same as the WS_THICKFRAME style.","Resize","+MaximizeBox +E0x10000"))
-    aoWinStyles.Push(Styles("WS_SYSMENU", "0x80000", "+/-SysMenu. Creates a window that has a window menu on its title bar. The WS_CAPTION style must also be specified.","SysMenu"," +E0x10000"))
+    aoWinStyles.Push(Styles("WS_OVERLAPPEDWINDOW", "0xCF0000", "Creates an overlapped window with the WS_OVERLAPPED, WS_CAPTION, WS_SYSMENU, WS_THICKFRAME, WS_MINIMIZEBOX, and WS_MAXIMIZEBOX styles. Same as the WS_TILEDWINDOW style.", , , true))
+    aoWinStyles.Push(Styles("WS_POPUPWINDOW", "0x80880000", "Creates a pop-up window with WS_BORDER, WS_POPUP, and WS_SYSMENU styles. The WS_CAPTION and WS_POPUPWINDOW styles must be combined to make the window menu visible.", , , true))
+    aoWinStyles.Push(Styles("WS_SIZEBOX", "0x40000", "+/-Resize. Creates a window that has a sizing border. Same as the WS_THICKFRAME style.", "Resize", "+MaximizeBox +E0x10000"))
+    aoWinStyles.Push(Styles("WS_SYSMENU", "0x80000", "+/-SysMenu. Creates a window that has a window menu on its title bar. The WS_CAPTION style must also be specified.", "SysMenu", " +E0x10000"))
     aoWinStyles.Push(Styles("WS_VSCROLL", "0x200000", "Creates a window that has a vertical scroll bar."))
     aoWinStyles.Push(Styles("WS_VISIBLE", "0x10000000", "Creates a window that is initially visible."))
     aoWinStyles.Push(Styles("WS_CHILD", "0x40000000", "Creates a child window. A window with this style cannot have a menu bar. This style cannot be used with the WS_POPUP style."))
 
     Global aoControlStyles := Array()
     ; stylest that seem double, for controls
-    aoControlStyles.Push(Styles("WS_BORDER", "0x800000","+/-Border. Creates a window that has a thin-line border.", "Border","0xC00000"))
+    aoControlStyles.Push(Styles("WS_BORDER", "0x800000", "+/-Border. Creates a window that has a thin-line border.", "Border", "0xC00000"))
     aoControlStyles.Push(Styles("WS_DISABLED", "0x8000000", "+/-Disabled. Creates a window that is initially disabled.", "Disabled"))
-    aoControlStyles.Push(Styles("WS_TABSTOP", "0x10000", "+/-Tabstop. Specifies a control that can receive the keyboard focus when the user presses Tab. Pressing Tab changes the keyboard focus to the next control with the WS_TABSTOP style.","Tabstop"))
+    aoControlStyles.Push(Styles("WS_TABSTOP", "0x10000", "+/-Tabstop. Specifies a control that can receive the keyboard focus when the user presses Tab. Pressing Tab changes the keyboard focus to the next control with the WS_TABSTOP style.", "Tabstop"))
     aoControlStyles.Push(Styles("WS_GROUP", "0x20000", '+/-Group. Indicates that this control is the first one in a group of controls. This style is automatically applied to manage the " only one at a time " behavior of radio buttons. In the rare case where two groups of radio buttons are added consecutively (with no other control types in between them), this style may be applied manually to the first control of the second radio group, which splits it off from the first.', "Group"))
-    aoControlStyles.Push(Styles("WS_THICKFRAME", "0x40000", "Creates a window that has a sizing border. Same as the WS_SIZEBOX style.",,"0x40000",true))
-    aoControlStyles.Push(Styles("WS_VSCROLL", "0x200000", "Creates a window that has a vertical scroll bar.","VScroll"))
-    aoControlStyles.Push(Styles("WS_HSCROLL", "0x100000", "Creates a window that has a horizontal scroll bar.","HScroll"))
+    aoControlStyles.Push(Styles("WS_THICKFRAME", "0x40000", "Creates a window that has a sizing border. Same as the WS_SIZEBOX style.", , "0x40000", true))
+    aoControlStyles.Push(Styles("WS_VSCROLL", "0x200000", "Creates a window that has a vertical scroll bar.", "VScroll"))
+    aoControlStyles.Push(Styles("WS_HSCROLL", "0x100000", "Creates a window that has a horizontal scroll bar.", "HScroll"))
 
     Global aoWinExStyles := Array()
     aoWinExStyles.Push(Styles("WS_EX_ACCEPTFILES", "0x10", 'The window accepts drag-drop files.'))
@@ -164,108 +164,108 @@ for property, value in oImageControls.OwnProps(){
     aoWinExStyles.Push(Styles("WS_EX_RIGHTSCROLLBAR", "0x0", 'The vertical scroll bar (if present) is to the right of the client area. This is the default.'))
     aoWinExStyles.Push(Styles("WS_EX_RTLREADING", "0x2000", 'If the shell language is Hebrew, Arabic, or another language that supports reading-order alignment, the window text is displayed using right-to-left reading-order properties. For other languages, the style is ignored.'))
     aoWinExStyles.Push(Styles("WS_EX_STATICEDGE", "0x20000", 'The window has a three-dimensional border style intended to be used for items that do not accept user input.'))
-    aoWinExStyles.Push(Styles("WS_EX_TOOLWINDOW", "0x80", 'The window is intended to be used as a floating toolbar. A tool window has a title bar that is shorter than a normal title bar, and the window title is drawn using a smaller font. A tool window does not appear in the taskbar or in the dialog that appears when the user presses ALT+TAB. If a tool window has a system menu, its icon is not displayed on the title bar. However, you can display the system menu by right-clicking or by typing ALT+SPACE.',"ToolWindow","+E0x10000"))
-    aoWinExStyles.Push(Styles("WS_EX_TOPMOST", "0x8", 'The window should be placed above all non-topmost windows and should stay above them, even when the window is deactivated. To add or remove this style, use the SetWindowPos function.',"AlwaysOnTop"))
+    aoWinExStyles.Push(Styles("WS_EX_TOOLWINDOW", "0x80", 'The window is intended to be used as a floating toolbar. A tool window has a title bar that is shorter than a normal title bar, and the window title is drawn using a smaller font. A tool window does not appear in the taskbar or in the dialog that appears when the user presses ALT+TAB. If a tool window has a system menu, its icon is not displayed on the title bar. However, you can display the system menu by right-clicking or by typing ALT+SPACE.', "ToolWindow", "+E0x10000"))
+    aoWinExStyles.Push(Styles("WS_EX_TOPMOST", "0x8", 'The window should be placed above all non-topmost windows and should stay above them, even when the window is deactivated. To add or remove this style, use the SetWindowPos function.', "AlwaysOnTop"))
     aoWinExStyles.Push(Styles("WS_EX_TRANSPARENT", "0x20", 'The window should not be painted until siblings beneath the window (that were created by the same thread) have been painted. The window appears transparent because the bits of underlying sibling windows have already been painted. To achieve transparency without these restrictions, use the SetWindowRgn function.'))
     aoWinExStyles.Push(Styles("WS_EX_WINDOWEDGE", "0x100", 'The window has a border with a raised edge.'))
 
     global aoTextStyles := Array()
-    aoTextStyles.Push(Styles("SS_BLACKFRAME", "0x7",'Specifies a box with a frame drawn in the same color as the window frames. This color is black in the default color scheme.'))
-    aoTextStyles.Push(Styles("SS_BLACKRECT", "0x4",'Specifies a rectangle filled with the current window frame color. This color is black in the default color scheme.'))
-    aoTextStyles.Push(Styles("SS_CENTER", "0x1",'+/-Center. Specifies a simple rectangle and centers the text in the rectangle. The control automatically wraps words that extend past the end of a line to the beginning of the next centered line.', 'Center'))
-    aoTextStyles.Push(Styles("SS_ETCHEDFRAME", "0x12",'Draws the frame of the static control using the EDGE_ETCHED edge style.'))
-    aoTextStyles.Push(Styles("SS_ETCHEDHORZ", "0x10",'Draws the top and bottom edges of the static control using the EDGE_ETCHED edge style.'))
-    aoTextStyles.Push(Styles("SS_ETCHEDVERT", "0x11",'Draws the left and right edges of the static control using the EDGE_ETCHED edge style.'))
-    aoTextStyles.Push(Styles("SS_GRAYFRAME", "0x8",'Specifies a box with a frame drawn with the same color as the screen background (desktop). This color is gray in the default color scheme.'))
-    aoTextStyles.Push(Styles("SS_GRAYRECT", "0x5",'Specifies a rectangle filled with the current screen background color. This color is gray in the default color scheme.'))
-    aoTextStyles.Push(Styles("SS_LEFT", "0x0",'+/-Left. This is the default. It specifies a simple rectangle and left-aligns the text in the rectangle. The text is formatted before it is displayed. Words that extend past the end of a line are automatically wrapped to the beginning of the next left-aligned line. Words that are longer than the width of the control are truncated.', 'Left'))
-    aoTextStyles.Push(Styles("SS_LEFTNOWORDWRAP", "0xC",'+/-Wrap. Specifies a rectangle and left-aligns the text in the rectangle. Tabs are expanded, but words are not wrapped. Text that extends past the end of a line is clipped.', 'Wrap'))
-    aoTextStyles.Push(Styles("SS_NOPREFIX", "0x80","Prevents interpretation of any ampersand (&) characters in the control's text as accelerator prefix characters. This can be useful when file names or other strings that might contain an ampersand (&) must be displayed within a text control."))
-    aoTextStyles.Push(Styles("SS_NOTIFY", "0x100",'Sends the parent window the STN_CLICKED notification when the user clicks the control.'))
-    aoTextStyles.Push(Styles("SS_RIGHT", "0x2",'+/-Right. Specifies a rectangle and right-aligns the specified text in the rectangle.', 'Right'))
-    aoTextStyles.Push(Styles("SS_SUNKEN", "0x1000",'Draws a half-sunken border around a static control.'))
-    aoTextStyles.Push(Styles("SS_WHITEFRAME", "0x9",'Specifies a box with a frame drawn with the same color as the window background. This color is white in the default color scheme.'))
-    aoTextStyles.Push(Styles("SS_WHITERECT", "0x6",'Specifies a rectangle filled with the current window background color. This color is white in the default color scheme.'))
+    aoTextStyles.Push(Styles("SS_BLACKFRAME", "0x7", 'Specifies a box with a frame drawn in the same color as the window frames. This color is black in the default color scheme.'))
+    aoTextStyles.Push(Styles("SS_BLACKRECT", "0x4", 'Specifies a rectangle filled with the current window frame color. This color is black in the default color scheme.'))
+    aoTextStyles.Push(Styles("SS_CENTER", "0x1", '+/-Center. Specifies a simple rectangle and centers the text in the rectangle. The control automatically wraps words that extend past the end of a line to the beginning of the next centered line.', 'Center'))
+    aoTextStyles.Push(Styles("SS_ETCHEDFRAME", "0x12", 'Draws the frame of the static control using the EDGE_ETCHED edge style.'))
+    aoTextStyles.Push(Styles("SS_ETCHEDHORZ", "0x10", 'Draws the top and bottom edges of the static control using the EDGE_ETCHED edge style.'))
+    aoTextStyles.Push(Styles("SS_ETCHEDVERT", "0x11", 'Draws the left and right edges of the static control using the EDGE_ETCHED edge style.'))
+    aoTextStyles.Push(Styles("SS_GRAYFRAME", "0x8", 'Specifies a box with a frame drawn with the same color as the screen background (desktop). This color is gray in the default color scheme.'))
+    aoTextStyles.Push(Styles("SS_GRAYRECT", "0x5", 'Specifies a rectangle filled with the current screen background color. This color is gray in the default color scheme.'))
+    aoTextStyles.Push(Styles("SS_LEFT", "0x0", '+/-Left. This is the default. It specifies a simple rectangle and left-aligns the text in the rectangle. The text is formatted before it is displayed. Words that extend past the end of a line are automatically wrapped to the beginning of the next left-aligned line. Words that are longer than the width of the control are truncated.', 'Left'))
+    aoTextStyles.Push(Styles("SS_LEFTNOWORDWRAP", "0xC", '+/-Wrap. Specifies a rectangle and left-aligns the text in the rectangle. Tabs are expanded, but words are not wrapped. Text that extends past the end of a line is clipped.', 'Wrap'))
+    aoTextStyles.Push(Styles("SS_NOPREFIX", "0x80", "Prevents interpretation of any ampersand (&) characters in the control's text as accelerator prefix characters. This can be useful when file names or other strings that might contain an ampersand (&) must be displayed within a text control."))
+    aoTextStyles.Push(Styles("SS_NOTIFY", "0x100", 'Sends the parent window the STN_CLICKED notification when the user clicks the control.'))
+    aoTextStyles.Push(Styles("SS_RIGHT", "0x2", '+/-Right. Specifies a rectangle and right-aligns the specified text in the rectangle.', 'Right'))
+    aoTextStyles.Push(Styles("SS_SUNKEN", "0x1000", 'Draws a half-sunken border around a static control.'))
+    aoTextStyles.Push(Styles("SS_WHITEFRAME", "0x9", 'Specifies a box with a frame drawn with the same color as the window background. This color is white in the default color scheme.'))
+    aoTextStyles.Push(Styles("SS_WHITERECT", "0x6", 'Specifies a rectangle filled with the current window background color. This color is white in the default color scheme.'))
 
     global aoEditStyles := Array()
-    aoEditStyles.Push(Styles("ES_AUTOHSCROLL", "0x80",'+/-Wrap for multi-line edits, and +/-Limit for single-line edits. Automatically scrolls text to the right by 10 characters when the user types a character at the end of the line. When the user presses Enter, the control scrolls all text back to the zero position.','Limit'))
-    aoEditStyles.Push(Styles("ES_AUTOVSCROLL", "0x40",'Scrolls text up one page when the user presses Enter on the last line.'))
-    aoEditStyles.Push(Styles("ES_CENTER", "0x1",'+/-Center. Centers text in a multiline edit control.', 'Center'))
-    aoEditStyles.Push(Styles("ES_LOWERCASE", "0x10",'+/-Lowercase. Converts all characters to lowercase as they are typed into the edit control.', 'Lowercase'))
-    aoEditStyles.Push(Styles("ES_NOHIDESEL", "0x100",'Negates the default behavior for an edit control. The default behavior hides the selection when the control loses the input focus and inverts the selection when the control receives the input focus. If you specify ES_NOHIDESEL, the selected text is inverted, even if the control does not have the focus.'))
-    aoEditStyles.Push(Styles("ES_NUMBER", "0x2000",'+/-Number. Prevents the user from typing anything other than digits in the control.', 'Number'))
-    aoEditStyles.Push(Styles("ES_OEMCONVERT", "0x400",'This style is most useful for edit controls that contain file names.'))
-    aoEditStyles.Push(Styles("ES_MULTILINE", "0x4",'+/-Multi. Designates a multiline edit control. The default is a single-line edit control.','Multi'))
-    aoEditStyles.Push(Styles("ES_PASSWORD", "0x20",'+/-Password. Displays a masking character in place of each character that is typed into the edit control, which conceals the text.', 'Password'))
-    aoEditStyles.Push(Styles("ES_READONLY", "0x800",'+/-ReadOnly. Prevents the user from typing or editing text in the edit control.', 'ReadOnly'))
-    aoEditStyles.Push(Styles("ES_RIGHT", "0x2",'+/-Right. Right-aligns text in a multiline edit control.', 'Right'))
-    aoEditStyles.Push(Styles("ES_UPPERCASE", "0x8",'+/-Uppercase. Converts all characters to uppercase as they are typed into the edit control.', 'Uppercase'))
-    aoEditStyles.Push(Styles("ES_WANTRETURN", "0x1000","+/-WantReturn. Specifies that a carriage return be inserted when the user presses Enter while typing text into a multiline edit control in a dialog box. If you do not specify this style, pressing Enter has the same effect as pressing the dialog box's default push button. This style has no effect on a single-line edit control.", 'WantReturn'))
+    aoEditStyles.Push(Styles("ES_AUTOHSCROLL", "0x80", '+/-Wrap for multi-line edits, and +/-Limit for single-line edits. Automatically scrolls text to the right by 10 characters when the user types a character at the end of the line. When the user presses Enter, the control scrolls all text back to the zero position.', 'Limit'))
+    aoEditStyles.Push(Styles("ES_AUTOVSCROLL", "0x40", 'Scrolls text up one page when the user presses Enter on the last line.'))
+    aoEditStyles.Push(Styles("ES_CENTER", "0x1", '+/-Center. Centers text in a multiline edit control.', 'Center'))
+    aoEditStyles.Push(Styles("ES_LOWERCASE", "0x10", '+/-Lowercase. Converts all characters to lowercase as they are typed into the edit control.', 'Lowercase'))
+    aoEditStyles.Push(Styles("ES_NOHIDESEL", "0x100", 'Negates the default behavior for an edit control. The default behavior hides the selection when the control loses the input focus and inverts the selection when the control receives the input focus. If you specify ES_NOHIDESEL, the selected text is inverted, even if the control does not have the focus.'))
+    aoEditStyles.Push(Styles("ES_NUMBER", "0x2000", '+/-Number. Prevents the user from typing anything other than digits in the control.', 'Number'))
+    aoEditStyles.Push(Styles("ES_OEMCONVERT", "0x400", 'This style is most useful for edit controls that contain file names.'))
+    aoEditStyles.Push(Styles("ES_MULTILINE", "0x4", '+/-Multi. Designates a multiline edit control. The default is a single-line edit control.', 'Multi'))
+    aoEditStyles.Push(Styles("ES_PASSWORD", "0x20", '+/-Password. Displays a masking character in place of each character that is typed into the edit control, which conceals the text.', 'Password'))
+    aoEditStyles.Push(Styles("ES_READONLY", "0x800", '+/-ReadOnly. Prevents the user from typing or editing text in the edit control.', 'ReadOnly'))
+    aoEditStyles.Push(Styles("ES_RIGHT", "0x2", '+/-Right. Right-aligns text in a multiline edit control.', 'Right'))
+    aoEditStyles.Push(Styles("ES_UPPERCASE", "0x8", '+/-Uppercase. Converts all characters to uppercase as they are typed into the edit control.', 'Uppercase'))
+    aoEditStyles.Push(Styles("ES_WANTRETURN", "0x1000", "+/-WantReturn. Specifies that a carriage return be inserted when the user presses Enter while typing text into a multiline edit control in a dialog box. If you do not specify this style, pressing Enter has the same effect as pressing the dialog box's default push button. This style has no effect on a single-line edit control.", 'WantReturn'))
 
     global aoEditMultiLineStyles := Array()
-    aoEditMultiLineStyles.Push(Styles("ES_AUTOHSCROLL", "0x80",'+/-Wrap for multi-line edits, and +/-Limit for single-line edits. Automatically scrolls text to the right by 10 characters when the user types a character at the end of the line. When the user presses Enter, the control scrolls all text back to the zero position.','Wrap'))
-    aoEditMultiLineStyles.Push(Styles("ES_AUTOVSCROLL", "0x40",'Scrolls text up one page when the user presses Enter on the last line.'))
-    aoEditMultiLineStyles.Push(Styles("ES_CENTER", "0x1",'+/-Center. Centers text in a multiline edit control.', 'Center'))
-    aoEditMultiLineStyles.Push(Styles("ES_LOWERCASE", "0x10",'+/-Lowercase. Converts all characters to lowercase as they are typed into the edit control.', 'Lowercase'))
-    aoEditMultiLineStyles.Push(Styles("ES_NOHIDESEL", "0x100",'Negates the default behavior for an edit control. The default behavior hides the selection when the control loses the input focus and inverts the selection when the control receives the input focus. If you specify ES_NOHIDESEL, the selected text is inverted, even if the control does not have the focus.'))
-    aoEditMultiLineStyles.Push(Styles("ES_NUMBER", "0x2000",'+/-Number. Prevents the user from typing anything other than digits in the control.', 'Number'))
-    aoEditMultiLineStyles.Push(Styles("ES_OEMCONVERT", "0x400",'This style is most useful for edit controls that contain file names.'))
-    aoEditMultiLineStyles.Push(Styles("ES_MULTILINE", "0x4",'+/-Multi. Designates a multiline edit control. The default is a single-line edit control.','Multi'))
-    aoEditMultiLineStyles.Push(Styles("ES_PASSWORD", "0x20",'+/-Password. Displays a masking character in place of each character that is typed into the edit control, which conceals the text.', 'Password'))
-    aoEditMultiLineStyles.Push(Styles("ES_READONLY", "0x800",'+/-ReadOnly. Prevents the user from typing or editing text in the edit control.', 'ReadOnly'))
-    aoEditMultiLineStyles.Push(Styles("ES_RIGHT", "0x2",'+/-Right. Right-aligns text in a multiline edit control.', 'Right'))
-    aoEditMultiLineStyles.Push(Styles("ES_UPPERCASE", "0x8",'+/-Uppercase. Converts all characters to uppercase as they are typed into the edit control.', 'Uppercase'))
-    aoEditMultiLineStyles.Push(Styles("ES_WANTRETURN", "0x1000","+/-WantReturn. Specifies that a carriage return be inserted when the user presses Enter while typing text into a multiline edit control in a dialog box. If you do not specify this style, pressing Enter has the same effect as pressing the dialog box's default push button. This style has no effect on a single-line edit control.", 'WantReturn'))
+    aoEditMultiLineStyles.Push(Styles("ES_AUTOHSCROLL", "0x80", '+/-Wrap for multi-line edits, and +/-Limit for single-line edits. Automatically scrolls text to the right by 10 characters when the user types a character at the end of the line. When the user presses Enter, the control scrolls all text back to the zero position.', 'Wrap'))
+    aoEditMultiLineStyles.Push(Styles("ES_AUTOVSCROLL", "0x40", 'Scrolls text up one page when the user presses Enter on the last line.'))
+    aoEditMultiLineStyles.Push(Styles("ES_CENTER", "0x1", '+/-Center. Centers text in a multiline edit control.', 'Center'))
+    aoEditMultiLineStyles.Push(Styles("ES_LOWERCASE", "0x10", '+/-Lowercase. Converts all characters to lowercase as they are typed into the edit control.', 'Lowercase'))
+    aoEditMultiLineStyles.Push(Styles("ES_NOHIDESEL", "0x100", 'Negates the default behavior for an edit control. The default behavior hides the selection when the control loses the input focus and inverts the selection when the control receives the input focus. If you specify ES_NOHIDESEL, the selected text is inverted, even if the control does not have the focus.'))
+    aoEditMultiLineStyles.Push(Styles("ES_NUMBER", "0x2000", '+/-Number. Prevents the user from typing anything other than digits in the control.', 'Number'))
+    aoEditMultiLineStyles.Push(Styles("ES_OEMCONVERT", "0x400", 'This style is most useful for edit controls that contain file names.'))
+    aoEditMultiLineStyles.Push(Styles("ES_MULTILINE", "0x4", '+/-Multi. Designates a multiline edit control. The default is a single-line edit control.', 'Multi'))
+    aoEditMultiLineStyles.Push(Styles("ES_PASSWORD", "0x20", '+/-Password. Displays a masking character in place of each character that is typed into the edit control, which conceals the text.', 'Password'))
+    aoEditMultiLineStyles.Push(Styles("ES_READONLY", "0x800", '+/-ReadOnly. Prevents the user from typing or editing text in the edit control.', 'ReadOnly'))
+    aoEditMultiLineStyles.Push(Styles("ES_RIGHT", "0x2", '+/-Right. Right-aligns text in a multiline edit control.', 'Right'))
+    aoEditMultiLineStyles.Push(Styles("ES_UPPERCASE", "0x8", '+/-Uppercase. Converts all characters to uppercase as they are typed into the edit control.', 'Uppercase'))
+    aoEditMultiLineStyles.Push(Styles("ES_WANTRETURN", "0x1000", "+/-WantReturn. Specifies that a carriage return be inserted when the user presses Enter while typing text into a multiline edit control in a dialog box. If you do not specify this style, pressing Enter has the same effect as pressing the dialog box's default push button. This style has no effect on a single-line edit control.", 'WantReturn'))
 
     global aoUpDownStyles := Array()
-    aoUpDownStyles.Push(Styles("UDS_WRAP", "0x1",'Named option "Wrap". Causes the control to wrap around to the other end of its range when the user attempts to go beyond the minimum or maximum. Without Wrap, the control stops when the minimum or maximum is reached.',"Wrap"))
-    aoUpDownStyles.Push(Styles("UDS_SETBUDDYINT", "0x2",'Causes the UpDown control to set the text of the buddy control (using the WM_SETTEXT message) when the position changes. However, if the buddy is a ListBox, the ListBox`'s current selection is changed instead.',""))
-    aoUpDownStyles.Push(Styles("UDS_ALIGNRIGHT", "0x4",'Named option "Right" (default). Positions UpDown on the right side of its buddy control.',"Right"))
-    aoUpDownStyles.Push(Styles("UDS_ALIGNLEFT", "0x8",'Named option "Left". Positions UpDown on the left side of its buddy control.',"Left"))
-    aoUpDownStyles.Push(Styles("UDS_AUTOBUDDY", "0x10",'Automatically selects the previous control in the z-order as the UpDown control`'s buddy control.',""))
-    aoUpDownStyles.Push(Styles("UDS_ARROWKEYS", "0x20",'Allows the user to press ↑ or ↓ on the keyboard to increase or decrease the UpDown control`'s position.',""))
-    aoUpDownStyles.Push(Styles("UDS_HORZ", "0x40",'Named option "Horz". Causes the control`'s arrows to point left and right instead of up and down.',"Horz"))
-    aoUpDownStyles.Push(Styles("UDS_NOTHOUSANDS", "0x80",'Does not insert a thousands separator between every three decimal digits in the buddy control.',""))
-    aoUpDownStyles.Push(Styles("UDS_HOTTRACK", "0x100",'Causes the control to exhibit "hot tracking" behavior. That is, it highlights the control`'s buttons as the mouse passes over them. This flag may be ignored if the desktop theme overrides it.',""))
+    aoUpDownStyles.Push(Styles("UDS_WRAP", "0x1", 'Named option "Wrap". Causes the control to wrap around to the other end of its range when the user attempts to go beyond the minimum or maximum. Without Wrap, the control stops when the minimum or maximum is reached.', "Wrap"))
+    aoUpDownStyles.Push(Styles("UDS_SETBUDDYINT", "0x2", 'Causes the UpDown control to set the text of the buddy control (using the WM_SETTEXT message) when the position changes. However, if the buddy is a ListBox, the ListBox`'s current selection is changed instead.', ""))
+    aoUpDownStyles.Push(Styles("UDS_ALIGNRIGHT", "0x4", 'Named option "Right" (default). Positions UpDown on the right side of its buddy control.', "Right"))
+    aoUpDownStyles.Push(Styles("UDS_ALIGNLEFT", "0x8", 'Named option "Left". Positions UpDown on the left side of its buddy control.', "Left"))
+    aoUpDownStyles.Push(Styles("UDS_AUTOBUDDY", "0x10", 'Automatically selects the previous control in the z-order as the UpDown control`'s buddy control.', ""))
+    aoUpDownStyles.Push(Styles("UDS_ARROWKEYS", "0x20", 'Allows the user to press ↑ or ↓ on the keyboard to increase or decrease the UpDown control`'s position.', ""))
+    aoUpDownStyles.Push(Styles("UDS_HORZ", "0x40", 'Named option "Horz". Causes the control`'s arrows to point left and right instead of up and down.', "Horz"))
+    aoUpDownStyles.Push(Styles("UDS_NOTHOUSANDS", "0x80", 'Does not insert a thousands separator between every three decimal digits in the buddy control.', ""))
+    aoUpDownStyles.Push(Styles("UDS_HOTTRACK", "0x100", 'Causes the control to exhibit "hot tracking" behavior. That is, it highlights the control`'s buttons as the mouse passes over them. This flag may be ignored if the desktop theme overrides it.', ""))
 
     global aoPicStyles := Array()
-    aoPicStyles.Push(Styles("SS_REALSIZECONTROL", "0x40",'Adjusts the bitmap to fit the size of the control.',""))
-    aoPicStyles.Push(Styles("SS_CENTERIMAGE", "0x200",'Centers the bitmap in the control. If the bitmap is too large, it will be clipped. For text controls, if the control contains a single line of text, the text is centered vertically within the available height of the control.',""))
-    aoPicStyles.Push(Styles("SS_BLACKFRAME", "0x7",'Specifies a box with a frame drawn in the same color as the window frames. This color is black in the default color scheme.'))
-    aoPicStyles.Push(Styles("SS_BLACKRECT", "0x4",'Specifies a rectangle filled with the current window frame color. This color is black in the default color scheme.'))
-    aoPicStyles.Push(Styles("SS_CENTER", "0x1",'+/-Center. Specifies a simple rectangle and centers the text in the rectangle. The control automatically wraps words that extend past the end of a line to the beginning of the next centered line.', 'Center'))
-    aoPicStyles.Push(Styles("SS_ETCHEDFRAME", "0x12",'Draws the frame of the static control using the EDGE_ETCHED edge style.'))
-    aoPicStyles.Push(Styles("SS_ETCHEDHORZ", "0x10",'Draws the top and bottom edges of the static control using the EDGE_ETCHED edge style.'))
-    aoPicStyles.Push(Styles("SS_ETCHEDVERT", "0x11",'Draws the left and right edges of the static control using the EDGE_ETCHED edge style.'))
-    aoPicStyles.Push(Styles("SS_GRAYFRAME", "0x8",'Specifies a box with a frame drawn with the same color as the screen background (desktop). This color is gray in the default color scheme.'))
-    aoPicStyles.Push(Styles("SS_GRAYRECT", "0x5",'Specifies a rectangle filled with the current screen background color. This color is gray in the default color scheme.'))
-    aoPicStyles.Push(Styles("SS_LEFT", "0x0",'+/-Left. This is the default. It specifies a simple rectangle and left-aligns the text in the rectangle. The text is formatted before it is displayed. Words that extend past the end of a line are automatically wrapped to the beginning of the next left-aligned line. Words that are longer than the width of the control are truncated.', 'Left'))
-    aoPicStyles.Push(Styles("SS_LEFTNOWORDWRAP", "0xC",'+/-Wrap. Specifies a rectangle and left-aligns the text in the rectangle. Tabs are expanded, but words are not wrapped. Text that extends past the end of a line is clipped.', 'Wrap'))
-    aoPicStyles.Push(Styles("SS_NOPREFIX", "0x80","Prevents interpretation of any ampersand (&) characters in the control's text as accelerator prefix characters. This can be useful when file names or other strings that might contain an ampersand (&) must be displayed within a text control."))
-    aoPicStyles.Push(Styles("SS_NOTIFY", "0x100",'Sends the parent window the STN_CLICKED notification when the user clicks the control.'))
-    aoPicStyles.Push(Styles("SS_RIGHT", "0x2",'+/-Right. Specifies a rectangle and right-aligns the specified text in the rectangle.', 'Right'))
-    aoPicStyles.Push(Styles("SS_SUNKEN", "0x1000",'Draws a half-sunken border around a static control.'))
-    aoPicStyles.Push(Styles("SS_WHITEFRAME", "0x9",'Specifies a box with a frame drawn with the same color as the window background. This color is white in the default color scheme.'))
-    aoPicStyles.Push(Styles("SS_WHITERECT", "0x6",'Specifies a rectangle filled with the current window background color. This color is white in the default color scheme.'))
+    aoPicStyles.Push(Styles("SS_REALSIZECONTROL", "0x40", 'Adjusts the bitmap to fit the size of the control.', ""))
+    aoPicStyles.Push(Styles("SS_CENTERIMAGE", "0x200", 'Centers the bitmap in the control. If the bitmap is too large, it will be clipped. For text controls, if the control contains a single line of text, the text is centered vertically within the available height of the control.', ""))
+    aoPicStyles.Push(Styles("SS_BLACKFRAME", "0x7", 'Specifies a box with a frame drawn in the same color as the window frames. This color is black in the default color scheme.'))
+    aoPicStyles.Push(Styles("SS_BLACKRECT", "0x4", 'Specifies a rectangle filled with the current window frame color. This color is black in the default color scheme.'))
+    aoPicStyles.Push(Styles("SS_CENTER", "0x1", '+/-Center. Specifies a simple rectangle and centers the text in the rectangle. The control automatically wraps words that extend past the end of a line to the beginning of the next centered line.', 'Center'))
+    aoPicStyles.Push(Styles("SS_ETCHEDFRAME", "0x12", 'Draws the frame of the static control using the EDGE_ETCHED edge style.'))
+    aoPicStyles.Push(Styles("SS_ETCHEDHORZ", "0x10", 'Draws the top and bottom edges of the static control using the EDGE_ETCHED edge style.'))
+    aoPicStyles.Push(Styles("SS_ETCHEDVERT", "0x11", 'Draws the left and right edges of the static control using the EDGE_ETCHED edge style.'))
+    aoPicStyles.Push(Styles("SS_GRAYFRAME", "0x8", 'Specifies a box with a frame drawn with the same color as the screen background (desktop). This color is gray in the default color scheme.'))
+    aoPicStyles.Push(Styles("SS_GRAYRECT", "0x5", 'Specifies a rectangle filled with the current screen background color. This color is gray in the default color scheme.'))
+    aoPicStyles.Push(Styles("SS_LEFT", "0x0", '+/-Left. This is the default. It specifies a simple rectangle and left-aligns the text in the rectangle. The text is formatted before it is displayed. Words that extend past the end of a line are automatically wrapped to the beginning of the next left-aligned line. Words that are longer than the width of the control are truncated.', 'Left'))
+    aoPicStyles.Push(Styles("SS_LEFTNOWORDWRAP", "0xC", '+/-Wrap. Specifies a rectangle and left-aligns the text in the rectangle. Tabs are expanded, but words are not wrapped. Text that extends past the end of a line is clipped.', 'Wrap'))
+    aoPicStyles.Push(Styles("SS_NOPREFIX", "0x80", "Prevents interpretation of any ampersand (&) characters in the control's text as accelerator prefix characters. This can be useful when file names or other strings that might contain an ampersand (&) must be displayed within a text control."))
+    aoPicStyles.Push(Styles("SS_NOTIFY", "0x100", 'Sends the parent window the STN_CLICKED notification when the user clicks the control.'))
+    aoPicStyles.Push(Styles("SS_RIGHT", "0x2", '+/-Right. Specifies a rectangle and right-aligns the specified text in the rectangle.', 'Right'))
+    aoPicStyles.Push(Styles("SS_SUNKEN", "0x1000", 'Draws a half-sunken border around a static control.'))
+    aoPicStyles.Push(Styles("SS_WHITEFRAME", "0x9", 'Specifies a box with a frame drawn with the same color as the window background. This color is white in the default color scheme.'))
+    aoPicStyles.Push(Styles("SS_WHITERECT", "0x6", 'Specifies a rectangle filled with the current window background color. This color is white in the default color scheme.'))
 
     global aoButtonStyles := Array()
-    aoButtonStyles.Push(Styles("BS_AUTO3STATE", "0x6",'Creates a button that is the same as a three-state check box, except that the box changes its state when the user selects it. The state cycles through checked, indeterminate, and cleared.'))
-    aoButtonStyles.Push(Styles("BS_AUTOCHECKBOX", "0x3",'Creates a button that is the same as a check box, except that the check state automatically toggles between checked and cleared each time the user selects the check box.'))
-    aoButtonStyles.Push(Styles("BS_AUTORADIOBUTTON", "0x9","Creates a button that is the same as a radio button, except that when the user selects it, the system automatically sets the button's check state to checked and automatically sets the check state for all other buttons in the same group to cleared."))
-    aoButtonStyles.Push(Styles("BS_LEFT", "0x100",'+/-Left. Left-aligns the text.', 'Left'))
-    aoButtonStyles.Push(Styles("BS_PUSHBUTTON", "0x0",'Creates a push button that posts a WM_COMMAND message to the owner window when the user selects the button.'))
-    aoButtonStyles.Push(Styles("BS_PUSHLIKE", "0x1000","Makes a checkbox or radio button look and act like a push button. The button looks raised when it isn't pushed or checked, and sunken when it is pushed or checked."))
-    aoButtonStyles.Push(Styles("BS_RIGHT", "0x200",'+/-Right. Right-aligns the text.', 'Right'))
-    aoButtonStyles.Push(Styles("BS_RIGHTBUTTON", "0x20","+Right (i.e. +Right includes both BS_RIGHT and BS_RIGHTBUTTON, but -Right removes only BS_RIGHT, not BS_RIGHTBUTTON). Positions a checkbox square or radio button circle on the right side of the control's available width instead of the left."))
-    aoButtonStyles.Push(Styles("BS_BOTTOM", "0x800","Places the text at the bottom of the control's available height."))
-    aoButtonStyles.Push(Styles("BS_CENTER", "0x300",'+/-Center. Centers the text horizontally within the control`'s available width.', 'Center'))
-    aoButtonStyles.Push(Styles("BS_DEFPUSHBUTTON", "0x1",'+/-Default. Creates a push button with a heavy black border. If the button is in a dialog box, the user can select the button by pressing Enter, even when the button does not have the input focus. This style is useful for enabling the user to quickly select the most likely option.', 'Default'))
-    aoButtonStyles.Push(Styles("BS_MULTILINE", "0x2000",'+/-Wrap. Wraps the text to multiple lines if the text is too long to fit on a single line in the control`'s available width. This also allows linefeed (``n) to start new lines of text.', 'Wrap'))
-    aoButtonStyles.Push(Styles("BS_NOTIFY", "0x4000",'Enables a button to send BN_KILLFOCUS and BN_SETFOCUS notification codes to its parent window. Note that buttons send the BN_CLICKED notification code regardless of whether it has this style. To get BN_DBLCLK notification codes, the button must have the BS_RADIOBUTTON or BS_OWNERDRAW style.'))
-    aoButtonStyles.Push(Styles("BS_TOP", "0x400",'Places text at the top of the control`'s available height.'))
-    aoButtonStyles.Push(Styles("BS_VCENTER", "0xC00",'Vertically centers text in the control`'s available height.'))
-    aoButtonStyles.Push(Styles("BS_FLAT", "0x8000",'Specifies that the button is two-dimensional; it does not use the default shading to create a 3-D effect.'))
-    aoButtonStyles.Push(Styles("BS_GROUPBOX", "0x7",'Creates a rectangle in which other controls can be grouped. Any text associated with this style is displayed in the rectangle`'s upper left corner.'))
+    aoButtonStyles.Push(Styles("BS_AUTO3STATE", "0x6", 'Creates a button that is the same as a three-state check box, except that the box changes its state when the user selects it. The state cycles through checked, indeterminate, and cleared.'))
+    aoButtonStyles.Push(Styles("BS_AUTOCHECKBOX", "0x3", 'Creates a button that is the same as a check box, except that the check state automatically toggles between checked and cleared each time the user selects the check box.'))
+    aoButtonStyles.Push(Styles("BS_AUTORADIOBUTTON", "0x9", "Creates a button that is the same as a radio button, except that when the user selects it, the system automatically sets the button's check state to checked and automatically sets the check state for all other buttons in the same group to cleared."))
+    aoButtonStyles.Push(Styles("BS_LEFT", "0x100", '+/-Left. Left-aligns the text.', 'Left'))
+    aoButtonStyles.Push(Styles("BS_PUSHBUTTON", "0x0", 'Creates a push button that posts a WM_COMMAND message to the owner window when the user selects the button.'))
+    aoButtonStyles.Push(Styles("BS_PUSHLIKE", "0x1000", "Makes a checkbox or radio button look and act like a push button. The button looks raised when it isn't pushed or checked, and sunken when it is pushed or checked."))
+    aoButtonStyles.Push(Styles("BS_RIGHT", "0x200", '+/-Right. Right-aligns the text.', 'Right'))
+    aoButtonStyles.Push(Styles("BS_RIGHTBUTTON", "0x20", "+Right (i.e. +Right includes both BS_RIGHT and BS_RIGHTBUTTON, but -Right removes only BS_RIGHT, not BS_RIGHTBUTTON). Positions a checkbox square or radio button circle on the right side of the control's available width instead of the left."))
+    aoButtonStyles.Push(Styles("BS_BOTTOM", "0x800", "Places the text at the bottom of the control's available height."))
+    aoButtonStyles.Push(Styles("BS_CENTER", "0x300", '+/-Center. Centers the text horizontally within the control`'s available width.', 'Center'))
+    aoButtonStyles.Push(Styles("BS_DEFPUSHBUTTON", "0x1", '+/-Default. Creates a push button with a heavy black border. If the button is in a dialog box, the user can select the button by pressing Enter, even when the button does not have the input focus. This style is useful for enabling the user to quickly select the most likely option.', 'Default'))
+    aoButtonStyles.Push(Styles("BS_MULTILINE", "0x2000", '+/-Wrap. Wraps the text to multiple lines if the text is too long to fit on a single line in the control`'s available width. This also allows linefeed (``n) to start new lines of text.', 'Wrap'))
+    aoButtonStyles.Push(Styles("BS_NOTIFY", "0x4000", 'Enables a button to send BN_KILLFOCUS and BN_SETFOCUS notification codes to its parent window. Note that buttons send the BN_CLICKED notification code regardless of whether it has this style. To get BN_DBLCLK notification codes, the button must have the BS_RADIOBUTTON or BS_OWNERDRAW style.'))
+    aoButtonStyles.Push(Styles("BS_TOP", "0x400", 'Places text at the top of the control`'s available height.'))
+    aoButtonStyles.Push(Styles("BS_VCENTER", "0xC00", 'Vertically centers text in the control`'s available height.'))
+    aoButtonStyles.Push(Styles("BS_FLAT", "0x8000", 'Specifies that the button is two-dimensional; it does not use the default shading to create a 3-D effect.'))
+    aoButtonStyles.Push(Styles("BS_GROUPBOX", "0x7", 'Creates a rectangle in which other controls can be grouped. Any text associated with this style is displayed in the rectangle`'s upper left corner.'))
 
     global aoCBBStyles := Array()
     aoCBBStyles.Push(Styles("CBS_AUTOHSCROLL", "0x40", '+/-Limit. Automatically scrolls the text in an edit control to the right when the user types a character at the end of the line. If this style is not set, only text that fits within the rectangular boundary is enabled.', "Limit"))
@@ -290,103 +290,103 @@ for property, value in oImageControls.OwnProps(){
     aoLBStyles.Push(Styles("LBS_USETABSTOPS", "0x80", 'Enables a ListBox to recognize and expand tab characters when drawing its strings. The default tab positions are 32 dialog box units apart. A dialog box unit is equal to one-fourth of the current dialog box base-width unit.', ""))
 
     global aoLVStyles := Array()
-    aoLVStyles.Push(Styles("LVS_ALIGNLEFT", "0x800",'Items are left-aligned in icon and small icon view.',""))
-    aoLVStyles.Push(Styles("LVS_ALIGNTOP", "0x0",'Items are aligned with the top of the list-view control in icon and small icon view. This is the default.',""))
-    aoLVStyles.Push(Styles("LVS_AUTOARRANGE", "0x100",'Icons are automatically kept arranged in icon and small icon view.',""))
-    aoLVStyles.Push(Styles("LVS_EDITLABELS", "0x200",'+/-ReadOnly. Specifying -ReadOnly (or +0x200) allows the user to edit the first field of each row in place.',"ReadOnly"))
-    aoLVStyles.Push(Styles("LVS_ICON", "0x0",'+Icon. Specifies large-icon view.',"Icon"))
-    aoLVStyles.Push(Styles("LVS_LIST", "0x3",'+List. Specifies list view.',"List"))
-    aoLVStyles.Push(Styles("LVS_NOCOLUMNHEADER", "0x4000",'+/-Hdr. Avoids displaying column headers in report view.',"-Hdr"))
-    aoLVStyles.Push(Styles("LVS_NOLABELWRAP", "0x80",'Item text is displayed on a single line in icon view. By default, item text may wrap in icon view.',""))
-    aoLVStyles.Push(Styles("LVS_NOSCROLL", "0x2000",'Scrolling is disabled. All items must be within the client area. This style is not compatible with the LVS_LIST or LVS_REPORT styles.',""))
-    aoLVStyles.Push(Styles("LVS_NOSORTHEADER", "0x8000",'+/-NoSortHdr. Column headers do not work like buttons. This style can be used if clicking a column header in report view does not carry out an action, such as sorting.',"NoSortHdr"))
-    aoLVStyles.Push(Styles("LVS_OWNERDATA", "0x1000",'This style specifies a virtual list-view control (not directly supported by AutoHotkey).',""))
-    aoLVStyles.Push(Styles("LVS_OWNERDRAWFIXED", "0x400",'The owner window can paint items in report view in response to WM_DRAWITEM messages (not directly supported by AutoHotkey).',""))
-    aoLVStyles.Push(Styles("LVS_REPORT", "0x1",'+Report. Specifies report view.',"Report"))
-    aoLVStyles.Push(Styles("LVS_SHAREIMAGELISTS", "0x40",'The image list will not be deleted when the control is destroyed. This style enables the use of the same image lists with multiple list-view controls.',""))
-    aoLVStyles.Push(Styles("LVS_SHOWSELALWAYS", "0x8",'The selection, if any, is always shown, even if the control does not have keyboard focus.',""))
-    aoLVStyles.Push(Styles("LVS_SINGLESEL", "0x4",'+/-Multi. Only one item at a time can be selected. By default, multiple items can be selected.',"Multi"))
-    aoLVStyles.Push(Styles("LVS_SMALLICON", "0x2",'+IconSmall. Specifies small-icon view.',"IconSmall"))
-    aoLVStyles.Push(Styles("LVS_SORTASCENDING", "0x10",'+/-Sort. Rows are sorted in ascending order based on the contents of the first field.',"Sort"))
-    aoLVStyles.Push(Styles("LVS_SORTDESCENDING", "0x20",'+/-SortDesc. Same as above but in descending order.',"SortDesc."))
+    aoLVStyles.Push(Styles("LVS_ALIGNLEFT", "0x800", 'Items are left-aligned in icon and small icon view.', ""))
+    aoLVStyles.Push(Styles("LVS_ALIGNTOP", "0x0", 'Items are aligned with the top of the list-view control in icon and small icon view. This is the default.', ""))
+    aoLVStyles.Push(Styles("LVS_AUTOARRANGE", "0x100", 'Icons are automatically kept arranged in icon and small icon view.', ""))
+    aoLVStyles.Push(Styles("LVS_EDITLABELS", "0x200", '+/-ReadOnly. Specifying -ReadOnly (or +0x200) allows the user to edit the first field of each row in place.', "ReadOnly"))
+    aoLVStyles.Push(Styles("LVS_ICON", "0x0", '+Icon. Specifies large-icon view.', "Icon"))
+    aoLVStyles.Push(Styles("LVS_LIST", "0x3", '+List. Specifies list view.', "List"))
+    aoLVStyles.Push(Styles("LVS_NOCOLUMNHEADER", "0x4000", '+/-Hdr. Avoids displaying column headers in report view.', "-Hdr"))
+    aoLVStyles.Push(Styles("LVS_NOLABELWRAP", "0x80", 'Item text is displayed on a single line in icon view. By default, item text may wrap in icon view.', ""))
+    aoLVStyles.Push(Styles("LVS_NOSCROLL", "0x2000", 'Scrolling is disabled. All items must be within the client area. This style is not compatible with the LVS_LIST or LVS_REPORT styles.', ""))
+    aoLVStyles.Push(Styles("LVS_NOSORTHEADER", "0x8000", '+/-NoSortHdr. Column headers do not work like buttons. This style can be used if clicking a column header in report view does not carry out an action, such as sorting.', "NoSortHdr"))
+    aoLVStyles.Push(Styles("LVS_OWNERDATA", "0x1000", 'This style specifies a virtual list-view control (not directly supported by AutoHotkey).', ""))
+    aoLVStyles.Push(Styles("LVS_OWNERDRAWFIXED", "0x400", 'The owner window can paint items in report view in response to WM_DRAWITEM messages (not directly supported by AutoHotkey).', ""))
+    aoLVStyles.Push(Styles("LVS_REPORT", "0x1", '+Report. Specifies report view.', "Report"))
+    aoLVStyles.Push(Styles("LVS_SHAREIMAGELISTS", "0x40", 'The image list will not be deleted when the control is destroyed. This style enables the use of the same image lists with multiple list-view controls.', ""))
+    aoLVStyles.Push(Styles("LVS_SHOWSELALWAYS", "0x8", 'The selection, if any, is always shown, even if the control does not have keyboard focus.', ""))
+    aoLVStyles.Push(Styles("LVS_SINGLESEL", "0x4", '+/-Multi. Only one item at a time can be selected. By default, multiple items can be selected.', "Multi"))
+    aoLVStyles.Push(Styles("LVS_SMALLICON", "0x2", '+IconSmall. Specifies small-icon view.', "IconSmall"))
+    aoLVStyles.Push(Styles("LVS_SORTASCENDING", "0x10", '+/-Sort. Rows are sorted in ascending order based on the contents of the first field.', "Sort"))
+    aoLVStyles.Push(Styles("LVS_SORTDESCENDING", "0x20", '+/-SortDesc. Same as above but in descending order.', "SortDesc."))
 
     global aoLVExStyles := Array()
-    aoLVExStyles.Push(Styles("LVS_EX_BORDERSELECT", "LV0x8000",'When an item is selected, the border color of the item changes rather than the item being highlighted (might be non-functional in recent operating systems).',""))
-    aoLVExStyles.Push(Styles("LVS_EX_CHECKBOXES", "LV0x4",'+/-Checked. Displays a checkbox with each item. When set to this style, the control creates and sets a state image list with two images using DrawFrameControl. State image 1 is the unchecked box, and state image 2 is the checked box. Setting the state image to zero removes the check box altogether.',"Checked"))
-    aoLVExStyles.Push(Styles("LVS_EX_DOUBLEBUFFER", "LV0x10000",'Paints via double-buffering, which reduces flicker. This extended style also enables alpha-blended marquee selection on systems where it is supported.',""))
-    aoLVExStyles.Push(Styles("LVS_EX_FLATSB", "LV0x100",'Enables flat scroll bars in the list view.',""))
-    aoLVExStyles.Push(Styles("LVS_EX_FULLROWSELECT", "LV0x20",'When a row is selected, all its fields are highlighted. This style is available only in conjunction with the LVS_REPORT style.',""))
-    aoLVExStyles.Push(Styles("LVS_EX_GRIDLINES", "LV0x1",'+/-Grid. Displays gridlines around rows and columns. This style is available only in conjunction with the LVS_REPORT style.',"Grid"))
-    aoLVExStyles.Push(Styles("LVS_EX_HEADERDRAGDROP", "LV0x10",'Enables drag-and-drop reordering of columns in a list-view control. This style is only available to list-view controls that use the LVS_REPORT style.',""))
-    aoLVExStyles.Push(Styles("LVS_EX_INFOTIP", "LV0x400",'When a list-view control uses this style, the LVN_GETINFOTIP notification message is sent to the parent window before displaying an item`'s ToolTip.',""))
-    aoLVExStyles.Push(Styles("LVS_EX_LABELTIP", "LV0x4000",'If a partially hidden label in any list-view mode lacks ToolTip text, the list-view control will unfold the label. If this style is not set, the list-view control will unfold partly hidden labels only for the large icon mode. Note: On some versions of Windows, this style might not work properly if the GUI window is set to be always-on-top.',""))
-    aoLVExStyles.Push(Styles("LVS_EX_MULTIWORKAREAS", "LV0x2000",'If the list-view control has the LVS_AUTOARRANGE style, the control will not autoarrange its icons until one or more work areas are defined (see LVM_SETWORKAREAS). To be effective, this style must be set before any work areas are defined and any items have been added to the control.',""))
-    aoLVExStyles.Push(Styles("LVS_EX_ONECLICKACTIVATE", "LV0x40",'The list-view control sends an LVN_ITEMACTIVATE notification message to the parent window when the user clicks an item. This style also enables hot tracking in the list-view control. Hot tracking means that when the cursor moves over an item, it is highlighted but not selected.',""))
-    aoLVExStyles.Push(Styles("LVS_EX_REGIONAL", "LV0x200",'Sets the list-view window region to include only the item icons and text using SetWindowRgn. Any area that is not part of an item is excluded from the window region. This style is only available to list-view controls that use the LVS_ICON style.',""))
-    aoLVExStyles.Push(Styles("LVS_EX_SIMPLESELECT", "LV0x100000",'In icon view, moves the state image of the item to the top right of the large icon rendering. In views other than icon view there is no change. When the user changes the state by using the space bar, all selected items cycle over, not the item with the focus.',""))
-    aoLVExStyles.Push(Styles("LVS_EX_SUBITEMIMAGES", "LV0x2",'Allows images to be displayed for fields beyond the first. This style is available only in conjunction with the LVS_REPORT style.',""))
-    aoLVExStyles.Push(Styles("LVS_EX_TRACKSELECT", "LV0x8",'Enables hot-track selection in a list-view control. Hot track selection means that an item is automatically selected when the cursor remains over the item for a certain period of time. The delay can be changed from the default system setting with a LVM_SETHOVERTIME message. This style applies to all styles of list-view control. You can check whether hot-track selection is enabled by calling SystemParametersInfo.',""))
-    aoLVExStyles.Push(Styles("LVS_EX_TWOCLICKACTIVATE", "LV0x80",'The list-view control sends an LVN_ITEMACTIVATE notification message to the parent window when the user double-clicks an item. This style also enables hot tracking in the list-view control. Hot tracking means that when the cursor moves over an item, it is highlighted but not selected.',""))
-    aoLVExStyles.Push(Styles("LVS_EX_UNDERLINECOLD", "LV0x1000",'Causes those non-hot items that may be activated to be displayed with underlined text. This style requires that LVS_EX_TWOCLICKACTIVATE be set also.',""))
-    aoLVExStyles.Push(Styles("LVS_EX_UNDERLINEHOT", "LV0x800",'Causes those hot items that may be activated to be displayed with underlined text. This style requires that LVS_EX_ONECLICKACTIVATE or LVS_EX_TWOCLICKACTIVATE also be set.',""))
+    aoLVExStyles.Push(Styles("LVS_EX_BORDERSELECT", "LV0x8000", 'When an item is selected, the border color of the item changes rather than the item being highlighted (might be non-functional in recent operating systems).', ""))
+    aoLVExStyles.Push(Styles("LVS_EX_CHECKBOXES", "LV0x4", '+/-Checked. Displays a checkbox with each item. When set to this style, the control creates and sets a state image list with two images using DrawFrameControl. State image 1 is the unchecked box, and state image 2 is the checked box. Setting the state image to zero removes the check box altogether.', "Checked"))
+    aoLVExStyles.Push(Styles("LVS_EX_DOUBLEBUFFER", "LV0x10000", 'Paints via double-buffering, which reduces flicker. This extended style also enables alpha-blended marquee selection on systems where it is supported.', ""))
+    aoLVExStyles.Push(Styles("LVS_EX_FLATSB", "LV0x100", 'Enables flat scroll bars in the list view.', ""))
+    aoLVExStyles.Push(Styles("LVS_EX_FULLROWSELECT", "LV0x20", 'When a row is selected, all its fields are highlighted. This style is available only in conjunction with the LVS_REPORT style.', ""))
+    aoLVExStyles.Push(Styles("LVS_EX_GRIDLINES", "LV0x1", '+/-Grid. Displays gridlines around rows and columns. This style is available only in conjunction with the LVS_REPORT style.', "Grid"))
+    aoLVExStyles.Push(Styles("LVS_EX_HEADERDRAGDROP", "LV0x10", 'Enables drag-and-drop reordering of columns in a list-view control. This style is only available to list-view controls that use the LVS_REPORT style.', ""))
+    aoLVExStyles.Push(Styles("LVS_EX_INFOTIP", "LV0x400", 'When a list-view control uses this style, the LVN_GETINFOTIP notification message is sent to the parent window before displaying an item`'s ToolTip.', ""))
+    aoLVExStyles.Push(Styles("LVS_EX_LABELTIP", "LV0x4000", 'If a partially hidden label in any list-view mode lacks ToolTip text, the list-view control will unfold the label. If this style is not set, the list-view control will unfold partly hidden labels only for the large icon mode. Note: On some versions of Windows, this style might not work properly if the GUI window is set to be always-on-top.', ""))
+    aoLVExStyles.Push(Styles("LVS_EX_MULTIWORKAREAS", "LV0x2000", 'If the list-view control has the LVS_AUTOARRANGE style, the control will not autoarrange its icons until one or more work areas are defined (see LVM_SETWORKAREAS). To be effective, this style must be set before any work areas are defined and any items have been added to the control.', ""))
+    aoLVExStyles.Push(Styles("LVS_EX_ONECLICKACTIVATE", "LV0x40", 'The list-view control sends an LVN_ITEMACTIVATE notification message to the parent window when the user clicks an item. This style also enables hot tracking in the list-view control. Hot tracking means that when the cursor moves over an item, it is highlighted but not selected.', ""))
+    aoLVExStyles.Push(Styles("LVS_EX_REGIONAL", "LV0x200", 'Sets the list-view window region to include only the item icons and text using SetWindowRgn. Any area that is not part of an item is excluded from the window region. This style is only available to list-view controls that use the LVS_ICON style.', ""))
+    aoLVExStyles.Push(Styles("LVS_EX_SIMPLESELECT", "LV0x100000", 'In icon view, moves the state image of the item to the top right of the large icon rendering. In views other than icon view there is no change. When the user changes the state by using the space bar, all selected items cycle over, not the item with the focus.', ""))
+    aoLVExStyles.Push(Styles("LVS_EX_SUBITEMIMAGES", "LV0x2", 'Allows images to be displayed for fields beyond the first. This style is available only in conjunction with the LVS_REPORT style.', ""))
+    aoLVExStyles.Push(Styles("LVS_EX_TRACKSELECT", "LV0x8", 'Enables hot-track selection in a list-view control. Hot track selection means that an item is automatically selected when the cursor remains over the item for a certain period of time. The delay can be changed from the default system setting with a LVM_SETHOVERTIME message. This style applies to all styles of list-view control. You can check whether hot-track selection is enabled by calling SystemParametersInfo.', ""))
+    aoLVExStyles.Push(Styles("LVS_EX_TWOCLICKACTIVATE", "LV0x80", 'The list-view control sends an LVN_ITEMACTIVATE notification message to the parent window when the user double-clicks an item. This style also enables hot tracking in the list-view control. Hot tracking means that when the cursor moves over an item, it is highlighted but not selected.', ""))
+    aoLVExStyles.Push(Styles("LVS_EX_UNDERLINECOLD", "LV0x1000", 'Causes those non-hot items that may be activated to be displayed with underlined text. This style requires that LVS_EX_TWOCLICKACTIVATE be set also.', ""))
+    aoLVExStyles.Push(Styles("LVS_EX_UNDERLINEHOT", "LV0x800", 'Causes those hot items that may be activated to be displayed with underlined text. This style requires that LVS_EX_ONECLICKACTIVATE or LVS_EX_TWOCLICKACTIVATE also be set.', ""))
 
 
     global aoTreeViewStyles := Array()
-    aoTreeViewStyles.Push(Styles("TVS_CHECKBOXES", "0x100",'+/-Checked. Displays a checkbox next to each item.',"Checked"))
-    aoTreeViewStyles.Push(Styles("TVS_DISABLEDRAGDROP", "0x10",'Prevents the tree-view control from sending TVN_BEGINDRAG notification messages.',""))
-    aoTreeViewStyles.Push(Styles("TVS_EDITLABELS", "0x8",'+/-ReadOnly. Allows the user to edit the names of tree-view items.',"ReadOnly"))
-    aoTreeViewStyles.Push(Styles("TVS_FULLROWSELECT", "0x1000",'Enables full-row selection in the tree view. The entire row of the selected item is highlighted, and clicking anywhere on an item`'s row causes it to be selected. This style cannot be used in conjunction with the TVS_HASLINES style.',""))
-    aoTreeViewStyles.Push(Styles("TVS_HASBUTTONS", "0x1",'+/-Buttons. Displays plus (+) and minus (-) buttons next to parent items. The user clicks the buttons to expand or collapse a parent item`'s list of child items. To include buttons with items at the root of the tree view, TVS_LINESATROOT must also be specified.',"Buttons"))
-    aoTreeViewStyles.Push(Styles("TVS_HASLINES", "0x2",'+/-Lines. Uses lines to show the hierarchy of items.',"Lines"))
-    aoTreeViewStyles.Push(Styles("TVS_INFOTIP", "0x800",'Obtains ToolTip information by sending the TVN_GETINFOTIP notification.',""))
-    aoTreeViewStyles.Push(Styles("TVS_LINESATROOT", "0x4",'+/-Lines. Uses lines to link items at the root of the tree-view control. This value is ignored if TVS_HASLINES is not also specified.',"Lines"))
-    aoTreeViewStyles.Push(Styles("TVS_NOHSCROLL", "0x8000",'+/-HScroll. Disables horizontal scrolling in the control. The control will not display any horizontal scroll bars.',"Hscroll"))
-    aoTreeViewStyles.Push(Styles("TVS_NONEVENHEIGHT", "0x4000",'Sets the height of the items to an odd height with the TVM_SETITEMHEIGHT message. By default, the height of items must be an even value.',""))
-    aoTreeViewStyles.Push(Styles("TVS_NOSCROLL", "0x2000",'Disables both horizontal and vertical scrolling in the control. The control will not display any scroll bars.',""))
-    aoTreeViewStyles.Push(Styles("TVS_NOTOOLTIPS", "0x80",'Disables tooltips.',""))
-    aoTreeViewStyles.Push(Styles("TVS_RTLREADING", "0x40",'Causes text to be displayed from right-to-left (RTL). Usually, windows display text left-to-right (LTR).',""))
-    aoTreeViewStyles.Push(Styles("TVS_SHOWSELALWAYS", "0x20",'Causes a selected item to remain selected when the tree-view control loses focus.',""))
-    aoTreeViewStyles.Push(Styles("TVS_SINGLEEXPAND", "0x400",'Causes the item being selected to expand and the item being unselected to collapse upon selection in the tree-view. If the user holds down Ctrl while selecting an item, the item being unselected will not be collapsed.',""))
-    aoTreeViewStyles.Push(Styles("TVS_TRACKSELECT", "0x200",'Enables hot tracking of the mouse in a tree-view control.',""))
+    aoTreeViewStyles.Push(Styles("TVS_CHECKBOXES", "0x100", '+/-Checked. Displays a checkbox next to each item.', "Checked"))
+    aoTreeViewStyles.Push(Styles("TVS_DISABLEDRAGDROP", "0x10", 'Prevents the tree-view control from sending TVN_BEGINDRAG notification messages.', ""))
+    aoTreeViewStyles.Push(Styles("TVS_EDITLABELS", "0x8", '+/-ReadOnly. Allows the user to edit the names of tree-view items.', "ReadOnly"))
+    aoTreeViewStyles.Push(Styles("TVS_FULLROWSELECT", "0x1000", 'Enables full-row selection in the tree view. The entire row of the selected item is highlighted, and clicking anywhere on an item`'s row causes it to be selected. This style cannot be used in conjunction with the TVS_HASLINES style.', ""))
+    aoTreeViewStyles.Push(Styles("TVS_HASBUTTONS", "0x1", '+/-Buttons. Displays plus (+) and minus (-) buttons next to parent items. The user clicks the buttons to expand or collapse a parent item`'s list of child items. To include buttons with items at the root of the tree view, TVS_LINESATROOT must also be specified.', "Buttons"))
+    aoTreeViewStyles.Push(Styles("TVS_HASLINES", "0x2", '+/-Lines. Uses lines to show the hierarchy of items.', "Lines"))
+    aoTreeViewStyles.Push(Styles("TVS_INFOTIP", "0x800", 'Obtains ToolTip information by sending the TVN_GETINFOTIP notification.', ""))
+    aoTreeViewStyles.Push(Styles("TVS_LINESATROOT", "0x4", '+/-Lines. Uses lines to link items at the root of the tree-view control. This value is ignored if TVS_HASLINES is not also specified.', "Lines"))
+    aoTreeViewStyles.Push(Styles("TVS_NOHSCROLL", "0x8000", '+/-HScroll. Disables horizontal scrolling in the control. The control will not display any horizontal scroll bars.', "Hscroll"))
+    aoTreeViewStyles.Push(Styles("TVS_NONEVENHEIGHT", "0x4000", 'Sets the height of the items to an odd height with the TVM_SETITEMHEIGHT message. By default, the height of items must be an even value.', ""))
+    aoTreeViewStyles.Push(Styles("TVS_NOSCROLL", "0x2000", 'Disables both horizontal and vertical scrolling in the control. The control will not display any scroll bars.', ""))
+    aoTreeViewStyles.Push(Styles("TVS_NOTOOLTIPS", "0x80", 'Disables tooltips.', ""))
+    aoTreeViewStyles.Push(Styles("TVS_RTLREADING", "0x40", 'Causes text to be displayed from right-to-left (RTL). Usually, windows display text left-to-right (LTR).', ""))
+    aoTreeViewStyles.Push(Styles("TVS_SHOWSELALWAYS", "0x20", 'Causes a selected item to remain selected when the tree-view control loses focus.', ""))
+    aoTreeViewStyles.Push(Styles("TVS_SINGLEEXPAND", "0x400", 'Causes the item being selected to expand and the item being unselected to collapse upon selection in the tree-view. If the user holds down Ctrl while selecting an item, the item being unselected will not be collapsed.', ""))
+    aoTreeViewStyles.Push(Styles("TVS_TRACKSELECT", "0x200", 'Enables hot tracking of the mouse in a tree-view control.', ""))
 
 
     global aoDateTimeStyles := Array()
-    aoDateTimeStyles.Push(Styles("DTS_UPDOWN", "0x1",'Provides an up-down control to the right of the control to modify date-time values, which replaces the of the drop-down month calendar that would otherwise be available.',""))
-    aoDateTimeStyles.Push(Styles("DTS_SHOWNONE", "0x2",'Displays a checkbox inside the control that users can uncheck to make the control have no date/time selected. Whenever the control has no date/time, Gui.Submit and GuiCtrl.Value will retrieve a blank value (empty string).',""))
-    aoDateTimeStyles.Push(Styles("DTS_SHORTDATEFORMAT", "0x0",'Displays the date in short format. In some locales, it looks like 6/1/05 or 6/1/2005. On older operating systems, a two-digit year might be displayed. This is why DTS_SHORTDATECENTURYFORMAT is the default and not DTS_SHORTDATEFORMAT.',""))
-    aoDateTimeStyles.Push(Styles("DTS_LONGDATEFORMAT", "0x4",'Format option "LongDate". Displays the date in long format. In some locales, it looks like Wednesday, June 01, 2005.',""))
-    aoDateTimeStyles.Push(Styles("DTS_SHORTDATECENTURYFORMAT", "0xC",'Format option blank/omitted. Displays the date in short format with four-digit year. In some locales, it looks like 6/1/2005. If the system`'s version of Comctl32.dll is older than 5.8, this style is not supported and DTS_SHORTDATEFORMAT is automatically substituted.',""))
-    aoDateTimeStyles.Push(Styles("DTS_TIMEFORMAT", "0x9",'Format option "Time". Displays only the time, which in some locales looks like 5:31:42 PM.',""))
-    aoDateTimeStyles.Push(Styles("DTS_APPCANPARSE", "0x10",'Not yet supported. Allows the owner to parse user input and take necessary action. It enables users to edit within the client area of the control when they press F2. The control sends DTN_USERSTRING notification messages when users are finished.',""))
-    aoDateTimeStyles.Push(Styles("DTS_RIGHTALIGN", "0x20",'+/-Right. The calendar will drop down on the right side of the control instead of the left.',"Right"))
+    aoDateTimeStyles.Push(Styles("DTS_UPDOWN", "0x1", 'Provides an up-down control to the right of the control to modify date-time values, which replaces the of the drop-down month calendar that would otherwise be available.', ""))
+    aoDateTimeStyles.Push(Styles("DTS_SHOWNONE", "0x2", 'Displays a checkbox inside the control that users can uncheck to make the control have no date/time selected. Whenever the control has no date/time, Gui.Submit and GuiCtrl.Value will retrieve a blank value (empty string).', ""))
+    aoDateTimeStyles.Push(Styles("DTS_SHORTDATEFORMAT", "0x0", 'Displays the date in short format. In some locales, it looks like 6/1/05 or 6/1/2005. On older operating systems, a two-digit year might be displayed. This is why DTS_SHORTDATECENTURYFORMAT is the default and not DTS_SHORTDATEFORMAT.', ""))
+    aoDateTimeStyles.Push(Styles("DTS_LONGDATEFORMAT", "0x4", 'Format option "LongDate". Displays the date in long format. In some locales, it looks like Wednesday, June 01, 2005.', ""))
+    aoDateTimeStyles.Push(Styles("DTS_SHORTDATECENTURYFORMAT", "0xC", 'Format option blank/omitted. Displays the date in short format with four-digit year. In some locales, it looks like 6/1/2005. If the system`'s version of Comctl32.dll is older than 5.8, this style is not supported and DTS_SHORTDATEFORMAT is automatically substituted.', ""))
+    aoDateTimeStyles.Push(Styles("DTS_TIMEFORMAT", "0x9", 'Format option "Time". Displays only the time, which in some locales looks like 5:31:42 PM.', ""))
+    aoDateTimeStyles.Push(Styles("DTS_APPCANPARSE", "0x10", 'Not yet supported. Allows the owner to parse user input and take necessary action. It enables users to edit within the client area of the control when they press F2. The control sends DTN_USERSTRING notification messages when users are finished.', ""))
+    aoDateTimeStyles.Push(Styles("DTS_RIGHTALIGN", "0x20", '+/-Right. The calendar will drop down on the right side of the control instead of the left.', "Right"))
 
 
     global aoMonthCalStyles := Array()
-    aoMonthCalStyles.Push(Styles("MCS_DAYSTATE", "0x1",'Makes the control send MCN_GETDAYSTATE notifications to request information about which days should be displayed in bold. [Not yet supported]',""))
-    aoMonthCalStyles.Push(Styles("MCS_WEEKNUMBERS", "0x4",'Displays week numbers (1-52) to the left of each row of days. Week 1 is defined as the first week that contains at least four days.',""))
-    aoMonthCalStyles.Push(Styles("MCS_NOTODAYCIRCLE", "0x8",'Prevents the circling of today`'s date within the control.',""))
-    aoMonthCalStyles.Push(Styles("MCS_NOTODAY", "0x10",'Prevents the display of today`'s date at the bottom of the control.',""))
+    aoMonthCalStyles.Push(Styles("MCS_DAYSTATE", "0x1", 'Makes the control send MCN_GETDAYSTATE notifications to request information about which days should be displayed in bold. [Not yet supported]', ""))
+    aoMonthCalStyles.Push(Styles("MCS_WEEKNUMBERS", "0x4", 'Displays week numbers (1-52) to the left of each row of days. Week 1 is defined as the first week that contains at least four days.', ""))
+    aoMonthCalStyles.Push(Styles("MCS_NOTODAYCIRCLE", "0x8", 'Prevents the circling of today`'s date within the control.', ""))
+    aoMonthCalStyles.Push(Styles("MCS_NOTODAY", "0x10", 'Prevents the display of today`'s date at the bottom of the control.', ""))
 
 
     global aoSliderStyles := Array()
-    aoSliderStyles.Push(Styles("TBS_VERT", "0x2",'+/-Vertical. The control is oriented vertically.',"Vertical"))
-    aoSliderStyles.Push(Styles("TBS_LEFT", "0x4",'+/-Left. The control displays tick marks at the top of the control (or to its left if TBS_VERT is present). Same as TBS_TOP.',"Left"))
-    aoSliderStyles.Push(Styles("TBS_TOP", "0x4",'same as TBS_LEFT.',""))
-    aoSliderStyles.Push(Styles("TBS_BOTH", "0x8",'+/-Center. The control displays tick marks on both sides of the control. This will be both top and bottom when used with TBS_HORZ or both left and right if used with TBS_VERT.',"Center"))
-    aoSliderStyles.Push(Styles("TBS_AUTOTICKS", "0x1",'The control has a tick mark for each increment in its range of values. Use +/-TickInterval to have more flexibility.',""))
-    aoSliderStyles.Push(Styles("TBS_ENABLESELRANGE", "0x20",'The control displays a selection range only. The tick marks at the starting and ending positions of a selection range are displayed as triangles (instead of vertical dashes), and the selection range is highlighted (highlighting might require that the theme be removed via GuiObj.Opt("-Theme")).',""))
-    aoSliderStyles.Push(Styles("TBS_FIXEDLENGTH", "0x40",'+/-Thick. Allows the thumb`'s size to be changed.',"Thick"))
-    aoSliderStyles.Push(Styles("TBS_NOTHUMB", "0x80",'The control does not display the moveable bar.',""))
-    aoSliderStyles.Push(Styles("TBS_NOTICKS", "0x10",'+/-NoTicks. The control does not display any tick marks.',"NoTicks"))
-    aoSliderStyles.Push(Styles("TBS_TOOLTIPS", "0x100",'+/-ToolTip. The control supports tooltips. When a control is created using this style, it automatically creates a default ToolTip control that displays the slider`'s current position. You can change where the tooltips are displayed by using the TBM_SETTIPSIDE message.',"ToolTip"))
-    aoSliderStyles.Push(Styles("TBS_REVERSED", "0x200",'Unfortunately, this style has no effect on the actual behavior of the control, so there is probably no point in using it (instead, use +Invert in the control`'s options to reverse it). Depending on OS version, this style might require Internet Explorer 5.0 or greater.',""))
-    aoSliderStyles.Push(Styles("TBS_DOWNISLEFT", "0x400",'Unfortunately, this style has no effect on the actual behavior of the control, so there is probably no point in using it. Depending on OS version, this style might require Internet Explorer 5.01 or greater.',""))
+    aoSliderStyles.Push(Styles("TBS_VERT", "0x2", '+/-Vertical. The control is oriented vertically.', "Vertical"))
+    aoSliderStyles.Push(Styles("TBS_LEFT", "0x4", '+/-Left. The control displays tick marks at the top of the control (or to its left if TBS_VERT is present). Same as TBS_TOP.', "Left"))
+    aoSliderStyles.Push(Styles("TBS_TOP", "0x4", 'same as TBS_LEFT.', ""))
+    aoSliderStyles.Push(Styles("TBS_BOTH", "0x8", '+/-Center. The control displays tick marks on both sides of the control. This will be both top and bottom when used with TBS_HORZ or both left and right if used with TBS_VERT.', "Center"))
+    aoSliderStyles.Push(Styles("TBS_AUTOTICKS", "0x1", 'The control has a tick mark for each increment in its range of values. Use +/-TickInterval to have more flexibility.', ""))
+    aoSliderStyles.Push(Styles("TBS_ENABLESELRANGE", "0x20", 'The control displays a selection range only. The tick marks at the starting and ending positions of a selection range are displayed as triangles (instead of vertical dashes), and the selection range is highlighted (highlighting might require that the theme be removed via GuiObj.Opt("-Theme")).', ""))
+    aoSliderStyles.Push(Styles("TBS_FIXEDLENGTH", "0x40", '+/-Thick. Allows the thumb`'s size to be changed.', "Thick"))
+    aoSliderStyles.Push(Styles("TBS_NOTHUMB", "0x80", 'The control does not display the moveable bar.', ""))
+    aoSliderStyles.Push(Styles("TBS_NOTICKS", "0x10", '+/-NoTicks. The control does not display any tick marks.', "NoTicks"))
+    aoSliderStyles.Push(Styles("TBS_TOOLTIPS", "0x100", '+/-ToolTip. The control supports tooltips. When a control is created using this style, it automatically creates a default ToolTip control that displays the slider`'s current position. You can change where the tooltips are displayed by using the TBM_SETTIPSIDE message.', "ToolTip"))
+    aoSliderStyles.Push(Styles("TBS_REVERSED", "0x200", 'Unfortunately, this style has no effect on the actual behavior of the control, so there is probably no point in using it (instead, use +Invert in the control`'s options to reverse it). Depending on OS version, this style might require Internet Explorer 5.0 or greater.', ""))
+    aoSliderStyles.Push(Styles("TBS_DOWNISLEFT", "0x400", 'Unfortunately, this style has no effect on the actual behavior of the control, so there is probably no point in using it. Depending on OS version, this style might require Internet Explorer 5.01 or greater.', ""))
 
 
     global aoProgressStyles := Array()
-    aoProgressStyles.Push(Styles("PBS_SMOOTH", "0x1",'+/-Smooth. The progress bar displays progress status in a smooth scrolling bar instead of the default segmented bar. When this style is present, the control automatically reverts to the Classic Theme appearance.',"Smooth"))
-    aoProgressStyles.Push(Styles("PBS_VERTICAL", "0x4",'+/-Vertical. The progress bar displays progress status vertically, from bottom to top.',"Vertical"))
-    aoProgressStyles.Push(Styles("PBS_MARQUEE", "0x8",'The progress bar moves like a marquee; that is, each change to its position causes the bar to slide further along its available length until it wraps around to the other side. A bar with this style has no defined position. Each attempt to change its position will instead slide the bar by one increment. This style is typically used to indicate an ongoing operation whose completion time is unknown.',""))
+    aoProgressStyles.Push(Styles("PBS_SMOOTH", "0x1", '+/-Smooth. The progress bar displays progress status in a smooth scrolling bar instead of the default segmented bar. When this style is present, the control automatically reverts to the Classic Theme appearance.', "Smooth"))
+    aoProgressStyles.Push(Styles("PBS_VERTICAL", "0x4", '+/-Vertical. The progress bar displays progress status vertically, from bottom to top.', "Vertical"))
+    aoProgressStyles.Push(Styles("PBS_MARQUEE", "0x8", 'The progress bar moves like a marquee; that is, each change to its position causes the bar to slide further along its available length until it wraps around to the other side. A bar with this style has no defined position. Each attempt to change its position will instead slide the bar by one increment. This style is typically used to indicate an ongoing operation whose completion time is unknown.', ""))
 
     global aoTabStyles := Array()
     aoTabStyles.Push(Styles("TCS_SCROLLOPPOSITE", "0x1", 'Unneeded tabs scroll to the opposite side of the control when a tab is selected.', ""))
@@ -410,34 +410,34 @@ for property, value in oImageControls.OwnProps(){
     aoTabStyles.Push(Styles("TCS_FOCUSNEVER", "0x8000", 'The tab control does not receive the input focus when clicked.', ""))
 
     global aoStatusbarStyles := Array()
-    aoStatusbarStyles.Push(Styles("SBARS_TOOLTIPS", "0x800",'Displays a tooltip when the mouse hovers over a part of the status bar that: 1) has too much text to be fully displayed; or 2) has an icon but no text. The text of the tooltip can be set via: SendMessage 0x0410, 0, "Text to display", "msctls_statusbar321", MyGui The bold 0 above is the zero-based part number. To use a part other than the first, specify 1 for second, 2 for the third, etc. NOTE: The tooltip might never appear on certain OS versions.',""))
-    aoStatusbarStyles.Push(Styles("SBARS_SIZEGRIP", "0x100",'Includes a sizing grip at the right end of the status bar. A sizing grip is similar to a sizing border; it is a rectangular area that the user can click and drag to resize the parent window.',""))
+    aoStatusbarStyles.Push(Styles("SBARS_TOOLTIPS", "0x800", 'Displays a tooltip when the mouse hovers over a part of the status bar that: 1) has too much text to be fully displayed; or 2) has an icon but no text. The text of the tooltip can be set via: SendMessage 0x0410, 0, "Text to display", "msctls_statusbar321", MyGui The bold 0 above is the zero-based part number. To use a part other than the first, specify 1 for second, 2 for the third, etc. NOTE: The tooltip might never appear on certain OS versions.', ""))
+    aoStatusbarStyles.Push(Styles("SBARS_SIZEGRIP", "0x100", 'Includes a sizing grip at the right end of the status bar. A sizing grip is similar to a sizing border; it is a rectangular area that the user can click and drag to resize the parent window.', ""))
 
     Global aoDefaultStyles := Object()
-    aoDefaultStyles.window := {style:0xffffffff94ca0000, exStyle:0x100}
-    aoDefaultStyles.gui := {style:0xffffffff94ca0000, exStyle:0x100}
-    aoDefaultStyles.edit := {style:0x50010080, exStyle:0x200}
-    aoDefaultStyles.editmultiLine := {style:0x50211040, exStyle:0x200}
-    aoDefaultStyles.button := {style:0x50010000, exStyle:0x0}
-    aoDefaultStyles.checkbox := {style:0x50010003, exStyle:0x0}
-    aoDefaultStyles.hotkey := {style:0x50010000, exStyle:0x200}
-    aoDefaultStyles.monthcal := {style:0x50010000, exStyle:0x0}
-    aoDefaultStyles.picture := {style:0x50000003, exStyle:0x0}
-    aoDefaultStyles.progress := {style:0x50000000, exStyle:0x0}
-    aoDefaultStyles.radio := {style:0x50030009, exStyle:0x0}
-    aoDefaultStyles.slider := {style:0x50030000, exStyle:0x0}
-    aoDefaultStyles.tab3 := {style:0x54010240, exStyle:0x0}
-    aoDefaultStyles.text := {style:0x50000000, exStyle:0x0}
-    aoDefaultStyles.treeview := {style:0x50010027, exStyle:0x200}
-    aoDefaultStyles.combobox := {style:0x50010242, exStyle:0x0}
-    aoDefaultStyles.datetime := {style:0x5201000c, exStyle:0x0}
-    aoDefaultStyles.dropdownlist := {style:0x50010203, exStyle:0x0}
-    aoDefaultStyles.groupbox := {style:0x50000007, exStyle:0x0}
-    aoDefaultStyles.link := {style:0x50010000, exStyle:0x0}
-    aoDefaultStyles.listbox := {style:0x50010081, exStyle:0x200}
-    aoDefaultStyles.listview := {style:0x50010009, exStyle:0x0}
-    aoDefaultStyles.statusbar := {style:0x50000800, exStyle:0x0}
-    aoDefaultStyles.separator := {style:0x50000000, exStyle:0x0}
+    aoDefaultStyles.window := { style: 0xffffffff94ca0000, exStyle: 0x100 }
+    aoDefaultStyles.gui := { style: 0xffffffff94ca0000, exStyle: 0x100 }
+    aoDefaultStyles.edit := { style: 0x50010080, exStyle: 0x200 }
+    aoDefaultStyles.editmultiLine := { style: 0x50211040, exStyle: 0x200 }
+    aoDefaultStyles.button := { style: 0x50010000, exStyle: 0x0 }
+    aoDefaultStyles.checkbox := { style: 0x50010003, exStyle: 0x0 }
+    aoDefaultStyles.hotkey := { style: 0x50010000, exStyle: 0x200 }
+    aoDefaultStyles.monthcal := { style: 0x50010000, exStyle: 0x0 }
+    aoDefaultStyles.picture := { style: 0x50000003, exStyle: 0x0 }
+    aoDefaultStyles.progress := { style: 0x50000000, exStyle: 0x0 }
+    aoDefaultStyles.radio := { style: 0x50030009, exStyle: 0x0 }
+    aoDefaultStyles.slider := { style: 0x50030000, exStyle: 0x0 }
+    aoDefaultStyles.tab3 := { style: 0x54010240, exStyle: 0x0 }
+    aoDefaultStyles.text := { style: 0x50000000, exStyle: 0x0 }
+    aoDefaultStyles.treeview := { style: 0x50010027, exStyle: 0x200 }
+    aoDefaultStyles.combobox := { style: 0x50010242, exStyle: 0x0 }
+    aoDefaultStyles.datetime := { style: 0x5201000c, exStyle: 0x0 }
+    aoDefaultStyles.dropdownlist := { style: 0x50010203, exStyle: 0x0 }
+    aoDefaultStyles.groupbox := { style: 0x50000007, exStyle: 0x0 }
+    aoDefaultStyles.link := { style: 0x50010000, exStyle: 0x0 }
+    aoDefaultStyles.listbox := { style: 0x50010081, exStyle: 0x200 }
+    aoDefaultStyles.listview := { style: 0x50010009, exStyle: 0x0 }
+    aoDefaultStyles.statusbar := { style: 0x50000800, exStyle: 0x0 }
+    aoDefaultStyles.separator := { style: 0x50000000, exStyle: 0x0 }
 }
 
 global SettingsFile := Regexreplace(A_scriptName, "(.*)\..*", "$1.ini")
@@ -453,7 +453,7 @@ If !pToken := Gdip_Startup() {
 }
 OnExit((ExitReason, ExitCode) => Gdip_Shutdown(pToken))
 
-if (oSet.Hotkey!=""){
+if (oSet.Hotkey != "") {
     Hotkey(oSet.Hotkey, wInspector_Activate)
 }
 
@@ -463,7 +463,7 @@ NM_RCLICK := -5
 
 SetTimer(Gui_wInspector, -1)
 
-Gui_wInspector(*){
+Gui_wInspector(*) {
     global
     if (IsSet(MyGui)) {
         Try {
@@ -480,6 +480,7 @@ Gui_wInspector(*){
     MyGui.Width := 1200
     MyGui.win_hwnd := 0
     MyGui.ctrl_hwnd := 0
+    MyGui.PID := 0
     ogButton_Selector := MyGui.addButton("xm y0 w60 vbtnSelector BackgroundTrans h24 w24 +0x4000", "+")
     ogButton_Selector.SetFont("s20", "Times New Roman")
     ogButton_Selector.statusbar := "Click and drag to select a specific control or window"
@@ -536,7 +537,7 @@ Gui_wInspector(*){
         oGuiWindow.AddText("x+5 yp+3", "H")
         ogEdit_wHeight := oGuiWindow.AddEdit("x+2 yp-3 Right Number vwHPos w40")
         ogButton_Move := oGuiWindow.AddButton("x258 yp-1 w40", "Move")
-        ogButton_Move.OnEvent("Click", (*) => (WinExist("ahk_id" ogEdit_wID.value) ? WinMove(ogEdit_wXPos.value, ogEdit_wYPos.value, ogEdit_wWidth.value, ogEdit_wHeight.value, "ahk_id" ogEdit_wID.value): ""))
+        ogButton_Move.OnEvent("Click", (*) => (WinExist("ahk_id" ogEdit_wID.value) ? WinMove(ogEdit_wXPos.value, ogEdit_wYPos.value, ogEdit_wWidth.value, ogEdit_wHeight.value, "ahk_id" ogEdit_wID.value) : ""))
         oGuiWindow.AddText("x8 y+4", "Transparent:")
         oGuiWindow.Add('Slider', "xp+60 vTransparent Range0-255 ToolTip", 255)
         oGuiWindow['Transparent'].OnEvent("Change", (Slider, Info) => (WinExist("ahk_id" ogEdit_wID.value) && WinSetTransparent(Slider.Value, "ahk_id" ogEdit_wID.value), 0))
@@ -595,69 +596,69 @@ Gui_wInspector(*){
         ogEdit_mPos := oGuiMouse.AddEdit("x42 yp-3 w70", "")
         ogDDL_MouseCoordMode := oGuiMouse.AddDropDownList("x+3 yp w70 vDDL_MouseCoordMode Choose1", ["Screen", "Window", "Client"])
         ogBut_MouseMove := oGuiMouse.AddButton("x+3 yp-1 w50", "Move")
-        ogBut_MouseMove.OnEvent("Click", (*) => (CoordMode("Mouse", ogDDL_MouseCoordMode.Text), MouseMove(MyGui.MouseX+0,MyGui.MouseY+0)))
+        ogBut_MouseMove.OnEvent("Click", (*) => (CoordMode("Mouse", ogDDL_MouseCoordMode.Text), MouseMove(MyGui.MouseX + 0, MyGui.MouseY + 0)))
         ogBut_MouseClick := oGuiMouse.AddButton("x+3 yp w50", "Click")
-        ogBut_MouseClick.OnEvent("Click", (*) => (CoordMode("Mouse", ogDDL_MouseCoordMode.Text), Mouseclick(,MyGui.MouseX+0,MyGui.MouseY+0)))
+        ogBut_MouseClick.OnEvent("Click", (*) => (CoordMode("Mouse", ogDDL_MouseCoordMode.Text), Mouseclick(, MyGui.MouseX + 0, MyGui.MouseY + 0)))
         oGuiMouse.AddText("x6 y+4", "RGB")
         ogEdit_mColor := oGuiMouse.AddEdit("x42 yp-3 w70", "")
         ogText_mColor := oGuiMouse.AddText("x+3 yp w21 h21 BackgroundWhite +Border")
 
-        ogDDL_GridSize := oGuiMouse.AddDropDownList("x+3 yp w60 vDDL_GridSize" , ["1x1", "3x3","5x5", "9x9", "15x15"])
+        ogDDL_GridSize := oGuiMouse.AddDropDownList("x+3 yp w60 vDDL_GridSize", ["1x1", "3x3", "5x5", "9x9", "15x15"])
 
         ogDDL_GridSize.text := oSet.MouseGrid "x" oSet.MouseGrid
         ogDDL_GridSize.OnEvent("Change", GridSize_Change)
         oGuiMouse.Grid := oSet.MouseGrid
 
-        ogPic_Grid := oGuiMouse.AddPicture("x42 y+2 w" oGuiMouse.Grid*16 " h" oGuiMouse.Grid*16 " +0x40 +0xE +Border Section")
-        ogText_Line1 := oGuiMouse.AddText("xs+" (oGuiMouse.Grid-1) * 16/2 " ys+1 w1 h" oGuiMouse.Grid * 16-2 " backgroundWhite")
-        ogText_Line2 := oGuiMouse.AddText("xs+" (oGuiMouse.Grid+1) * 16/2 " ys+1 w1 h" oGuiMouse.Grid * 16-2 " backgroundWhite")
-        ogText_Line3 := oGuiMouse.AddText("xs+1 ys+" (oGuiMouse.Grid - 1) * 16 / 2 " w" oGuiMouse.Grid * 16-2 " h1 backgroundWhite")
-        ogText_Line4 := oGuiMouse.AddText("xs+1 ys+" (oGuiMouse.Grid + 1) * 16 / 2 " w" oGuiMouse.Grid * 16-2 " h1 backgroundWhite")
+        ogPic_Grid := oGuiMouse.AddPicture("x42 y+2 w" oGuiMouse.Grid * 16 " h" oGuiMouse.Grid * 16 " +0x40 +0xE +Border Section")
+        ogText_Line1 := oGuiMouse.AddText("xs+" (oGuiMouse.Grid - 1) * 16 / 2 " ys+1 w1 h" oGuiMouse.Grid * 16 - 2 " backgroundWhite")
+        ogText_Line2 := oGuiMouse.AddText("xs+" (oGuiMouse.Grid + 1) * 16 / 2 " ys+1 w1 h" oGuiMouse.Grid * 16 - 2 " backgroundWhite")
+        ogText_Line3 := oGuiMouse.AddText("xs+1 ys+" (oGuiMouse.Grid - 1) * 16 / 2 " w" oGuiMouse.Grid * 16 - 2 " h1 backgroundWhite")
+        ogText_Line4 := oGuiMouse.AddText("xs+1 ys+" (oGuiMouse.Grid + 1) * 16 / 2 " w" oGuiMouse.Grid * 16 - 2 " h1 backgroundWhite")
         GridSize_Change()
     }
     ; Function Section
 
     oGuiFunction.posRef := oGuiMouse
     oGuiFunction.posRule := "Xx Yyh Ww"
-    ogGBFunction := oGuiFunction.addGroupBox(,"Function")
+    ogGBFunction := oGuiFunction.addGroupBox(, "Function")
     ogGBFunction.LeftMargin := 2
     ogGBFunction.BottomMargin := 2
 
     moFunctions := Map()
-    moFunctions["ControlAddItem"] := {var1:"String", var1Default: "", control:true, description:"Adds the specified string as a new entry at the bottom of a ListBox or ComboBox."}
-    moFunctions["ControlChooseIndex"] := {var1:"N", var1Default: "0", control:true, description:"Sets the selection in a ListBox, ComboBox or Tab control to be the specified entry or tab number."}
-    moFunctions["ControlChooseString"] := {var1:"String", var1Default: "0", control:true, description:"Sets the selection in a ListBox or ComboBox to be the first entry whose leading part matches the specified string."}
-    moFunctions["ControlClick"] := {control:true, description:"Sends a mouse button or mouse wheel event to a control."}
-    moFunctions["ControlFocus"] := {control:true, description:"Sets input focus to a given control on a window."}
-    moFunctions["ControlGetChecked"] := {control:true, description: "Returns a non-zero value if the checkbox or radio button is checked.", result: true}
-    moFunctions["ControlGetChoice"] := {control:true, description: "Returns the name of the currently selected entry in a ListBox or ComboBox.", result: true}
-    moFunctions["ControlGetText"] := {control:true, description: "Retrieves text from a control.", result: true}
-    moFunctions["ControlGetItems"] := {control:true, description: "Returns an array of items/rows from a ListBox, ComboBox, or DropDownList.", result: true}
-    moFunctions["ControlGetIndex"] := {control:true, description: "Returns the index of the currently selected entry or tab in a ListBox, ComboBox or Tab control.", result: true}
-    moFunctions["ControlSend"] := {var1:"Keys", var1Default: "", control:true, description:"Sends simulated keystrokes to a window or control."}
-    moFunctions["ControlSendText"] := {var1:"Keys", var1Default: "", control:true, description: "Sends text to a window or control."}
-    moFunctions["ControlSetText"] := {var1:"NewText", var1Default: "", control:true, description:"Changes the text of a control."}
-    moFunctions["ControlSetEnabled"] := {var1:"Value", var1Default: "1", control:true, description:"Enables or disables the specified control."}
-    moFunctions["ListViewGetContent"] := {var1: "Options", var1Default: "", control:true, description:"Returns a list of items/rows from a ListView.", result: true}
-    moFunctions["SendMessage"] := {var1:"Msg", var1Default: "", var2: "wParam", var2Default: "0", var3: "lParam", var3Default: "0", control:true, result:true, description:"Sends a message to a window or control and waits for acknowledgement."}
-    moFunctions["PostMessage"] := {var1:"Msg", var1Default: "", var2: "wParam", var2Default: "0", var3: "lParam", var3Default: "0", control:true, result:true, description:"Places a message in the message queue of a window or control."}
-    moFunctions["WinActivate"] := {description: "Activates the specified window."}
-    moFunctions["WinClose"] := {description: "Closes the specified window."}
-    moFunctions["WinGetControls"] := {description: "Returns the control names for all controls in the specified window.", result: true}
-    moFunctions["WinGetCount"] := {description: "Returns the number of existing windows that match the specified criteria.", result: true}
-    moFunctions["WinGetClass"] := {description: "Retrieves the specified window`'s class name.", result: true}
-    moFunctions["WinGetPID"] := {description: "Returns the Process ID number of the specified window.", result: true}
-    moFunctions["WinGetTitle"] := {description: "Retrieves the title of the specified window.", result: true}
-    moFunctions["WinGetText"] := {description: "Retrieves the text from the specified window.", result: true}
-    moFunctions["WinGetStyle"] := {description: "Returns the style of the specified window.", result: true}
-    moFunctions["WinGetExStyle"] := {description: "Returns the extended style of the specified window.", result: true}
-    moFunctions["WinGetMinMax"] := {description: "Returns the state whether the specified window is maximized or minimized.", result: true}
-    moFunctions["WinGetList"] := {description: "Returns the unique ID numbers of all existing windows that match the specified criteria.", result: true}
-    moFunctions["WinGetProcessName"] := {description: "Returns the name of the process that owns the specified window.", result: true}
-    moFunctions["WinGetProcessPath"] := {description: "Returns the full path and name of the process that owns the specified window.", result: true}
+    moFunctions["ControlAddItem"] := { var1: "String", var1Default: "", control: true, description: "Adds the specified string as a new entry at the bottom of a ListBox or ComboBox." }
+    moFunctions["ControlChooseIndex"] := { var1: "N", var1Default: "0", control: true, description: "Sets the selection in a ListBox, ComboBox or Tab control to be the specified entry or tab number." }
+    moFunctions["ControlChooseString"] := { var1: "String", var1Default: "0", control: true, description: "Sets the selection in a ListBox or ComboBox to be the first entry whose leading part matches the specified string." }
+    moFunctions["ControlClick"] := { control: true, description: "Sends a mouse button or mouse wheel event to a control." }
+    moFunctions["ControlFocus"] := { control: true, description: "Sets input focus to a given control on a window." }
+    moFunctions["ControlGetChecked"] := { control: true, description: "Returns a non-zero value if the checkbox or radio button is checked.", result: true }
+    moFunctions["ControlGetChoice"] := { control: true, description: "Returns the name of the currently selected entry in a ListBox or ComboBox.", result: true }
+    moFunctions["ControlGetText"] := { control: true, description: "Retrieves text from a control.", result: true }
+    moFunctions["ControlGetItems"] := { control: true, description: "Returns an array of items/rows from a ListBox, ComboBox, or DropDownList.", result: true }
+    moFunctions["ControlGetIndex"] := { control: true, description: "Returns the index of the currently selected entry or tab in a ListBox, ComboBox or Tab control.", result: true }
+    moFunctions["ControlSend"] := { var1: "Keys", var1Default: "", control: true, description: "Sends simulated keystrokes to a window or control." }
+    moFunctions["ControlSendText"] := { var1: "Keys", var1Default: "", control: true, description: "Sends text to a window or control." }
+    moFunctions["ControlSetText"] := { var1: "NewText", var1Default: "", control: true, description: "Changes the text of a control." }
+    moFunctions["ControlSetEnabled"] := { var1: "Value", var1Default: "1", control: true, description: "Enables or disables the specified control." }
+    moFunctions["ListViewGetContent"] := { var1: "Options", var1Default: "", control: true, description: "Returns a list of items/rows from a ListView.", result: true }
+    moFunctions["SendMessage"] := { var1: "Msg", var1Default: "", var2: "wParam", var2Default: "0", var3: "lParam", var3Default: "0", control: true, result: true, description: "Sends a message to a window or control and waits for acknowledgement." }
+    moFunctions["PostMessage"] := { var1: "Msg", var1Default: "", var2: "wParam", var2Default: "0", var3: "lParam", var3Default: "0", control: true, result: true, description: "Places a message in the message queue of a window or control." }
+    moFunctions["WinActivate"] := { description: "Activates the specified window." }
+    moFunctions["WinClose"] := { description: "Closes the specified window." }
+    moFunctions["WinGetControls"] := { description: "Returns the control names for all controls in the specified window.", result: true }
+    moFunctions["WinGetCount"] := { description: "Returns the number of existing windows that match the specified criteria.", result: true }
+    moFunctions["WinGetClass"] := { description: "Retrieves the specified window`'s class name.", result: true }
+    moFunctions["WinGetPID"] := { description: "Returns the Process ID number of the specified window.", result: true }
+    moFunctions["WinGetTitle"] := { description: "Retrieves the title of the specified window.", result: true }
+    moFunctions["WinGetText"] := { description: "Retrieves the text from the specified window.", result: true }
+    moFunctions["WinGetStyle"] := { description: "Returns the style of the specified window.", result: true }
+    moFunctions["WinGetExStyle"] := { description: "Returns the extended style of the specified window.", result: true }
+    moFunctions["WinGetMinMax"] := { description: "Returns the state whether the specified window is maximized or minimized.", result: true }
+    moFunctions["WinGetList"] := { description: "Returns the unique ID numbers of all existing windows that match the specified criteria.", result: true }
+    moFunctions["WinGetProcessName"] := { description: "Returns the name of the process that owns the specified window.", result: true }
+    moFunctions["WinGetProcessPath"] := { description: "Returns the full path and name of the process that owns the specified window.", result: true }
 
     aFunctionList := Array()
-    For Key, Value in moFunctions{
+    For Key, Value in moFunctions {
         aFunctionList.Push(Key)
     }
     DDLFunction := oGuiFunction.AddComboBox("x60 yp+15 w130 Choose", aFunctionList)
@@ -671,16 +672,16 @@ Gui_wInspector(*){
         )
     )
 
-    BtnRun := oGuiFunction.AddPicButton("x+8 yp-1 w23 h23", "mmcndmgr.dll","icon33 w16 h16")
+    BtnRun := oGuiFunction.AddPicButton("x+8 yp-1 w23 h23", "mmcndmgr.dll", "icon33 w16 h16")
     BtnRun.StatusBar := "Run the selected function"
-    BtnRun.OnEvent("Click",ClickRun)
+    BtnRun.OnEvent("Click", ClickRun)
 
-    BtnCopy := oGuiFunction.AddPicButton("x+6 yp w23 h23", "shell32.dll","icon135 w16 h16")
+    BtnCopy := oGuiFunction.AddPicButton("x+6 yp w23 h23", "shell32.dll", "icon135 w16 h16")
     BtnCopy.StatusBar := "Copy the Code"
-    BtnCopy.OnEvent("Click",ClickCopy)
-    BtnInfo := oGuiFunction.AddPicButton("x+6 yp w23 h23", "shell32.dll","icon278 w14 h14")
+    BtnCopy.OnEvent("Click", ClickCopy)
+    BtnInfo := oGuiFunction.AddPicButton("x+6 yp w23 h23", "shell32.dll", "icon278 w14 h14")
     BtnInfo.StatusBar := "Open the documentation of the function."
-    BtnInfo.OnEvent("Click",(*)=>(run("https://lexikos.github.io/v2/docs/search.htm?q=" DDLFunction.text "&m=2")))
+    BtnInfo.OnEvent("Click", (*) => (run("https://lexikos.github.io/v2/docs/search.htm?q=" DDLFunction.text "&m=2")))
 
     ogTxtVar1 := oGuiFunction.AddText("xm+2 y+4 w50", "Msg")
     ogEdtVar1 := oGuiFunction.AddEdit("x60 yp-3 w237 right", "")
@@ -697,7 +698,7 @@ Gui_wInspector(*){
     ogTxtControl.posRef := ogTxtVar2
     ogTxtControl.yMargin := 10
 
-    ogEdtControl := oGuiFunction.AddEdit("yp-3 x60 w237 right", )
+    ogEdtControl := oGuiFunction.AddEdit("yp-3 x60 w237 right",)
     ogEdtControl.posRef := ogEdtVar2
     ogEdtControl.yMargin := 2
 
@@ -723,8 +724,8 @@ Gui_wInspector(*){
     ogEdtSearch.posRef := ogGbMsgList
     ogEdtSearch.yOffset := 15
     ogEdtSearch.SetCueText("Search")
-    ogEdtSearch.OnEvent("Change",UpdateLVMessages)
-    ogLvMessages := oGuiFunction.Add("ListView", "w280 r10 Hidden", ["Message","Value"])
+    ogEdtSearch.OnEvent("Change", UpdateLVMessages)
+    ogLvMessages := oGuiFunction.Add("ListView", "w280 r10 Hidden", ["Message", "Value"])
     ogLvMessages.posRef := ogEdtSearch
     ogLvMessages.yMargin := 4
     UpdateLVMessages()
@@ -734,7 +735,7 @@ Gui_wInspector(*){
 
     oGuiProcessList.posRef := oGuiWindow
     oGuiProcessList.posRule := "Xxw Yy"
-    ogGBProcessList := oGuiProcessList.addGroupBox("h311","ProcessList")
+    ogGBProcessList := oGuiProcessList.addGroupBox("h311", "ProcessList")
     ogGBProcessList.LeftMargin := 2
     ogGBProcessList.BottomMargin := 2
     oGuiProcessList.LeftDistance := 0
@@ -743,9 +744,10 @@ Gui_wInspector(*){
     ogEdit_Process_search := oGuiProcessList.AddEdit("xp+4 yp+15 w200 vProcess_seach")
     ogEdit_Process_search.SetCueText("Search")
     ogEdit_Process_search.statusbar := "Type to filter the Processes on specific words"
-    ogEdit_Process_search.OnEvent("Change",UpdateProcessList)
+    ogEdit_Process_search.OnEvent("Change", UpdateProcessList)
 
-    ogLV_ProcessList := oGuiProcessList.AddListView("xm+4 y+2 r14 w" (myGui.Width - 8 * 3) / 2 " vProcessList section AltSubmit", ["Process", "PID","Path"])
+    ogLV_ProcessList := oGuiProcessList.AddListView("xm+4 y+2 r14 w" (myGui.Width - 8 * 3) / 2 " vProcessList section AltSubmit", _ := ["Process", "PID", "Path"])
+    ogLV_ProcessList.columns := _
     ogLV_ProcessList.Opt("Count400 -Multi")
     ogLV_ProcessList.ModifyCol()
     ogLV_ProcessList.ModifyCol(1, 300)
@@ -753,7 +755,7 @@ Gui_wInspector(*){
     ogLV_ProcessList.ModifyCol(2, "Integer")
 
     ogLV_ProcessList.OnEvent("Click", DClickProcessList)
-    ogLV_ProcessList.OnNotify(NM_DBLCLK, CopyLVITEMText)
+    ;ogLV_ProcessList.OnNotify(NM_DBLCLK, CopyLVITEMText)
     ogLV_ProcessList.OnNotify(NM_RCLICK, RClickProcessList)
     ogLV_ProcessList.LeftMargin := 5
     ogLV_ProcessList.BottomMargin := 8
@@ -762,7 +764,7 @@ Gui_wInspector(*){
     ; WinList Section
     oGuiWindowList.posRef := oGuiProcessList
     oGuiWindowList.posRule := "Xx Yyh Ww"
-    ogGBWinList := oGuiWindowList.addGroupBox("h311","WinList")
+    ogGBWinList := oGuiWindowList.addGroupBox("h311", "WinList")
     ogGBWinList.LeftMargin := 2
     ogGBWinList.BottomMargin := 2
     oGuiWindowList.LeftDistance := 0
@@ -771,9 +773,9 @@ Gui_wInspector(*){
     ogEdit_win_search := oGuiWindowList.AddEdit("xp+4 yp+15 w200 vwin_seach")
     ogEdit_win_search.SetCueText("Search")
     ogEdit_win_search.statusbar := "Type to filter the windows on specific words"
-    ogEdit_win_search.OnEvent("Change",UpdateWinList)
+    ogEdit_win_search.OnEvent("Change", UpdateWinList)
     ogCB_FilterWinVisible := oGuiWindowList.AddCheckbox("xp+210 yp+3 vfilter_win_visible Checked", "Visible")
-    ogCB_FilterWinVisible.OnEvent("Click",UpdateWinList)
+    ogCB_FilterWinVisible.OnEvent("Click", UpdateWinList)
     ogCB_FilterWinVisible.Statusbar := "Filter on only visible windows"
     ogCB_FilterWinTitle := oGuiWindowList.AddCheckbox("xp+60 yp vfilter_win_title Checked", "Title")
     ogCB_FilterWinTitle.OnEvent("Click", UpdateWinList)
@@ -781,7 +783,8 @@ Gui_wInspector(*){
     ogCB_FilterWinPID := oGuiWindowList.AddCheckbox("xp+60 yp vfilter_win_PID", "Process PID")
     ogCB_FilterWinPID.OnEvent("Click", UpdateWinList)
     ogCB_FilterWinPID.Statusbar := "Filter on by selected PID in ProcessList"
-    ogLV_WinList := oGuiWindowList.AddListView("xm+4 y+7 r14 w" (myGui.Width - 8 * 3) / 2 " vWinList section AltSubmit", ["Title", "Process", "ID", "Visible", "X", "Y", "W", "H", "Class"])
+    ogLV_WinList := oGuiWindowList.AddListView("xm+4 y+7 r14 w" (myGui.Width - 8 * 3) / 2 " vWinList section AltSubmit", _ := ["Title", "Process", "ID", "Visible", "X", "Y", "W", "H", "Class"])
+    ogLV_WinList.columns := _
     ogLV_WinList.Opt("Count400 -Multi")
 
     ogLV_WinList.ModifyCol()
@@ -821,7 +824,8 @@ Gui_wInspector(*){
         ogCB_FilterCtrlText := oGuiControlList.AddCheckbox("xp+60 yp vfilter_ctrl_text", "Text visible")
         ogCB_FilterCtrlText.OnEvent("Click", UpdateCtrlList)
         ogCB_FilterCtrlText.statusbar := "Filter on controls with text"
-        ogLV_CtrlList := oGuiControlList.AddListView("xm+4 y+7 r15 w" (myGui.Width-8*3)/2 " vCtrlList section AltSubmit", ["Class(NN)", "Hwnd", "Text", "Type", "X", "Y", "W", "H","Visible"])
+        ogLV_CtrlList := oGuiControlList.AddListView("xm+4 y+7 r15 w" (myGui.Width - 8 * 3) / 2 " vCtrlList section AltSubmit", _ := ["Class(NN)", "Hwnd", "Text", "Type", "X", "Y", "W", "H", "Visible"])
+        ogLV_CtrlList.columns := _
         ogLV_CtrlList.Opt("Count100 -Multi")
         ogLV_CtrlList.OnNotify(NM_CLICK, DClickCtrlList)
         ogLV_CtrlList.OnNotify(NM_DBLCLK, DClickCtrlList)
@@ -833,15 +837,15 @@ Gui_wInspector(*){
     SettingsMenu := Menu()
     SettingsMenu.Add("Options", Gui_Settings)
     SettingsMenu.Add()
-    SettingsMenu.Add("Resize", (ItemName, ItemPos, ItemMenu) => (ItemMenu.ToggleCheck(ItemName), oSet.WinResize:= !oSet.WinResize, oSet.WinResize ? myGui.Opt("+Resize") :  myGui.Opt("-Resize")))
-    oSet.WinResize=1 ? SettingsMenu.Check("Resize") : ""
-    SettingsMenu.Add("AlwaysOnTop", (ItemName, ItemPos, ItemMenu) => (ItemMenu.ToggleCheck(ItemName), oSet.WinAlwaysOnTop:= !oSet.WinAlwaysOnTop, oSet.WinAlwaysOnTop ? myGui.Opt("+AlwaysOnTop") :  myGui.Opt("-AlwaysOnTop")))
-    oSet.WinAlwaysOnTop=1 ? SettingsMenu.Check("AlwaysOnTop") : ""
-    SettingsMenu.Add("ID Hex", (ItemName, ItemPos, ItemMenu) => (ItemMenu.ToggleCheck(ItemName), oSet.IDHex:= !oSet.IDHex))
-    oSet.IDHex=1 ? SettingsMenu.Check("ID Hex") : ""
+    SettingsMenu.Add("Resize", (ItemName, ItemPos, ItemMenu) => (ItemMenu.ToggleCheck(ItemName), oSet.WinResize := !oSet.WinResize, oSet.WinResize ? myGui.Opt("+Resize") : myGui.Opt("-Resize")))
+    oSet.WinResize=1? SettingsMenu.Check("Resize") : ""
+    SettingsMenu.Add("AlwaysOnTop", (ItemName, ItemPos, ItemMenu) => (ItemMenu.ToggleCheck(ItemName), oSet.WinAlwaysOnTop := !oSet.WinAlwaysOnTop, oSet.WinAlwaysOnTop ? myGui.Opt("+AlwaysOnTop") : myGui.Opt("-AlwaysOnTop")))
+    oSet.WinAlwaysOnTop=1? SettingsMenu.Check("AlwaysOnTop") : ""
+    SettingsMenu.Add("ID Hex", (ItemName, ItemPos, ItemMenu) => (ItemMenu.ToggleCheck(ItemName), oSet.IDHex := !oSet.IDHex))
+    oSet.IDHex=1? SettingsMenu.Check("ID Hex") : ""
     SettingsMenu.Add()
-    SettingsMenu.Add("Highlight", (ItemName, ItemPos, ItemMenu) => (ItemMenu.ToggleCheck(ItemName), oSet.WinHighlight:= !oSet.WinHighlight))
-    oSet.WinHighlight=1 ? SettingsMenu.Check("Highlight") : ""
+    SettingsMenu.Add("Highlight", (ItemName, ItemPos, ItemMenu) => (ItemMenu.ToggleCheck(ItemName), oSet.WinHighlight := !oSet.WinHighlight))
+    oSet.WinHighlight=1? SettingsMenu.Check("Highlight") : ""
     SettingsMenu.Add()
     ControlMenu := Menu()
     ControlMenuItemFunc(ItemName, ItemPos, ItemMenu) {
@@ -849,7 +853,7 @@ Gui_wInspector(*){
         for , vItemName in ItemMenu[]
             ItemMenu.%ItemName = vItemName ? '' : 'Un'%Check(vItemName)
     }
-    for , ItemName in ControlMenu.__Item:=['hwnd','Text','ClassNN'] {
+    for , ItemName in ControlMenu.__Item := ['hwnd', 'Text', 'ClassNN'] {
         ControlMenu.Add(ItemName, ControlMenuItemFunc)
         ControlMenu.%oSet.ControlPar = ItemName ? '' : 'un'%Check(ItemName)
     }
@@ -885,15 +889,15 @@ Gui_wInspector(*){
     SettingsMenu.Add("Window", WindowMenu)
 
     HelpMenu := Menu()
-    HelpMenu.Add("Report Issue", (*)=>Run("https://github.com/dmtr99/wInspector/issues/new"))
-    HelpMenu.Add("Open Github", (*)=>Run("https://github.com/dmtr99/wInspector"))
+    HelpMenu.Add("Report Issue", (*) => Run("https://github.com/dmtr99/wInspector/issues/new"))
+    HelpMenu.Add("Open Github", (*) => Run("https://github.com/dmtr99/wInspector"))
     HelpMenu.Add()
-    HelpMenu.Add("About wInspector",(*)=>(Gui_About()))
+    HelpMenu.Add("About wInspector", (*) => (Gui_About()))
 
     Menus := MenuBar()
     Menus.Add("&Settings", SettingsMenu)
     Menus.Add("&Help", HelpMenu)
-    Menus.Add( "&Reload", (*) => (Gui_Close(MyGui), Reload()))
+    Menus.Add("&Reload", (*) => (Gui_Close(MyGui), Reload()))
     MyGui.MenuBar := Menus
 
     ; Toolbar
@@ -909,7 +913,7 @@ Gui_wInspector(*){
     oTbWindowList := oToolbar.Add("", "WindowList", (*) => (ToggleSection("WindowList")), "shell32.dll", 3)
     oTbControlList := oToolbar.Add("", "ControlList", (*) => (ToggleSection("ControlList")), "shell32.dll", 96)
 
-    for Section in ["Window","Control","Acc","Mouse","Function","ProcessList","WindowList","ControlList"]{
+    for Section in ["Window", "Control", "Acc", "Mouse", "Function", "ProcessList", "WindowList", "ControlList"] {
         oTb%Section%.Styles := "Check"
         SectionTitle := oGui%Section%.Title
         (oSet.Sect%SectionTitle% = 1 && oTb%Section%.States := "Checked")
@@ -922,10 +926,10 @@ Gui_wInspector(*){
     MyGui.OnEvent("Size", Gui_Size)
     MyGui.OnEvent("Close", Gui_Close)
 
-    Gui_Close(GuiObj){
+    Gui_Close(GuiObj) {
         ; Save the position of the window
-        GuiObj.GetPos(&X,&Y)
-        GuiObj.GetClientPos(,,&W,&H)
+        GuiObj.GetPos(&X, &Y)
+        GuiObj.GetClientPos(, , &W, &H)
         oSet.WinX := X
         oSet.WinY := Y
         oSet.WinW := W
@@ -936,7 +940,7 @@ Gui_wInspector(*){
         return true
     }
 
-    ControlGetPos( , , , &ToolbarHeight, oToolbar)
+    ControlGetPos(, , , &ToolbarHeight, oToolbar)
     for index, oSection in myGui.aSections {
         SectionTitle := oSection.Title
         ; Show the sections
@@ -948,8 +952,8 @@ Gui_wInspector(*){
     UpdateWinList()
 
     ; Correct coordinates to a visible position inside the screens
-    oSet.WinX := (oSet.WinX<0) ? 0 : (oSet.WinX+oSet.WinW>SysGet(78)) ? SysGet(78)-oSet.WinW : oSet.WinX
-    oSet.WinY := (oSet.WinY<0) ? 0 : (oSet.WinY+oSet.WinH>SysGet(79)) ? SysGet(79)-oSet.WinH : oSet.WinY
+    oSet.WinX := (oSet.WinX < 0) ? 0 : (oSet.WinX + oSet.WinW > SysGet(78)) ? SysGet(78) - oSet.WinW : oSet.WinX
+    oSet.WinY := (oSet.WinY < 0) ? 0 : (oSet.WinY + oSet.WinH > SysGet(79)) ? SysGet(79) - oSet.WinH : oSet.WinY
 
     MyGui.Show("x" oSet.WinX " y" oSet.WinY " w" oSet.WinW " h" oSet.WinH)
 
@@ -964,7 +968,7 @@ Gui_wInspector(*){
     OnMessage(WM_LBUTTONDOWN := 0x0201, CheckButtonClick)
     OnMessage(0x200, WM_MOUSEMOVE)
 
-    Gui_Settings(*){
+    Gui_Settings(*) {
         ; Gui to set the hotkey, other settings can be added.
         Hotkey(oSet.Hotkey, "Off")
         gSettings := Gui('+AlwaysOnTop', "Settings")
@@ -973,11 +977,11 @@ Gui_wInspector(*){
         Grp1 := gSettings.AddGroupBox("x10 y8", "Hotkey")
         BtnApply := gSettings.AddButton("x81 y73 w68 h23", "&Apply")
         BtnApply.OnEvent("Click", Click_BtnApply)
-        gSettings.OnEvent("Close", (*)=>(Hotkey(oSet.Hotkey, wInspector_Activate),Hotkey(oSet.Hotkey, "On")))
+        gSettings.OnEvent("Close", (*) => (Hotkey(oSet.Hotkey, wInspector_Activate), Hotkey(oSet.Hotkey, "On")))
         gSettings.Show()
         Return
 
-        Click_BtnApply(GuiObj,Info){
+        Click_BtnApply(GuiObj, Info) {
             oSet.Hotkey := ogHotKey.Value
             INI_File := Regexreplace(A_scriptName, "(.*)\..*", "$1.ini")
             IniWrite(oSet.Hotkey, INI_File, "MainGui", "Hotkey")
@@ -988,13 +992,13 @@ Gui_wInspector(*){
     }
 }
 
-~LButton::{
-    if (isSet(GuiBox) and !WinActive("wInspector")){
+~LButton:: {
+    if (isSet(GuiBox) and !WinActive("wInspector")) {
         GuiBox.hide()
     }
 }
 
-ToggleSection(SectionTitle){
+ToggleSection(SectionTitle) {
     oSet.Sect%SectionTitle% := !oSet.Sect%SectionTitle%
     oGui%SectionTitle%.Visible := oSet.Sect%SectionTitle%
     INI_File := Regexreplace(A_scriptName, "(.*)\..*", "$1.ini")
@@ -1005,7 +1009,7 @@ ToggleSection(SectionTitle){
     return
 }
 
-wInspector_Activate(ThisHotkey){
+wInspector_Activate(ThisHotkey) {
     MouseGetPos(&MouseX, &MouseY, &MouseWinHwnd, &MouseControlHwnd, 2)
 
     Gui_wInspector()
@@ -1019,31 +1023,31 @@ wInspector_Activate(ThisHotkey){
     return
 }
 
-CheckButtonClick(wParam :=0, lParam := 0, msg := 0, hwnd := 0){
+CheckButtonClick(wParam := 0, lParam := 0, msg := 0, hwnd := 0) {
     global MyGui
-    MouseGetPos(,,,&OutputVarControlHwnd, 2)
+    MouseGetPos(, , , &OutputVarControlHwnd, 2)
     MouseControlHwnd_Prev := OutputVarControlHwnd
     MouseX_Prev := -1
     MouseY_Prev := -1
     GuiBox := GuiRectangle()
 
-    if (ogButton_Selector.hwnd=OutputVarControlHwnd){
+    if (ogButton_Selector.hwnd = OutputVarControlHwnd) {
         ogButton_Selector.text := ""
         SetSystemCursor("Cross")
-        While(GetKeyState("LButton")){
+        While (GetKeyState("LButton")) {
             CoordMode("Mouse", ogDDL_MouseCoordMode.Text)
             MouseGetPos(&MouseX, &MouseY, &MouseWinHwnd, &MouseControlHwnd, 2)
             Sleep(100)
-            if (MouseControlHwnd_Prev != MouseControlHwnd and MouseControlHwnd!=""){
+            if (MouseControlHwnd_Prev != MouseControlHwnd and MouseControlHwnd != "") {
 
-                if oSet.WinHighlight{
+                if oSet.WinHighlight {
                     GuiBox.MoveToControl(MouseControlHwnd, MouseWinHwnd)
                     GuiBox.Show()
                 }
                 SetSelectedWindow(MouseWinHwnd)
                 SetSelectedControl(MouseControlHwnd)
             }
-            if (MouseX_Prev != MouseX or MouseY_Prev != MouseY){
+            if (MouseX_Prev != MouseX or MouseY_Prev != MouseY) {
                 SetSelectedMouse(MouseX, MouseY)
                 SetSelectedMouseGrid(MouseX, MouseY)
             }
@@ -1065,7 +1069,7 @@ CheckButtonClick(wParam :=0, lParam := 0, msg := 0, hwnd := 0){
         ogButton_Selector.text := "+"
         SetSystemCursor("Default")
         SetSelectedMouseGrid(MouseX, MouseY)
-        if (oGuiAcc.Visible){
+        if (oGuiAcc.Visible) {
             ; MsgBox("Text")
             oAccp := Acc.ObjectFromPoint(MouseX, MouseY)
             ogLV_AccProps.Delete()
@@ -1076,7 +1080,7 @@ CheckButtonClick(wParam :=0, lParam := 0, msg := 0, hwnd := 0){
             }
         }
 
-    } else if (ogPic_Grid.hwnd = OutputVarControlHwnd){
+    } else if (ogPic_Grid.hwnd = OutputVarControlHwnd) {
         ; Hide the cross and get the selected pixel
         ogText_Line1.visible := 0
         ogText_Line2.visible := 0
@@ -1086,7 +1090,7 @@ CheckButtonClick(wParam :=0, lParam := 0, msg := 0, hwnd := 0){
         CoordMode("Pixel", ogDDL_MouseCoordMode.Text)
         MouseGetPos(&MouseX, &MouseY, &MouseWinHwnd, &MouseControlHwnd, 2)
         A_Clipboard := PixelGetColor(MouseX, MouseY)
-        Tooltip2("Copied [" A_Clipboard "]")
+        Tooltip2(A_Clipboard)
         ogText_Line1.visible := 1
         ogText_Line2.visible := 1
         ogText_Line3.visible := 1
@@ -1102,8 +1106,17 @@ GetSelectedWindow(*) {
 
 SetSelectedWindow(win_id) {
     OutputDebug(A_ThisFunc '`n')
-    if !WinExist(Win_id) {
-        UpdateWinList()
+    if !Win_id := WinExist(Win_id || 0) {
+        ogEdit_wTitle.text := ''
+        ogEdit_wClass.text := ''
+        ogEdit_wID.text := ''
+        ogEdit_wProcess.text := ''
+        ogEdit_wPID.text := ''
+        oGuiWindow['Transparent'].value := 255
+        ogEdit_wXPos.value := ''
+        ogEdit_wYPos.value := ''
+        ogEdit_wWidth.value := ''
+        ogEdit_wHeight.value := ''
         return
     }
     ogEdit_wTitle.text := WinGetTitle(win_id)
@@ -1141,9 +1154,9 @@ SetSelectedWindow(win_id) {
     }
 }
 
-SetSelectedControl(ctrl_id){
+SetSelectedControl(ctrl_id) {
     OutputDebug(A_ThisFunc '`n')
-    if (ctrl_id=""){
+    if (!ctrl_id := WinExist(ctrl_id || 0)) {
         ogEdit_cText.value := ""
         ogEdit_cClass.value := ""
         ogEdit_cID.value := ""
@@ -1164,7 +1177,7 @@ SetSelectedControl(ctrl_id){
     ogEdit_cWidth.value := cW
     ogEdit_cHeight.value := cH
 
-    ogEdtControl.text := (oSet.ControlPar = "text" && ControlGetText(ctrl_id)!="") ? ControlGetText(ctrl_id) : (oSet.ControlPar = "hwnd") ? ctrl_id : ControlGetClassNN(ctrl_id)
+    ogEdtControl.text := (oSet.ControlPar = "text" && ControlGetText(ctrl_id) != "") ? ControlGetText(ctrl_id) : (oSet.ControlPar = "hwnd") ? ctrl_id : ControlGetClassNN(ctrl_id)
 }
 
 SetSelectedMouse(MouseX, MouseY) {
@@ -1176,12 +1189,12 @@ SetSelectedMouse(MouseX, MouseY) {
     ogText_mColor.Redraw()
 }
 
-SetSelectedMouseGrid(MouseX, MouseY){
+SetSelectedMouseGrid(MouseX, MouseY) {
     global oSet
     CoordMode("Mouse", "Screen")
     CoordMode("Pixel", "Screen")
     Grid := oGuiMouse.Grid
-    pBitmap := Gdip_BitmapFromScreen(MouseX - (Grid-1)/2 "|" MouseY -(Grid - 1) / 2 "|" Grid "|" Grid)
+    pBitmap := Gdip_BitmapFromScreen(MouseX - (Grid - 1) / 2 "|" MouseY - (Grid - 1) / 2 "|" Grid "|" Grid)
     hBitmap := Gdip_CreateHBITMAPFromBitmap(pBitmap)
 
     SetImage(ogPic_Grid.hwnd, hBitmap)
@@ -1191,7 +1204,7 @@ SetSelectedMouseGrid(MouseX, MouseY){
     ogText_Line2.Redraw()
     ogText_Line3.Redraw()
     ogText_Line4.Redraw()
-    if (oGuiMouse.Visible){
+    if (oGuiMouse.Visible) {
         oGuiMouse.Show("AutoSize")
     }
 
@@ -1207,7 +1220,7 @@ RClickAccList(LV, lParam) {
     Value := LV.GetText(rownumber, 2)
     myMenu := Menu()
     if (Value != "") {
-        myMenu.Add("Copy " Property, (*) => (A_Clipboard := Value, Tooltip2("Copied [" A_Clipboard "]")))
+        myMenu.Add("Copy " Property, (*) => (A_Clipboard := Value, Tooltip2(A_Clipboard)))
         myMenu.SetIcon("Copy " Property, "shell32.dll", 135)
     }
     myMenu.Show()
@@ -1223,27 +1236,39 @@ RClickProcessList(LV, lParam) {
         Tooltip2('Copied')
         return
     }
-    Process := LV.GetText(rownumber, 1)
-    Process_PID := LV.GetText(rownumber, 2)
-    Process_Path := LV.GetText(rownumber, 3)
 
     myMenu := Menu()
-    myMenu.Add("Copy Process", (*) => (A_Clipboard := Process, Tooltip2("Copied [" A_Clipboard "]")))
-    myMenu.SetIcon("Copy Process", "shell32.dll", 135)
-    myMenu.Add("Copy ProcessPath", (*) => (A_Clipboard := Process_Path, Tooltip2("Copied [" A_Clipboard "]")))
-    myMenu.SetIcon("Copy ProcessPath", "shell32.dll", 135)
-    myMenu.Add()
-    myMenu.Add("ProcessClose", (*) => (ProcessClose(Process_PID),UpdateProcessList(), Tooltip2("ProcessClose(" Process_PID ")")))
-    myMenu.SetIcon("ProcessClose", "shell32.dll", 132)
-    ; Disable the closing of known critical processes.
-    if (process~="i)NTOSKrnl.exe|SMSS.exe|CSRSS.exe|WinLogon.exe|WinInit.exe|LogonUI.exe|lsass.exe|Services.exe|svchost.exe|DWM.exe"){
-        myMenu.Disable("ProcessClose")
+    for i, v in LV.columns {
+        if '' = (LVTx := LV.GetText(rownumber, i)) ;|| v ~= '^(?:Visible|.)$'
+            continue
+        LVMenuItemFunc(LVTx, ItemName, ItemPos, ItemMenu) => (A_Clipboard := LVTx, Tooltip2(LVTx))
+        myMenu.Add(v, LVMenuItemFunc.Bind(LVTx))
+        myMenu.SetIcon(v, "shell32.dll", 135)
+    }
+
+    if ProcessExist(Process_PID := LV.GetText(rownumber, 2)) {
+        Process := LV.GetText(rownumber, 1)
+        ;Process_Path := LV.GetText(rownumber, 3)
+        ;myMenu.Add("Copy Process", (*) => (A_Clipboard := Process, Tooltip2(A_Clipboard)))
+        ;myMenu.SetIcon("Copy Process", "shell32.dll", 135)
+        ;myMenu.Add("Copy ProcessPath", (*) => (A_Clipboard := Process_Path, Tooltip2(A_Clipboard)))
+        ;myMenu.SetIcon("Copy ProcessPath", "shell32.dll", 135)
+        myMenu.Add()
+        myMenu.Add("Close", (*) => (ProcessClose(Process_PID), Tooltip2("ProcessClose(" Process_PID ")")))
+        myMenu.SetIcon("Close", "shell32.dll", 132)
+        ; Disable the closing of known critical processes.
+        if (process ~= "i)NTOSKrnl.exe|SMSS.exe|CSRSS.exe|WinLogon.exe|WinInit.exe|LogonUI.exe|lsass.exe|Services.exe|svchost.exe|DWM.exe") {
+            myMenu.Disable("Close")
+        }
+    } else {
+        myMenu.Add("Delete", (*) => LV.Delete(rownumber))
     }
     myMenu.Show()
 }
 
 RClickWinList(LV, lParam) {
     idFrom := NumGet(lParam + A_PtrSize, 0, "Int")
+    ;hwndFrom := NumGet(lParam, 0, "Int")
     rownumber := NumGet(lParam + (A_PtrSize * 3), 0, "Int") + 1
     if idFrom = 0 || rownumber = 0
         return
@@ -1253,34 +1278,39 @@ RClickWinList(LV, lParam) {
         return
     }
     win_hwnd := LV.GetText(RowNumber, 3) + 0
-
     myMenu := Menu()
-    myMenu.Add("Copy Title", (*) => (A_Clipboard := WinGetTitle(win_hwnd), Tooltip2("Copied [" A_Clipboard "]")))
-    myMenu.SetIcon("Copy Title", "shell32.dll", 135)
-    myMenu.Add("Copy Process", (*) => (A_Clipboard := WinGetProcessName(win_hwnd), Tooltip2("Copied [" A_Clipboard "]")))
-    myMenu.SetIcon("Copy Process", "shell32.dll", 135)
-    myMenu.Add("Copy ProcessPath", (*) => (A_Clipboard := WinGetProcessPath(win_hwnd), Tooltip2("Copied [" A_Clipboard "]")))
-    myMenu.SetIcon("Copy ProcessPath", "shell32.dll", 135)
-    myMenu.Add("Copy WinClass", (*) => (A_Clipboard := WinGetClass(win_hwnd), Tooltip2("Copied [" A_Clipboard "]")))
-    myMenu.SetIcon("Copy WinClass", "shell32.dll", 135)
-    myMenu.Add("Styles", (*) => (GuiStyles_Create(win_hwnd, "Window")))
-    myMenu.Add("Acc Viewer", (*) => (GuiAccViewer(win_hwnd)))
-    myMenu.SetIcon("Acc Viewer", "shell32.dll", 85)
-    myMenu.Add()
-    myMenu.Add("Activate", (*) => (WinActivate(win_hwnd), Tooltip2("WinActivate(" win_hwnd ")")))
-    State_AlwaysOnTop := WinGetExStyle(win_hwnd) & 0x8
-    myMenu.Add("AlwaysOnTop", (*) => (WinSetAlwaysOnTop(!State_AlwaysOnTop, win_hwnd), WinMoveTop(MyGui)))
-    myMenu.%State_AlwaysOnTop ? '' : 'un'%Check("AlwaysOnTop")
-
-    if (WinGetStyle(win_hwnd) & 0x10000000) {
-        myMenu.Add("Visible", (*) => (WinHide(win_hwnd), UpdateWinList(), Tooltip2("WinHide(" win_hwnd ")")))
-        myMenu.Check("Visible")
-    } else {
-        myMenu.Add("Visible", (*) => (WinShow(win_hwnd), UpdateWinList(), Tooltip2("WinHide(" win_hwnd ")")))
+    for i, v in LV.columns {
+        if '' = (LVTx := LV.GetText(rownumber, i)) || v ~= '^(?:Visible|.)$'
+            continue
+        LVMenuItemFunc(LVTx, ItemName, ItemPos, ItemMenu) => (A_Clipboard := LVTx, Tooltip2(LVTx))
+        myMenu.Add(v, LVMenuItemFunc.Bind(LVTx))
+        myMenu.SetIcon(v, "shell32.dll", 135)
     }
-    myMenu.Add("Close", (*) => (WinClose(win_hwnd), UpdateWinList(), Tooltip2("WinClose(" win_hwnd ")")))
-    myMenu.SetIcon("Close", "shell32.dll", 132)
-    ; myMenu.Add("GetPID", (*) => (Tooltip2(WinGetPID(win_hwnd))))
+    if WinExist(win_hwnd) {
+        ;myMenu.Add("Copy Title", (*) => (A_Clipboard := WinGetTitle(win_hwnd), Tooltip2(A_Clipboard)))
+        ;myMenu.SetIcon("Copy Title", "shell32.dll", 135)
+        ;myMenu.Add("Copy Process", (*) => (A_Clipboard := WinGetProcessName(win_hwnd), Tooltip2(A_Clipboard)))
+        ;myMenu.SetIcon("Copy Process", "shell32.dll", 135)
+        myMenu.Add("ProcessPath", (*) => (A_Clipboard := WinGetProcessPath(win_hwnd), Tooltip2(A_Clipboard)))
+        myMenu.SetIcon("ProcessPath", "shell32.dll", 135)
+        ;myMenu.Add("Copy WinClass", (*) => (A_Clipboard := WinGetClass(win_hwnd), Tooltip2(A_Clipboard)))
+        ;myMenu.SetIcon("Copy WinClass", "shell32.dll", 135)
+        myMenu.Add("Styles", (*) => (GuiStyles_Create(win_hwnd, "Window")))
+        myMenu.Add("Acc Viewer", (*) => (GuiAccViewer(win_hwnd)))
+        myMenu.SetIcon("Acc Viewer", "shell32.dll", 85)
+        myMenu.Add()
+        myMenu.Add("Activate", (*) => (WinActivate(win_hwnd), Tooltip2("WinActivate(" win_hwnd ")")))
+        State_AlwaysOnTop := WinGetExStyle(win_hwnd) & 0x8
+        myMenu.Add("AlwaysOnTop", (*) => (WinSetAlwaysOnTop(!State_AlwaysOnTop, win_hwnd), WinMoveTop(MyGui)))
+        myMenu.%State_AlwaysOnTop ? '' : 'un'%Check("AlwaysOnTop")
+        myMenu.Add("Visible", (ItemName, *) => (Win%(vs := !(WinGetStyle(win_hwnd) & 0x10000000)) ? 'Show' : 'Hide'%(win_hwnd), ModifyLVcolumns(LV, rownumber, ItemName, vs), Tooltip2("Win" (vs ? "Show" : "Hide") "(" win_hwnd ")")))
+        myMenu.%WinGetStyle(win_hwnd) & 0x10000000 ? '' : 'Un'%Check("Visible")
+        myMenu.Add("Close", (*) => (WinClose(win_hwnd), Tooltip2("WinClose(" win_hwnd ")")))
+        myMenu.SetIcon("Close", "shell32.dll", 132)
+        ; myMenu.Add("GetPID", (*) => (Tooltip2(WinGetPID(win_hwnd))))
+    } else {
+        myMenu.Add("Delete", (*) => LV.Delete(rownumber))
+    }
 
     myMenu.Show()
 }
@@ -1296,38 +1326,56 @@ RClickCtrlList(LV, lParam) {
         return
     }
     ctrl_hwnd := LV.GetText(rownumber, 2) + 0
-    ctrl_ClassNN := ControlGetClassNN(ctrl_hwnd + 0)
-    Ctrl_Visible := ControlGetVisible(ctrl_hwnd + 0)
-    Ctrl_Enabled := ControlGetEnabled(ctrl_hwnd + 0)
-    ObjectType := ControlGetType(ctrl_hwnd + 0)
-    win_hwnd := MyGui.win_hwnd + 0
+
     myMenu := Menu()
-    myMenu.Add("Copy Text", (*) => (A_Clipboard := ControlGetText(ctrl_hwnd + 0), Tooltip2("Copied [" A_Clipboard "]")))
-    myMenu.SetIcon("Copy Text", "shell32.dll", 135)
-    myMenu.Add("Copy ClassNN", (*) => (A_Clipboard := ControlGetClassNN(ctrl_hwnd + 0), Tooltip2("Copied [" A_Clipboard "]")))
-    myMenu.SetIcon("Copy ClassNN", "shell32.dll", 135)
-    if (InStr(ctrl_ClassNN, "Listview")) {
-        myMenu.Add("Copy ListViewGetContent", (*) => (A_Clipboard := ListViewGetContent(, ctrl_hwnd + 0), Tooltip2("Copied [" A_Clipboard "]")))
+    for i, v in LV.columns {
+        if '' = (LVTx := LV.GetText(rownumber, i)) || v ~= '^(?:Visible|.)$'
+            continue
+        LVMenuItemFunc(LVTx, ItemName, ItemPos, ItemMenu) => (A_Clipboard := LVTx, Tooltip2(LVTx))
+        myMenu.Add(v, LVMenuItemFunc.Bind(LVTx))
+        myMenu.SetIcon(v, "shell32.dll", 135)
     }
-    myMenu.Add("Styles", (*) => (GuiStyles_Create(ctrl_hwnd, ObjectType)))
-    myMenu.Add("Acc Viewer", (*) => (GuiAccViewer(win_hwnd, ctrl_hwnd)))
-    myMenu.SetIcon("Acc Viewer", "shell32.dll", 85)
-    myMenu.Add()
-    myMenu.Add("SendMessage", (*) => (SendMessage(0x0115, 0, 0, ctrl_hwnd)))
-    myMenu.Add("ControlClick", (*) => (ControlClick(ctrl_hwnd), Tooltip2("ControlClick(" ctrl_hwnd ")")))
-    myMenu.SetIcon("ControlClick", "shell32.dll", 101)
-    myMenu.Add("ControlFocus", (*) => (ControlFocus(ctrl_hwnd), Tooltip2("ControlFocus(" ctrl_hwnd ")")))
-    if (Ctrl_Visible) {
-        myMenu.Add("Visible", (*) => (ControlHide(ctrl_hwnd), Tooltip2("ControlHide(" ctrl_hwnd ")")))
-        myMenu.Check("Visible")
+
+    if WinExist(ctrl_hwnd) {
+        ctrl_ClassNN := ControlGetClassNN(ctrl_hwnd)
+        Ctrl_Visible := ControlGetVisible(ctrl_hwnd)
+        Ctrl_Enabled := ControlGetEnabled(ctrl_hwnd)
+        ObjectType := ControlGetType(ctrl_hwnd)
+        ;myMenu.Add("Copy Text", (*) => (A_Clipboard := ControlGetText(ctrl_hwnd + 0), Tooltip2(A_Clipboard)))
+        ;myMenu.SetIcon("Copy Text", "shell32.dll", 135)
+        ;myMenu.Add("Copy ClassNN", (*) => (A_Clipboard := ControlGetClassNN(ctrl_hwnd + 0), Tooltip2(A_Clipboard)))
+        ;myMenu.SetIcon("Copy ClassNN", "shell32.dll", 135)
+        if (InStr(ctrl_ClassNN, "Listview")) {
+            myMenu.Add("ListViewGetContent", (*) => (A_Clipboard := ListViewGetContent(, ctrl_hwnd), Tooltip2(A_Clipboard)))
+            myMenu.SetIcon("ListViewGetContent", "shell32.dll", 135)
+        }
+        myMenu.Add("Styles", (*) => (GuiStyles_Create(ctrl_hwnd, ObjectType)))
+        win_hwnd := Number(MyGui.win_hwnd)
+        myMenu.Add("Acc Viewer", (*) => (GuiAccViewer(win_hwnd, ctrl_hwnd)))
+        myMenu.SetIcon("Acc Viewer", "shell32.dll", 85)
+        myMenu.Add()
+        myMenu.Add("SendMessage", (*) => (SendMessage(0x0115, 0, 0, ctrl_hwnd)))
+        myMenu.Add("ControlClick", (*) => (ControlClick(ctrl_hwnd), Tooltip2("ControlClick(" ctrl_hwnd ")")))
+        myMenu.SetIcon("ControlClick", "shell32.dll", 101)
+        myMenu.Add("ControlFocus", (*) => (ControlFocus(ctrl_hwnd), Tooltip2("ControlFocus(" ctrl_hwnd ")")))
+
+        myMenu.Add("Visible", (ItemName, *) => (Control%(vs := !ControlGetVisible(ctrl_hwnd)) ? 'Show' : 'Hide'%(ctrl_hwnd), ModifyLVcolumns(LV, rownumber, ItemName, vs), Tooltip2("Control" (vs ? "Show" : "Hide") "(" ctrl_hwnd ")")))
+        myMenu.%Ctrl_Visible ? '' : 'Un'%Check("Visible")
+
+        myMenu.Add("Enabled", (*) => (ControlSetEnabled(-1, ctrl_hwnd), Tooltip2("ControlSetEnabled(-1," ctrl_hwnd ")")))
+        myMenu.%Ctrl_Enabled ? '' : 'Un'%Check("Enabled")
     } else {
-        myMenu.Add("Visible", (*) => (ControlShow(ctrl_hwnd), Tooltip2("ControlShow(" ctrl_hwnd ")")))
+        myMenu.Add("Delete", (*) => LV.Delete(rownumber))
     }
-    myMenu.Add("Enabled", (*) => (ControlSetEnabled(-1, ctrl_hwnd), Tooltip2("ControlSetEnabled(-1," ctrl_hwnd ")")))
-    if (Ctrl_Enabled) {
-        myMenu.Check("Enabled")
-    }
+
     myMenu.Show()
+}
+
+ModifyLVcolumns(LV, rownumber, name, value?) {
+    for i, v in LV.columns {
+        if IsSet(v) && v = name
+            return IsSet(value) ? LV.Modify(rownumber, 'Col' i, value) : i
+    }
 }
 
 DClickProcessList(LV, RowNumber) {
@@ -1335,6 +1383,12 @@ DClickProcessList(LV, RowNumber) {
         return
     }
     MyGui.PID := LV.GetText(RowNumber, 2) + 0
+
+    if !ProcessExist(MyGui.PID) {
+        ;LV.Delete(rownumber)
+        return
+    }
+
     if (ogCB_FilterWinPID.value = 1) {
         UpdateWinList()
     }
@@ -1351,15 +1405,17 @@ DClickWinList(LV, lParam) {
 
     MyGui.win_hwnd := LV.GetText(RowNumber, 3) + 0
 
+    if !WinExist(MyGui.win_hwnd) {
+        (IsSet(GuiBox) && WinExist(GuiBox) && GuiBox.Hide())
+        ;LV.Delete(rownumber)
+        ;UpdateProcessList()
+        UpdateCtrlList()
+        SetSelectedWindow(MyGui.win_hwnd := '')
+        return
+    }
+
     switch code := NumGet(lParam + A_PtrSize * 2, 0, "Int") {
         case -2:
-            if !WinExist(MyGui.win_hwnd) {
-                (IsSet(GuiBox) && WinExist(GuiBox) && GuiBox.Hide())
-                UpdateWinList()
-                UpdateProcessList()
-                UpdateCtrlList()
-                return
-            }
             winPID := MyGui.win_hwnd != 0 and WinExist(MyGui.win_hwnd) ? WinGetPID(MyGui.win_hwnd) : 0
             Loop ogLV_ProcessList.GetCount() {
                 rowPID := ogLV_ProcessList.GetText(A_Index, 2)
@@ -1393,17 +1449,24 @@ DClickCtrlList(LV, lParam) {
     if idFrom = 0 || rownumber = 0
         return
 
-    MyGui.ctrl_hwnd := Hwnd_selected := LV.GetText(RowNumber, 2) + 0 ; convert to number
+    MyGui.ctrl_hwnd := LV.GetText(RowNumber, 2) + 0 ; convert to number
+
+    if !WinExist(MyGui.ctrl_hwnd) {
+        (IsSet(GuiBox) && WinExist(GuiBox) && GuiBox.Hide())
+        ;LV.Delete(rownumber)
+        SetSelectedControl(MyGui.ctrl_hwnd := '')
+        return
+    }
 
     switch code := NumGet(lParam + A_PtrSize * 2, 0, "Int") {
         case -2:
-            ;text := ControlGetText(Hwnd_selected)
-            SetSelectedControl(Hwnd_selected)
+            ;text := ControlGetText(MyGui.ctrl_hwnd)
+            SetSelectedControl(MyGui.ctrl_hwnd)
         case -3:
             win_hwnd := MyGui.win_hwnd + 0
             if oSet.WinHighlight {
                 GuiBox := GuiRectangle()
-                GuiBox.MoveToControl(Hwnd_selected, win_hwnd)
+                GuiBox.MoveToControl(MyGui.ctrl_hwnd, win_hwnd)
                 ;GuiBox.Opt("+Owner" win_hwnd)
                 GuiBox.Show()
             }
@@ -1411,7 +1474,7 @@ DClickCtrlList(LV, lParam) {
             if oSet.WinHighlight
                 WinMoveTop(GuiBox)
             ;WinMoveTop(win_hwnd)
-            ControlFocus(Hwnd_selected)
+            ControlFocus(MyGui.ctrl_hwnd)
     }
 }
 
@@ -1425,23 +1488,23 @@ CopyLVITEMText(LV, lParam) {
     Tooltip2('Copied')
 }
 
-SectionCorrections(){
-    myGui.GetPos(&xWin,&yWin,&wWin,&hWin)
+SectionCorrections() {
+    myGui.GetPos(&xWin, &yWin, &wWin, &hWin)
     WinGetClientPos(&XcmyGui, &YcmyGui, &WcmyGui, &HcmyGui, myGui)
     ScreenScale := A_ScreenDPI / 96
-    HcmyGui := HcmyGui/ScreenScale
-    WcmyGui := WcmyGui/ScreenScale
-    if (oSet.SectWindowList|oSet.SectControlList){
+    HcmyGui := HcmyGui / ScreenScale
+    WcmyGui := WcmyGui / ScreenScale
+    if (oSet.SectWindowList | oSet.SectControlList) {
         oGuiProcessList.BottomDistance := ""
         ogGBProcessList.BottomMargin := 2
         ogLV_ProcessList.BottomMargin := 8
-    } else{
+    } else {
         oGuiProcessList.BottomDistance := 24
         ogGBProcessList.BottomMargin := 24
         ogLV_ProcessList.BottomMargin := 28
         oGuiProcessList.HeigthMultiplier := ""
     }
-    if (oSet.SectControlList){
+    if (oSet.SectControlList) {
         oGuiWindowList.BottomDistance := ""
         ogGBWinList.BottomMargin := 2
         ogLV_WinList.BottomMargin := 8
@@ -1451,27 +1514,27 @@ SectionCorrections(){
         ogLV_WinList.BottomMargin := 28
         oGuiWindowList.HeigthMultiplier := ""
     }
-    if (oSet.SectProcessList && oSet.SectWindowList && oSet.SectControlList){
-        ControlMove(, , ,HcmyGui/3,oGuiProcessList)
-        ControlMove(, , ,HcmyGui/3,oGuiWindowList)
+    if (oSet.SectProcessList && oSet.SectWindowList && oSet.SectControlList) {
+        ControlMove(, , , HcmyGui / 3, oGuiProcessList)
+        ControlMove(, , , HcmyGui / 3, oGuiWindowList)
         ; oGuiProcessList.move(,,,HcmyGui/3)
         ; oGuiWindowList.move(,,,HcmyGui/3)
         oGuiProcessList.HeigthMultiplier := 0.3
         oGuiWindowList.HeigthMultiplier := 0.3
 
-    } else if (!oSet.SectProcessList && oSet.SectWindowList && oSet.SectControlList){
-        oGuiWindowList.move(,,,HcmyGui/2)
+    } else if (!oSet.SectProcessList && oSet.SectWindowList && oSet.SectControlList) {
+        oGuiWindowList.move(, , , HcmyGui / 2)
         oGuiWindowList.HeigthMultiplier := 0.4
-    } else if (oSet.SectProcessList && (oSet.SectWindowList | oSet.SectControlList)){
-        oGuiProcessList.move(,,,HcmyGui/2)
+    } else if (oSet.SectProcessList && (oSet.SectWindowList | oSet.SectControlList)) {
+        oGuiProcessList.move(, , , HcmyGui / 2)
         oGuiProcessList.HeigthMultiplier := 0.4
     }
-    if((oSet.SectProcessList | oSet.SectWindowList | oSet.SectControlList) and wWin <700){
-        MyGui.move(,,700)
+    if ((oSet.SectProcessList | oSet.SectWindowList | oSet.SectControlList) and wWin < 700) {
+        MyGui.move(, , 700)
     }
 
-    if (!oSet.SectWindowList && !oSet.SectControlList  && !oSet.SectProcessList){
-        MyGui.move(,,320)
+    if (!oSet.SectWindowList && !oSet.SectControlList && !oSet.SectProcessList) {
+        MyGui.move(, , 320)
     }
     GroupBoxAutosize(ogGB_Acc)
     GroupBoxAutosize(ogGB_Mouse)
@@ -1482,7 +1545,7 @@ SectionCorrections(){
     WinRedraw(myGui)
 }
 
-Gui_Autosize(){
+Gui_Autosize() {
     WinGetPos(&XmyGui, &YmyGui, &WmyGui, &HmyGui, myGui)
     maxHeight := 0
     For Hwnd, ogSection in myGui.aSections {
@@ -1495,39 +1558,39 @@ Gui_Autosize(){
     MyGui.move(, , , maxHeight)
 }
 
-UpdateProcessList(p*){
+UpdateProcessList(p*) {
     ogLV_ProcessList.Delete()
 
     ogLV_ProcessList.Opt("-Redraw")
     oProcessList := ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Process")
 
-    winPID := MyGui.win_hwnd !=0 and WinExist("ahk_id" MyGui.win_hwnd) ? WinGetPID("ahk_id" MyGui.win_hwnd) : 0
-    index:=0
-    for oProcess in oProcessList{
+    winPID := MyGui.win_hwnd != 0 and WinExist("ahk_id" MyGui.win_hwnd) ? WinGetPID("ahk_id" MyGui.win_hwnd) : 0
+    index := 0
+    for oProcess in oProcessList {
         index++
     }
-    static ImageProcessList := IL_Create(index+1)
+    static ImageProcessList := IL_Create(index + 1)
     static mapIL := Map()
     ogLV_ProcessList.SetImageList(ImageProcessList)
     IconIndex1 := IL_Add(ImageProcessList, "shell32.dll", 50) ; add empty image
     for oProcess in oProcessList
     {
 
-        if (ogEdit_Process_search.value="" or InStrSuffled(oProcess.Name oProcess.ExecutablePath,ogEdit_Process_search.value)){
-            if (mapIL.Has(oProcess.Name)){
+        if (ogEdit_Process_search.value = "" or InStrSuffled(oProcess.Name oProcess.ExecutablePath, ogEdit_Process_search.value)) {
+            if (mapIL.Has(oProcess.Name)) {
                 IconIndex := mapIL[oProcess.Name]
-            } else{
+            } else {
                 ;ProcessHIcon := WinGetHIcon(oProcess.Handle)
                 if (oProcess.ExecutablePath = "") {
                     mapIL[oProcess.Name] := 1
-                } else{
+                } else {
                     mapIL[oProcess.Name] := IL_Add(ImageProcessList, oProcess.ExecutablePath)
                 }
             }
 
             ; NewRowNumber :=ogLV_ProcessList.Add("Icon" mapIL[oProcess.Name], win_title, win_process, format("{:#x}", win_id), win_visible, win_x, win_y, win_w, win_h)
-            NewRowNumber :=ogLV_ProcessList.Add("Icon" mapIL[oProcess.Name], oProcess.Name, oSet.IDHex ? format("{:#x}", oProcess.Handle) : oProcess.Handle, oProcess.ExecutablePath)
-            if(oProcess.Handle = winPID){
+            NewRowNumber := ogLV_ProcessList.Add("Icon" mapIL[oProcess.Name], oProcess.Name, oSet.IDHex ? format("{:#x}", oProcess.Handle) : oProcess.Handle, oProcess.ExecutablePath)
+            if (oProcess.Handle = winPID) {
                 ogLV_ProcessList.Modify(NewRowNumber, "Select Vis")
             }
         }
@@ -1538,7 +1601,7 @@ UpdateProcessList(p*){
     ogLV_ProcessList.Opt("+Redraw")
 }
 
-UpdateWinList(p*){
+UpdateWinList(p*) {
     ogLV_WinList.Delete()
     if (ogCB_FilterWinVisible.value = 0) {
         DetectHiddenWindows(true)
@@ -1562,28 +1625,28 @@ UpdateWinList(p*){
         WinGetClientPos(&win_x, &win_y, &win_w, &win_h, win_id)
 
         win_visible := WinGetStyle(win_id) & 0x10000000 ? "Visible" : "Hidden"
-        if (ogCB_FilterWinTitle.value=1 and win_title=""){
+        if (ogCB_FilterWinTitle.value = 1 and win_title = "") {
             continue
         }
-        if (ogCB_FilterWinPID.value=1 and MyGui.PID != "" and MyGui.PID != win_PID+0){
+        if (ogCB_FilterWinPID.value = 1 and Number(MyGui.PID) != Number(win_PID)) {
             continue
         }
-        if (ogEdit_win_search.value="" or InStrSuffled(win_title " " win_process " " (oSet.IDHex ? format("{:#x}", win_PID) : win_PID),ogEdit_win_search.value)){
-            if (mapIL.Has(win_id)){
+        if (ogEdit_win_search.value = "" or InStrSuffled(win_title " " win_process " " (oSet.IDHex ? format("{:#x}", win_PID) : win_PID), ogEdit_win_search.value)) {
+            if (mapIL.Has(win_id)) {
                 IconIndex := mapIL[win_id]
-            } else{
+            } else {
                 WinHIcon := WinGetHIcon(win_id)
                 if (WinHIcon != 0) {
                     mapIL[win_id] := IL_Add(ImageWinList, "HICON:" WinHIcon)
-                } else{
+                } else {
                     ProcessPath := ""
                     try ProcessPath := WinGetProcessPath(win_id)
                     mapIL[win_id] := IL_Add(ImageWinList, ProcessPath)
                 }
             }
 
-            NewRowNumber :=ogLV_WinList.Add("Icon" mapIL[win_id], win_title, win_process, oSet.IDHex ? format("{:#x}", win_id) : win_id, win_visible, win_x, win_y, win_w, win_h, win_class)
-            if(win_id = MyGui.win_hwnd){
+            NewRowNumber := ogLV_WinList.Add("Icon" mapIL[win_id], win_title, win_process, oSet.IDHex ? format("{:#x}", win_id) : win_id, win_visible, win_x, win_y, win_w, win_h, win_class)
+            if (win_id = MyGui.win_hwnd) {
                 ogLV_WinList.Modify(NewRowNumber, "Select Vis")
             }
         }
@@ -1598,7 +1661,7 @@ UpdateWinList(p*){
 
 }
 
-UpdateCtrlList(*){
+UpdateCtrlList(*) {
     ;IconLib
     ogLV_CtrlList.Delete()
     ogLV_CtrlList.SetImageList(ImageCtrlList)
@@ -1606,9 +1669,9 @@ UpdateCtrlList(*){
     win_hwnd := MyGui.win_hwnd + 0
     ogLV_CtrlList.Opt("-Redraw")
     selectedCtrl_hwnd := MyGui.ctrl_hwnd
-    if WinExist(win_hwnd){
-        for n, ctrl_hwnd in WinGetControlsHwnd(win_hwnd){
-            if (A_Index=1){
+    if WinExist(win_hwnd) {
+        for n, ctrl_hwnd in WinGetControlsHwnd(win_hwnd) {
+            if (A_Index = 1) {
                 Hwnd_selected := ctrl_hwnd
             }
             ctrl_text := ControlGetText(ctrl_hwnd)
@@ -1623,12 +1686,12 @@ UpdateCtrlList(*){
             ctrl_Type := ControlGetType(ctrl_hwnd)
 
             ctrl_Visible := ControlGetVisible(ctrl_hwnd)
-            if ((ogCB_FilterCtrlText.value = 1 and ctrl_text = "") or (ogCB_FilterCtrlVisible.value = 1 and !ctrl_Visible)){
-                 continue
+            if ((ogCB_FilterCtrlText.value = 1 and ctrl_text = "") or (ogCB_FilterCtrlVisible.value = 1 and !ctrl_Visible)) {
+                continue
             }
-            if (ogEdit_ctrl_search.value="" or InStrSuffled(ctrl_ClassNN " " ctrl_hwnd " " ctrl_text,ogEdit_ctrl_search.value)){
-                NewRowNumber:= ogLV_CtrlList.Add((mILControls.Has(ctrl_Type) ? "Icon" mILControls[ctrl_Type] : "" ) , ctrl_ClassNN, oSet.IDHex ? format("{:#x}", ctrl_hwnd) : ctrl_hwnd, ctrl_text, ctrl_Type, ctrl_x, ctrl_y, ctrl_w, ctrl_h, ctrl_Visible ? "Visible" : "Hidden")
-                if (selectedCtrl_hwnd=ctrl_hwnd){
+            if (ogEdit_ctrl_search.value = "" or InStrSuffled(ctrl_ClassNN " " ctrl_hwnd " " ctrl_text, ogEdit_ctrl_search.value)) {
+                NewRowNumber := ogLV_CtrlList.Add((mILControls.Has(ctrl_Type) ? "Icon" mILControls[ctrl_Type] : ""), ctrl_ClassNN, oSet.IDHex ? format("{:#x}", ctrl_hwnd) : ctrl_hwnd, ctrl_text, ctrl_Type, ctrl_x, ctrl_y, ctrl_w, ctrl_h, ctrl_Visible ? "Visible" : "Hidden")
+                if (selectedCtrl_hwnd = ctrl_hwnd) {
                     ogLV_CtrlList.Modify(NewRowNumber, "Select Vis")
                 }
             }
@@ -1637,25 +1700,25 @@ UpdateCtrlList(*){
     ;
     ;SetSelectedControl(isSet(Hwnd_selected) ? Hwnd_selected : "")
     ogLV_CtrlList.ModifyCol()
-    ogLV_CtrlList.ModifyCol(3,200)
+    ogLV_CtrlList.ModifyCol(3, 200)
     ogLV_CtrlList.Opt("+Redraw")
 }
 
-GridSize_Change(*){
-    global oSet,oSettings
+GridSize_Change(*) {
+    global oSet, oSettings
     mGrid := [0, 3, 5, 9, 15]
     oGuiMouse.Grid := mGrid[ogDDL_GridSize.value]
-    oSet.MouseGrid := (oGuiMouse.Grid=0) ? 1 : oGuiMouse.Grid
-    ogPic_Grid.Move(,,oGuiMouse.Grid * 16, oGuiMouse.Grid * 16)
-    ogPic_Grid.GetPos(&cx,&cy,&cw,&ch)
-    ogText_Line1.Move(cx+ (oGuiMouse.Grid - 1) * 16 / 2, cy+1 ,1, oGuiMouse.Grid * 16 - 2 )
-    ogText_Line2.Move(cx+ (oGuiMouse.Grid + 1) * 16 / 2, cy+1, 1, oGuiMouse.Grid * 16 - 2 )
-    ogText_Line3.Move(cx+1, cy+ (oGuiMouse.Grid - 1) * 16 / 2, oGuiMouse.Grid * 16 - 2 )
-    ogText_Line4.Move(cx+1, cy+ (oGuiMouse.Grid + 1) * 16 / 2, oGuiMouse.Grid * 16 - 2)
-    aControls := [ogPic_Grid,ogText_Line1,ogText_Line2,ogText_Line3,ogText_Line4]
+    oSet.MouseGrid := (oGuiMouse.Grid = 0) ? 1 : oGuiMouse.Grid
+    ogPic_Grid.Move(, , oGuiMouse.Grid * 16, oGuiMouse.Grid * 16)
+    ogPic_Grid.GetPos(&cx, &cy, &cw, &ch)
+    ogText_Line1.Move(cx + (oGuiMouse.Grid - 1) * 16 / 2, cy + 1, 1, oGuiMouse.Grid * 16 - 2)
+    ogText_Line2.Move(cx + (oGuiMouse.Grid + 1) * 16 / 2, cy + 1, 1, oGuiMouse.Grid * 16 - 2)
+    ogText_Line3.Move(cx + 1, cy + (oGuiMouse.Grid - 1) * 16 / 2, oGuiMouse.Grid * 16 - 2)
+    ogText_Line4.Move(cx + 1, cy + (oGuiMouse.Grid + 1) * 16 / 2, oGuiMouse.Grid * 16 - 2)
+    aControls := [ogPic_Grid, ogText_Line1, ogText_Line2, ogText_Line3, ogText_Line4]
     oSettings.MainGui := oSet
     WriteINI(&oSettings)
-    for oControl in aControls{
+    for oControl in aControls {
         oControl.visible := (oGuiMouse.Grid = 0) ? false : true
     }
     GroupBoxAutosize(ogGB_Mouse)
@@ -1665,7 +1728,7 @@ GridSize_Change(*){
 
 
 ; Updates the visibility and position of the sections of the gui
-GuiUpdate(*){
+GuiUpdate(*) {
     WinGetPos(&XmyGui, &YmyGui, &WmyGui, &HmyGui, myGui)
     WinGetClientPos(&XcmyGui, &YcmyGui, &WcmyGui, &HcmyGui, myGui)
     wMax := 0
@@ -1673,22 +1736,22 @@ GuiUpdate(*){
     For Hwnd, ogSection in myGui.aSections
     {
         ogSection.replacement := ""
-        if (ogSection.HasProp("posRef")){
+        if (ogSection.HasProp("posRef")) {
             posRule := ogSection.posRule
             GuiRef := ogSection.posRef
-            loop{
-                if GuiRef.Visible{
+            loop {
+                if GuiRef.Visible {
                     WinGetPos(&X2, &Y2, &W2, &H2, GuiRef)
                     break
-                } else if(GuiRef.HasProp("replacement")){
-                    if (GuiRef.replacement = ""){
+                } else if (GuiRef.HasProp("replacement")) {
+                    if (GuiRef.replacement = "") {
                         WinGetPos(&X2, &Y2, &W2, &H2, GuiRef)
                         posRule := "Xx Yy"
                         GuiRef.Replacement := ogSection
                         break
                     }
                     GuiRef := GuiRef.replacement
-                } else if(GuiRef.HasProp("posRef")){
+                } else if (GuiRef.HasProp("posRef")) {
                     posRule := GuiRef.posRule
                     GuiRef := GuiRef.posRef
                 } else {
@@ -1699,65 +1762,65 @@ GuiUpdate(*){
                 }
             }
             ScreenScale := A_ScreenDPI / 96
-            if (posRule = "Xx Yyh Ww"){
-                ogSection.move((X2 - XcmyGui)/ScreenScale, (H2 + Y2 - YcmyGui)/ScreenScale,W2/ScreenScale)
-            } else if (posRule = "Xxw Yy"){
-                ogSection.move((X2 - XcmyGui+W2)/ScreenScale, (Y2 - YcmyGui)/ScreenScale)
-            } else if (posRule = "Xx Yy"){
-                ogSection.move((X2 - XcmyGui)/ScreenScale, (Y2 - YcmyGui)/ScreenScale)
+            if (posRule = "Xx Yyh Ww") {
+                ogSection.move((X2 - XcmyGui) / ScreenScale, (H2 + Y2 - YcmyGui) / ScreenScale, W2 / ScreenScale)
+            } else if (posRule = "Xxw Yy") {
+                ogSection.move((X2 - XcmyGui + W2) / ScreenScale, (Y2 - YcmyGui) / ScreenScale)
+            } else if (posRule = "Xx Yy") {
+                ogSection.move((X2 - XcmyGui) / ScreenScale, (Y2 - YcmyGui) / ScreenScale)
             }
 
         }
-        if (ogSection.Visible){
+        if (ogSection.Visible) {
             WinGetClientPos(&x, &y, &w, &h, ogSection)
-            wMax := Max(wMax,x+w-XcmyGui)
-            hMax := Max(hMax,y+h-YcmyGui)
+            wMax := Max(wMax, x + w - XcmyGui)
+            hMax := Max(hMax, y + h - YcmyGui)
         }
     }
 }
 
 ; Automatically change size of controls based on properties
-GuiSection_Size(thisGui, MinMax:=1, Width:="", Height:= "") {
+GuiSection_Size(thisGui, MinMax := 1, Width := "", Height := "") {
     if MinMax = -1	; The window has been minimized. No action needed.
         return
     ;DllCall("LockWindowUpdate", "Uint", thisGui.Hwnd)
-    (Width="" && WinGetPos(, , &Width, &Height, thisGui)) ; autocollect missing parameters
+    (Width = "" && WinGetPos(, , &Width, &Height, thisGui)) ; autocollect missing parameters
 
     For Hwnd, GuiCtrlObj in thisGui {
         GuiCtrlObj.GetPos(&cX, &cY, &cWidth, &cHeight)
-        if (GuiCtrlObj.HasProp("LeftMargin") && GuiCtrlObj.LeftMargin!="") {
-            GuiCtrlObj.Move(, , Width - cX - GuiCtrlObj.LeftMargin, )
+        if (GuiCtrlObj.HasProp("LeftMargin") && GuiCtrlObj.LeftMargin != "") {
+            GuiCtrlObj.Move(, , Width - cX - GuiCtrlObj.LeftMargin,)
         }
-        if (GuiCtrlObj.HasProp("LeftDistance") && GuiCtrlObj.LeftDistance!="") {
-            GuiCtrlObj.Move(Width - cWidth - GuiCtrlObj.LeftDistance, , , )
+        if (GuiCtrlObj.HasProp("LeftDistance") && GuiCtrlObj.LeftDistance != "") {
+            GuiCtrlObj.Move(Width - cWidth - GuiCtrlObj.LeftDistance, , ,)
         }
-        if (GuiCtrlObj.HasProp("BottomDistance") && GuiCtrlObj.BottomDistance!="") {
-            GuiCtrlObj.Move(, Height - cHeight - GuiCtrlObj.BottomDistance, , )
+        if (GuiCtrlObj.HasProp("BottomDistance") && GuiCtrlObj.BottomDistance != "") {
+            GuiCtrlObj.Move(, Height - cHeight - GuiCtrlObj.BottomDistance, ,)
         }
-        if (GuiCtrlObj.HasProp("BottomMargin") && GuiCtrlObj.BottomMargin!="") {
+        if (GuiCtrlObj.HasProp("BottomMargin") && GuiCtrlObj.BottomMargin != "") {
             GuiCtrlObj.Move(, , , Height - cY - GuiCtrlObj.BottomMargin)
         }
-        if (GuiCtrlObj.HasProp("PosRef") && GuiCtrlObj.PosRef!="") {
+        if (GuiCtrlObj.HasProp("PosRef") && GuiCtrlObj.PosRef != "") {
             GuiCtrlPosRef := GuiCtrlObj.PosRef
 
-            loop{
-                if (GuiCtrlPosRef.Visible){
+            loop {
+                if (GuiCtrlPosRef.Visible) {
                     break
-                } else{
-                    if (GuiCtrlPosRef.hasProp("PosRef")){
+                } else {
+                    if (GuiCtrlPosRef.hasProp("PosRef")) {
                         GuiCtrlPosRef := GuiCtrlPosRef.PosRef
-                    } else{
+                    } else {
 
                         Break
                     }
                 }
             }
             GuiCtrlPosRef.GetPos(&rX, &rY, &rW, &rH)
-            if (!GuiCtrlPosRef.Visible){
-                GuiCtrlObj.Move(, rY, , )
+            if (!GuiCtrlPosRef.Visible) {
+                GuiCtrlObj.Move(, rY, ,)
             }
-            else{
-                GuiCtrlObj.Move(, rY+(GuiCtrlObj.HasProp("yOffset") ? GuiCtrlObj.yOffset : 0)+(GuiCtrlObj.HasProp("yMargin") ? rH+GuiCtrlObj.yMargin : 0), , )
+            else {
+                GuiCtrlObj.Move(, rY + (GuiCtrlObj.HasProp("yOffset") ? GuiCtrlObj.yOffset : 0) + (GuiCtrlObj.HasProp("yMargin") ? rH + GuiCtrlObj.yMargin : 0), ,)
             }
         }
     }
@@ -1765,9 +1828,9 @@ GuiSection_Size(thisGui, MinMax:=1, Width:="", Height:= "") {
 }
 
 ; Automatically change Sections positions
-Gui_Size(thisGui, MinMax:=1, Width:= 1, Height:= 1) {
+Gui_Size(thisGui, MinMax := 1, Width := 1, Height := 1) {
 
-    if (WinExist("Highlight")){
+    if (WinExist("Highlight")) {
         ; Hide the rectangle if window is moved
         WinHide("Highlight")
     }
@@ -1780,17 +1843,17 @@ Gui_Size(thisGui, MinMax:=1, Width:= 1, Height:= 1) {
     WinGetClientPos(&XcmyGui, &YcmyGui, &WcmyGui, &HcmyGui, myGui)
     ScreenScale := A_ScreenDPI / 96
 
-    For Hwnd, ogSection in myGui.aSections{
+    For Hwnd, ogSection in myGui.aSections {
         WinGetPos(&XSection, &YSection, &WSection, &HSection, ogSection)
         WinGetClientPos(&XcSection, &YcSection, &WcSection, &HcSection, ogSection)
-        if (ogSection.HasProp("LeftDistance") && ogSection.LeftDistance!=""){
-            ogSection.move((XSection - XcmyGui)/ScreenScale, (YSection - YcmyGui)/ScreenScale,((XcmyGui+WcmyGui)-XSection-ogSection.LeftDistance)/ScreenScale)
+        if (ogSection.HasProp("LeftDistance") && ogSection.LeftDistance != "") {
+            ogSection.move((XSection - XcmyGui) / ScreenScale, (YSection - YcmyGui) / ScreenScale, ((XcmyGui + WcmyGui) - XSection - ogSection.LeftDistance) / ScreenScale)
         }
-        if (ogSection.HasProp("BottomDistance") && ogSection.BottomDistance != ""){
-            ogSection.move((XSection - XcmyGui)/ScreenScale, (YSection - YcmyGui)/ScreenScale,,(((YcmyGui+HcmyGui)-YcSection)/ScreenScale-ogSection.BottomDistance))
-        } else if (ogSection.HasProp("HeigthMultiplier") && ogSection.HeigthMultiplier != ""){
+        if (ogSection.HasProp("BottomDistance") && ogSection.BottomDistance != "") {
+            ogSection.move((XSection - XcmyGui) / ScreenScale, (YSection - YcmyGui) / ScreenScale, , (((YcmyGui + HcmyGui) - YcSection) / ScreenScale - ogSection.BottomDistance))
+        } else if (ogSection.HasProp("HeigthMultiplier") && ogSection.HeigthMultiplier != "") {
 
-            ogSection.move((XSection - XcmyGui)/ScreenScale, (YSection - YcmyGui)/ScreenScale,,(HcmyGui*ogSection.HeigthMultiplier)/ScreenScale)
+            ogSection.move((XSection - XcmyGui) / ScreenScale, (YSection - YcmyGui) / ScreenScale, , (HcmyGui * ogSection.HeigthMultiplier) / ScreenScale)
         }
     }
 
@@ -1803,27 +1866,27 @@ Gui_Size(thisGui, MinMax:=1, Width:= 1, Height:= 1) {
 GuiStyles_Create(hwnd, ObjectType) {
     object_Style := WinGetStyle(hwnd)
     object_ExStyle := WinGetExStyle(hwnd)
-    Try{
+    Try {
         Object_ClassNN := ControlGetClassNN(hwnd)
-    }Catch{
+    } Catch {
         Object_ClassNN := WinGetTitle(hwnd)
     }
 
-    ObjectType := (ObjectType="Edit" and object_Style & 0x4) ? "editmultiLine" : ObjectType
+    ObjectType := (ObjectType = "Edit" and object_Style & 0x4) ? "editmultiLine" : ObjectType
 
-    if !aoDefaultStyles.HasProp(ObjectType){
+    if !aoDefaultStyles.HasProp(ObjectType) {
         return
     }
-    defaultStyle :=aoDefaultStyles.%ObjectType%.style
-    defaultExStyle :=aoDefaultStyles.%ObjectType%.exStyle
+    defaultStyle := aoDefaultStyles.%ObjectType%.style
+    defaultExStyle := aoDefaultStyles.%ObjectType%.exStyle
 
-    GuiStyles := Gui("Resize +AlwaysOnTop", "Styles - " Object_ClassNN " - " ObjectType " - " format("0x{:X}",object_Style))
-    GuiStyles.OnEvent("Size",GuiSection_Size)
-    ogTab := GuiStyles.AddTab3("w400 h400",["Styles","Extended Styles"])
+    GuiStyles := Gui("Resize +AlwaysOnTop", "Styles - " Object_ClassNN " - " ObjectType " - " format("0x{:X}", object_Style))
+    GuiStyles.OnEvent("Size", GuiSection_Size)
+    ogTab := GuiStyles.AddTab3("w400 h400", ["Styles", "Extended Styles"])
     ogTab.LeftMargin := 10
     ogTab.BottomMargin := 40
-    ogEditStyle := GuiStyles.AddEdit("w150",format("0x{:X}", object_Style))
-    ogLVStyles := GuiStyles.Add("ListView", " h332 w375 Checked", ["Style", "Hex", "Default","Description"])
+    ogEditStyle := GuiStyles.AddEdit("w150", format("0x{:X}", object_Style))
+    ogLVStyles := GuiStyles.Add("ListView", " h332 w375 Checked", ["Style", "Hex", "Default", "Description"])
     ogLVStyles.LeftMargin := 20
     ogLVStyles.BottomMargin := 50
     ogTab.UseTab("Extended Styles")
@@ -1861,30 +1924,29 @@ GuiStyles_Create(hwnd, ObjectType) {
 
 
     ; general style
-    for index, oStyle in aoStyles{
-        ogLVStyles.Add(((object_Style & oStyle.Hex) ? "Check" : ""),oStyle.Style,oStyle.Hex,(defaultStyle & oStyle.Hex) ? "true" : "false", oStyle.Description)
+    for index, oStyle in aoStyles {
+        ogLVStyles.Add(((object_Style & oStyle.Hex) ? "Check" : ""), oStyle.Style, oStyle.Hex, (defaultStyle & oStyle.Hex) ? "true" : "false", oStyle.Description)
         ; Options .= (((defaultStyle & oStyle.Hex) && (object_Style & oStyle.Hex)) | (!(defaultStyle & oStyle.Hex) && !(object_Style & oStyle.Hex))) ? "" : " " ((defaultStyle & oStyle.Hex) ? "-" : "+") (oStyle.OptionText="" ? oStyle.Hex : oStyle.OptionText)
         ; SkipOptions .= (((defaultStyle & oStyle.Hex) && (object_Style & oStyle.Hex)) | (!(defaultStyle & oStyle.Hex) && !(object_Style & oStyle.Hex))) ? "" : " " (oStyle.SkipHex)
     }
 
 
-
     ; object specific styles
-    if (aoStyles_extra!=""){
-        for index, oStyle in aoStyles_extra{
-            ogLVStyles.Add(((object_Style & oStyle.Hex)? "Check" : ""),oStyle.Style,oStyle.Hex,(defaultStyle & oStyle.Hex) ? "true" : "false",oStyle.Description)
+    if (aoStyles_extra != "") {
+        for index, oStyle in aoStyles_extra {
+            ogLVStyles.Add(((object_Style & oStyle.Hex) ? "Check" : ""), oStyle.Style, oStyle.Hex, (defaultStyle & oStyle.Hex) ? "true" : "false", oStyle.Description)
             ; Options .= (((defaultStyle & oStyle.Hex) && (object_Style & oStyle.Hex)) | (!(defaultStyle & oStyle.Hex) && !(object_Style & oStyle.Hex))) ? "" : " " ((defaultStyle & oStyle.Hex) ? "-" : "+") (oStyle.OptionText="" ? oStyle.Hex : oStyle.OptionText)
             ; SkipOptions .= (((defaultStyle & oStyle.Hex) && (object_Style & oStyle.Hex)) | (!(defaultStyle & oStyle.Hex) && !(object_Style & oStyle.Hex))) ? "" : " " (oStyle.SkipHex)
         }
     }
 
-    for index, oExStyle in aoWinExStyles{
-        ogLVExStyles.Add(((object_ExStyle & oExStyle.Hex)? "Check" : ""),oExStyle.Style,oExStyle.Hex, (defaultExStyle & oExStyle.Hex) ? "true" : "false",oExStyle.Description)
+    for index, oExStyle in aoWinExStyles {
+        ogLVExStyles.Add(((object_ExStyle & oExStyle.Hex) ? "Check" : ""), oExStyle.Style, oExStyle.Hex, (defaultExStyle & oExStyle.Hex) ? "true" : "false", oExStyle.Description)
         ; Options .= (((defaultExStyle & oExStyle.Hex) && (object_ExStyle & oExStyle.Hex)) | (!(defaultExStyle & oExStyle.Hex) && !(object_ExStyle & oExStyle.Hex))) ? "" : " " ((defaultExStyle & oExStyle.Hex) ? "-" : "+") (oExStyle.OptionText="" ? "E" oExStyle.Hex : oExStyle.OptionText)
         ; SkipOptions .= (((defaultExStyle & oExStyle.Hex) && (object_ExStyle & oExStyle.Hex)) | (!(defaultStyle & oExStyle.Hex) && !(object_ExStyle & oExStyle.Hex))) ? "" : " " (oExStyle.SkipHex)
     }
 
-    ogEditOptions.Value := ControlGetAHKOptions(ObjectType,object_Style,object_ExStyle)
+    ogEditOptions.Value := ControlGetAHKOptions(ObjectType, object_Style, object_ExStyle)
     ogLVStyles.ModifyCol
     ogLVStyles.ModifyCol(2, "Integer")
     ogLVExStyles.ModifyCol
@@ -1892,18 +1954,18 @@ GuiStyles_Create(hwnd, ObjectType) {
 
     GuiStyles.Show("")
 
-    ControlGetAHKOptions(ObjectType, object_Style, object_ExStyle){
+    ControlGetAHKOptions(ObjectType, object_Style, object_ExStyle) {
         Options := ""
         SkipOptions := "" ;Styles to be skipped because of set options
         optionsBuffer := ""
         aoStyles := (ObjectType = "window") ? aoWinStyles : aoControlStyles
 
-        defaultStyle :=aoDefaultStyles.%ObjectType%.style
-        defaultExStyle :=aoDefaultStyles.%ObjectType%.exStyle
+        defaultStyle := aoDefaultStyles.%ObjectType%.style
+        defaultExStyle := aoDefaultStyles.%ObjectType%.exStyle
 
-        if (ObjectType="Checkbox"){
+        if (ObjectType = "Checkbox") {
             ; Correction on Check3 Checkbox
-            if(object_Style & 0xF== 6){
+            if (object_Style & 0xF == 6) {
                 optionsBuffer .= "Check3 "
                 defaultStyle := 0x50010006
             }
@@ -1931,31 +1993,31 @@ GuiStyles_Create(hwnd, ObjectType) {
         aoStyles_extra := (ObjectType = "Statusbar") ? aoStatusbarStyles : aoStyles_extra
 
         ; general style
-        for index, oStyle in aoStyles{
-            Options .= (((defaultStyle & oStyle.Hex) && (object_Style & oStyle.Hex)) | (!(defaultStyle & oStyle.Hex) && !(object_Style & oStyle.Hex))) ? "" : " " ((defaultStyle & oStyle.Hex) ? "-" : "+") (oStyle.OptionText="" ? oStyle.Hex : oStyle.OptionText)
+        for index, oStyle in aoStyles {
+            Options .= (((defaultStyle & oStyle.Hex) && (object_Style & oStyle.Hex)) | (!(defaultStyle & oStyle.Hex) && !(object_Style & oStyle.Hex))) ? "" : " " ((defaultStyle & oStyle.Hex) ? "-" : "+") (oStyle.OptionText = "" ? oStyle.Hex : oStyle.OptionText)
             SkipOptions .= (((defaultStyle & oStyle.Hex) && (object_Style & oStyle.Hex)) | (!(defaultStyle & oStyle.Hex) && !(object_Style & oStyle.Hex))) ? "" : " " (oStyle.SkipHex)
         }
 
         ; object specific styles
-        if (aoStyles_extra!=""){
-            for index, oStyle in aoStyles_extra{
-                Options .= (((defaultStyle & oStyle.Hex) && (object_Style & oStyle.Hex)) | (!(defaultStyle & oStyle.Hex) && !(object_Style & oStyle.Hex))) ? "" : " " ((defaultStyle & oStyle.Hex) ? "-" : "+") (oStyle.OptionText="" ? oStyle.Hex : oStyle.OptionText)
+        if (aoStyles_extra != "") {
+            for index, oStyle in aoStyles_extra {
+                Options .= (((defaultStyle & oStyle.Hex) && (object_Style & oStyle.Hex)) | (!(defaultStyle & oStyle.Hex) && !(object_Style & oStyle.Hex))) ? "" : " " ((defaultStyle & oStyle.Hex) ? "-" : "+") (oStyle.OptionText = "" ? oStyle.Hex : oStyle.OptionText)
                 SkipOptions .= (((defaultStyle & oStyle.Hex) && (object_Style & oStyle.Hex)) | (!(defaultStyle & oStyle.Hex) && !(object_Style & oStyle.Hex))) ? "" : " " (oStyle.SkipHex)
             }
         }
 
-        for index, oExStyle in aoWinExStyles{
-            Options .= (((defaultExStyle & oExStyle.Hex) && (object_ExStyle & oExStyle.Hex)) | (!(defaultExStyle & oExStyle.Hex) && !(object_ExStyle & oExStyle.Hex))) ? "" : " " ((defaultExStyle & oExStyle.Hex) ? "-" : "+") (oExStyle.OptionText="" ? "E" oExStyle.Hex : oExStyle.OptionText)
+        for index, oExStyle in aoWinExStyles {
+            Options .= (((defaultExStyle & oExStyle.Hex) && (object_ExStyle & oExStyle.Hex)) | (!(defaultExStyle & oExStyle.Hex) && !(object_ExStyle & oExStyle.Hex))) ? "" : " " ((defaultExStyle & oExStyle.Hex) ? "-" : "+") (oExStyle.OptionText = "" ? "E" oExStyle.Hex : oExStyle.OptionText)
             SkipOptions .= (((defaultExStyle & oExStyle.Hex) && (object_ExStyle & oExStyle.Hex)) | (!(defaultStyle & oExStyle.Hex) && !(object_ExStyle & oExStyle.Hex))) ? "" : " " (oExStyle.SkipHex)
         }
 
 
-        Loop parse, Options, A_space{
-            if !InStr(" " SkipOptions " ", " " A_LoopField " ",){
+        Loop parse, Options, A_space {
+            if !InStr(" " SkipOptions " ", " " A_LoopField " ",) {
                 optionsBuffer .= A_LoopField " "
             }
         }
-        optionsBuffer :=StrReplace(optionsBuffer,"+-", "-")
+        optionsBuffer := StrReplace(optionsBuffer, "+-", "-")
 
 
         return optionsBuffer
@@ -1964,9 +2026,9 @@ GuiStyles_Create(hwnd, ObjectType) {
 
 }
 
-GuiRectangle(x:= 0, y:= 0 ,w:= 100 ,h:=100 , Color:="Blue",Thickness := 2){
+GuiRectangle(x := 0, y := 0, w := 100, h := 100, Color := "Blue", Thickness := 2) {
     Static GuiBox := ""
-    if IsObject(GuiBox){
+    if IsObject(GuiBox) {
         try GuiBox.Destroy()
     }
     GuiBox := Gui(" +ToolWindow -Caption +AlwaysOnTop +E0x20 -DPIScale", "Highlight")
@@ -1976,17 +2038,17 @@ GuiRectangle(x:= 0, y:= 0 ,w:= 100 ,h:=100 , Color:="Blue",Thickness := 2){
     GuiBox.h := h
     GuiBox.Thickness := Thickness
 
-    if (Thickness <0){
-        Thickness:= -Thickness
-        x := x-Thickness
-        y := y-Thickness
-        w := w+Thickness*2
-        h := h+Thickness*2
+    if (Thickness < 0) {
+        Thickness := -Thickness
+        x := x - Thickness
+        y := y - Thickness
+        w := w + Thickness * 2
+        h := h + Thickness * 2
     }
     GuiBox.MarginX := 0
     GuiBox.MarginY := 0
     goColor := GuiBox.AddText("w" w " h" h " Background" Color)
-    goTransp := GuiBox.AddText("x" Thickness " y" Thickness " w" w-Thickness*2 " h" h-Thickness*2 " BackgroundEEAA99")
+    goTransp := GuiBox.AddText("x" Thickness " y" Thickness " w" w - Thickness * 2 " h" h - Thickness * 2 " BackgroundEEAA99")
     WinSetTransColor("EEAA99", GuiBox)
 
     GuiBox.SetColor := SetColor
@@ -1999,23 +2061,23 @@ GuiRectangle(x:= 0, y:= 0 ,w:= 100 ,h:=100 , Color:="Blue",Thickness := 2){
     return GuiBox
 
     ; Set the color
-    SetColor(GuiBox, Color := "Blue"){
+    SetColor(GuiBox, Color := "Blue") {
         goColor.Opt(" +Background" Color)
         goColor.Redraw()
     }
 
     ; Set the Thickness (simple function)
-    SetThickness(GuiBox, Thickness := 1){
+    SetThickness(GuiBox, Thickness := 1) {
         MovePos(GuiBox, , , , , Thickness)
     }
 
     ; Change the position of the gui without destroying it
-    MovePos(GuiBox, x:="", y:="", w:="", h:="",Thickness:=""){
-        x := x=""? GuiBox.x : x
-        y := y=""? GuiBox.y : y
-        w := w=""? GuiBox.w : w
-        h := h=""? GuiBox.h : h
-        Thickness:= Thickness=""? GuiBox.Thickness : Thickness
+    MovePos(GuiBox, x := "", y := "", w := "", h := "", Thickness := "") {
+        x := x = "" ? GuiBox.x : x
+        y := y = "" ? GuiBox.y : y
+        w := w = "" ? GuiBox.w : w
+        h := h = "" ? GuiBox.h : h
+        Thickness := Thickness = "" ? GuiBox.Thickness : Thickness
 
         GuiBox.x := x
         GuiBox.y := y
@@ -2032,33 +2094,33 @@ GuiRectangle(x:= 0, y:= 0 ,w:= 100 ,h:=100 , Color:="Blue",Thickness := 2){
         }
 
         GuiBox.Move(x, y, w, h)
-        goColor.Move(,,w,h)
-        goTransp.Move(Thickness, Thickness, w-Thickness*2, h-Thickness*2)
+        goColor.Move(, , w, h)
+        goTransp.Move(Thickness, Thickness, w - Thickness * 2, h - Thickness * 2)
         goColor.Redraw()
         goTransp.Redraw()
 
     }
 
     ; Set the rectangle arround a control
-    MoveToControl(GuiBox,Control,Wintitle){
-        Try{
+    MoveToControl(GuiBox, Control, Wintitle) {
+        Try {
             ControlGetPos(&X, &Y, &W, &H, Control, WinTitle)
-            WinGetClientPos(&winX, &winY,,, WinTitle)
-            MovePos(GuiBox, winX+x, winY+y, w, h)
-        } Catch{
+            WinGetClientPos(&winX, &winY, , , WinTitle)
+            MovePos(GuiBox, winX + x, winY + y, w, h)
+        } Catch {
             GuiBox.Hide()
         }
     }
 
     ; Set the rectangle arround a control
-    MoveToWindow(GuiBox,Wintitle){
-        try{
+    MoveToWindow(GuiBox, Wintitle) {
+        try {
             WinGetClientPos(&winX, &winY, &winW, &winH, WinTitle)
-            if (winY=-8){
-                winX:=winX+8
-                winY:=winY+8
-                winW:=winW-8*2
-                winH:=winH-8*2
+            if (winY = -8) {
+                winX := winX + 8
+                winY := winY + 8
+                winW := winW - 8 * 2
+                winH := winH - 8 * 2
 
             }
             MovePos(GuiBox, winX, winY, winW, winH) ; Strangly, WinGetPos returned slightly offset values
@@ -2068,13 +2130,13 @@ GuiRectangle(x:= 0, y:= 0 ,w:= 100 ,h:=100 , Color:="Blue",Thickness := 2){
     }
 }
 
-WinGetHIcon(Wintitle){
+WinGetHIcon(Wintitle) {
     ICON_BIG := 1
 
     try {
         IconHwnd := SendMessage(WM_GETICON := 0x007F, ICON_SMALL := 0, 96, , Wintitle)
     }
-    Catch{
+    Catch {
         ; IconHwnd := DllCall("GetClassLongPtr", "Ptr", Wintitle, "Int", GCLP_HICONSM := -34)
         IconHwnd := DllCall("GetClassLongPtr", "Ptr", Wintitle, "Int", GCLP_HICON := -14)
     }
@@ -2087,7 +2149,7 @@ Tooltip2(Params*) {
     SetTimer () => ToolTip(), -3000
 }
 
-GetButtonType(hwndButton){
+GetButtonType(hwndButton) {
     static types := ["Button"	;BS_PUSHBUTTON 1
         , "Button"	;BS_DEFPUSHBUTTON 2
         , "Checkbox"	;BS_CHECKBOX 3
@@ -2109,7 +2171,7 @@ GetButtonType(hwndButton){
     return types[1 + (btnStyle & 0xF)]
 }
 
-ControlGetType(ctrl_hwnd){
+ControlGetType(ctrl_hwnd) {
     ctrl_ClassNN := ''
     try {
         ctrl_ClassNN := ControlGetClassNN(ctrl_hwnd)
@@ -2218,9 +2280,10 @@ WM_MOUSEMOVE(wParam, lParam, Msg, Hwnd) {
 
     ; Setting the tooltips for controls with a property tooltip
     if (Hwnd != PrevHwnd) {
-        Text := "", ToolTip()	; Turn off any previous tooltip.
+        if PrevHwnd != '#32768'
+            Text := "", ToolTip()	; Turn off any previous tooltip.
         if CurrControl {
-            if CurrControl.HasProp("ToolTip"){
+            if CurrControl.HasProp("ToolTip") {
                 CheckHoverControl := () => hwnd != prevHwnd ? (SetTimer(DisplayToolTip, 0), SetTimer(CheckHoverControl, 0)) : ""
                 DisplayToolTip := () => (ToolTip(CurrControl.ToolTip), SetTimer(CheckHoverControl, 0))
                 SetTimer(CheckHoverControl, 50)	; Checks if hovered control is still the same
@@ -2230,14 +2293,14 @@ WM_MOUSEMOVE(wParam, lParam, Msg, Hwnd) {
             SB.SetText(StatusbarText, 1)
         }
 
-        PrevHwnd := Hwnd
+        PrevHwnd := WinExist(Hwnd) && WinGetClass(Hwnd) = '#32768' ? '#32768' : Hwnd
     }
     return
 }
 
-WriteINI(&Array2D, INI_File :="") {	; write 2D-array to INI-file
+WriteINI(&Array2D, INI_File := "") {	; write 2D-array to INI-file
     ;-------------------------------------------------------------------------------
-    INI_File := INI_File="" ? Regexreplace(A_scriptName,"(.*)\..*","$1.ini") : INI_File
+    INI_File := INI_File = "" ? Regexreplace(A_scriptName, "(.*)\..*", "$1.ini") : INI_File
     for SectionName, Entry in Array2D.OwnProps() {
         Pairs := ""
 
@@ -2248,7 +2311,7 @@ WriteINI(&Array2D, INI_File :="") {	; write 2D-array to INI-file
     }
 }
 
-ReadINI(INI_File:="", oResult := "") {	; return 2D-array from INI-file
+ReadINI(INI_File := "", oResult := "") {	; return 2D-array from INI-file
     INI_File := INI_File = "" ? Regexreplace(A_scriptName, "(.*)\..*", "$1.ini") : INI_File
     oResult := IsObject(oResult) ? oResult : Object()
     if !FileExist(INI_File) {
@@ -2258,10 +2321,10 @@ ReadINI(INI_File:="", oResult := "") {	; return 2D-array from INI-file
     SectionNames := IniRead(INI_File)
     for each, Section in StrSplit(SectionNames, "`n") {
         OutputVar_Section := IniRead(INI_File, Section)
-        if !oResult.HasOwnProp(Section){
+        if !oResult.HasOwnProp(Section) {
             oResult.%Section% := Object()
         }
-        for each, Haystack in StrSplit(OutputVar_Section, "`n"){
+        for each, Haystack in StrSplit(OutputVar_Section, "`n") {
             RegExMatch(Haystack, "(.*?)=(.*)", &match)
             ArrayProperty := match[1]
             Value := RegExReplace(match[2], '^JSON(?=\{)', , &oc)
@@ -2279,61 +2342,61 @@ ReadINI(INI_File:="", oResult := "") {	; return 2D-array from INI-file
         ogEdtVar1.text := ogLvMessages.GetText(RowNumber, 2)	; convert to number
     }
 
-    ClickRun(*){
+    ClickRun(*) {
         KeyWait("Lbutton")
         SelFunction := DDLFunction.text
         ogEdtResult.text := ""
         oFunct := moFunctions[SelFunction]
-        if !moFunctions.has(SelFunction){ ; Not recognized
+        if !moFunctions.has(SelFunction) { ; Not recognized
             return
         }
         aPar := []
 
-        if (oFunct.HasProp("var1")){
+        if (oFunct.HasProp("var1")) {
             aPar.Push(ogEdtVar1.text)
         }
-        if (oFunct.HasProp("var2")){
+        if (oFunct.HasProp("var2")) {
             aPar.Push(ogEdtVar2.text)
         }
-        if (oFunct.HasProp("var3")){
-            if (InStr(SelFunction,"Message") and type(ogEdtVar3.text)="String" and !IsNumber(ogEdtVar3.text)){
+        if (oFunct.HasProp("var3")) {
+            if (InStr(SelFunction, "Message") and type(ogEdtVar3.text) = "String" and !IsNumber(ogEdtVar3.text)) {
                 aPar.Push(StrPtr(ogEdtVar3.text))
             }
-            else{
+            else {
                 aPar.Push(ogEdtVar3.text)
             }
         }
         if (oFunct.HasProp("Control") and oFunct.Control) {
-            aPar.Push(oSet.ControlPar = "hwnd" ? Number(ogEdtControl.text) : ogEdtControl.text)
+            aPar.Push(oSet.ControlPar = "hwnd" ? (ogEdtControl.text = '' ? unset : Number(ogEdtControl.text)) : ogEdtControl.text)
         }
 
-        if !WinExist(ogEdtWindow.text){
-            MsgBox("No window was found for [" ogEdtWindow.text "]",,"Iconx 262144") ; AlwaysOnTop := 262144
+        if !WinExist(ogEdtWindow.text) {
+            MsgBox("No window was found for [" ogEdtWindow.text "]", , "Iconx 262144") ; AlwaysOnTop := 262144
             return
         }
 
         ; Display tooltip if more than one window found
-        if (SelFunction != "WinGetCount" && WinGetCount(ogEdtWindow.text)>1){
+        if (SelFunction != "WinGetCount" && WinGetCount(ogEdtWindow.text) > 1) {
             Tooltip2("WARNING: " WinGetCount(ogEdtWindow.text) " windows found")
         }
 
         aPar.Push(ogEdtWindow.text)
 
         Result := %SelFunction%(aPar*)
-        if (Type(Result)="Array"){
+        if (Type(Result) = "Array") {
             EditGui(Result)
             return
         } else if (IsObject(Result)) {
             ObjectGui(Result)
             return
-        }else if InStr(Result,"`n"){
+        } else if InStr(Result, "`n") {
             ogEdtResult.Opt("+VScroll")
-            ogEdtResult.Move(,,,7+5*13)
-            ogGbResult.Move(,,,26+5*13)
-        } else{
+            ogEdtResult.Move(, , , 7 + 5 * 13)
+            ogGbResult.Move(, , , 26 + 5 * 13)
+        } else {
             ogEdtResult.Opt("-VScroll")
-            ogEdtResult.Move(,,,7+1*13)
-            ogGbResult.Move(,,,26+1*13)
+            ogEdtResult.Move(, , , 7 + 1 * 13)
+            ogGbResult.Move(, , , 26 + 1 * 13)
         }
 
         ogEdtResult.text := Result
@@ -2342,10 +2405,10 @@ ReadINI(INI_File:="", oResult := "") {	; return 2D-array from INI-file
 
     }
 
-    ClickCopy(*){
+    ClickCopy(*) {
         SelFunction := DDLFunction.text
 
-        if !moFunctions.has(SelFunction){ ; Not recognized
+        if !moFunctions.has(SelFunction) { ; Not recognized
             return
         }
 
@@ -2353,33 +2416,33 @@ ReadINI(INI_File:="", oResult := "") {	; return 2D-array from INI-file
 
         Clipboard := (oFunct.HasProp("result") && oFunct.result) ? "Result := " : ""
         aPar := []
-        if (oFunct.HasProp("var1")){
+        if (oFunct.HasProp("var1")) {
             aPar.Push('"' ogEdtVar1.text '"')
         }
-        if (oFunct.HasProp("var2")){
+        if (oFunct.HasProp("var2")) {
             aPar.Push('"' ogEdtVar2.text '"')
         }
-        if (oFunct.HasProp("var3")){
-            if (InStr(SelFunction,"Message") and type(ogEdtVar3.text)="String" and !IsNumber(ogEdtVar3.text)){
+        if (oFunct.HasProp("var3")) {
+            if (InStr(SelFunction, "Message") and type(ogEdtVar3.text) = "String" and !IsNumber(ogEdtVar3.text)) {
                 aPar.Push('StrPtr("' ogEdtVar3.text '")')
             }
-            else{
+            else {
                 aPar.Push('"' ogEdtVar3.text '"')
             }
         }
-        if (oFunct.HasProp("Control") and oFunct.Control){
+        if (oFunct.HasProp("Control") and oFunct.Control) {
             aPar.Push('"' ogEdtControl.text '"')
         }
         aPar.Push('"' ogEdtWindow.text '"')
         Clipboard .= SelFunction "("
-        for index, value in aPar{
-            Clipboard .= (index=1) ? value : ', ' value
+        for index, value in aPar {
+            Clipboard .= (index = 1) ? value : ', ' value
         }
         Clipboard .= ")"
 
-        Clipboard := StrReplace(Clipboard, ', "")',')')
-        Clipboard := StrReplace(Clipboard, ', "")',')')
-        Clipboard := StrReplace(Clipboard, ', "")',')')
+        Clipboard := StrReplace(Clipboard, ', "")', ')')
+        Clipboard := StrReplace(Clipboard, ', "")', ')')
+        Clipboard := StrReplace(Clipboard, ', "")', ')')
         Clipboard := StrReplace(Clipboard, '"")', ')')
 
         A_Clipboard := Clipboard
@@ -2387,7 +2450,7 @@ ReadINI(INI_File:="", oResult := "") {	; return 2D-array from INI-file
         SetTimer () => ToolTip(), -5000
     }
 
-    UpdateLVMessages(*){
+    UpdateLVMessages(*) {
         msgList := "
         (
             WM_NULL	0x0000
@@ -2649,8 +2712,8 @@ ReadINI(INI_File:="", oResult := "") {	; return 2D-array from INI-file
 
         loop parse msgList, "`n", "`r"
         {
-            if (ogEdtSearch.text="" || InStr(A_LoopField,ogEdtSearch.text)){
-                ogLvMessages.Add(, StrSplit(A_LoopField, "`t") * )
+            if (ogEdtSearch.text = "" || InStr(A_LoopField, ogEdtSearch.text)) {
+                ogLvMessages.Add(, StrSplit(A_LoopField, "`t")*)
             }
         }
         ogLvMessages.ModifyCol(1, 150)
@@ -2663,30 +2726,30 @@ ReadINI(INI_File:="", oResult := "") {	; return 2D-array from INI-file
     }
 
     ; Update controls of function section to see what should be visible
-    UpdateFunctionControls(*){
+    UpdateFunctionControls(*) {
 
         SelFunction := DDLFunction.text
         oSet.Function := SelFunction
-        if !moFunctions.has(SelFunction){ ; Not recognized
+        if !moFunctions.has(SelFunction) { ; Not recognized
             return
         }
         oFunct := moFunctions[SelFunction]
         DDLFunction.Statusbar := oFunct.Hasprop("Description") ? oFunct.Description : ""
         ogTxtVar1.Visible := oFunct.HasProp("var1")
         ogEdtVar1.Visible := oFunct.HasProp("var1")
-        if (oFunct.HasProp("var1")){
+        if (oFunct.HasProp("var1")) {
             ogTxtVar1.text := oFunct.var1
             ogEdtVar1.Value := oFunct.HasProp("var1Default") ? oFunct.var1Default : ""
         }
         ogTxtVar2.Visible := oFunct.HasProp("var2")
         ogEdtVar2.Visible := oFunct.HasProp("var2")
-        if (oFunct.HasProp("var2")){
+        if (oFunct.HasProp("var2")) {
             ogTxtVar2.text := oFunct.var2
             ogEdtVar2.Value := oFunct.HasProp("var2Default") ? oFunct.var2Default : ""
         }
         ogTxtVar3.Visible := oFunct.HasProp("var3")
         ogEdtVar3.Visible := oFunct.HasProp("var3")
-        if (oFunct.HasProp("var3")){
+        if (oFunct.HasProp("var3")) {
             ogTxtVar3.text := oFunct.var3
             ogEdtVar3.Value := oFunct.HasProp("var3Default") ? oFunct.var3Default : ""
         }
@@ -2709,51 +2772,51 @@ ReadINI(INI_File:="", oResult := "") {	; return 2D-array from INI-file
 }
 
 ; Resize size of GroupBox based on visible controls
-GroupBoxAutosize(ogGB){
+GroupBoxAutosize(ogGB) {
     ; Autosize Groupbox
     ; Skip if gui is not visible
-    if ((WinGetStyle(ogGB.gui) & 0x10000000) = 0){
+    if ((WinGetStyle(ogGB.gui) & 0x10000000) = 0) {
         return
     }
 
     yMax := 0
     ; ogGB.GetPos(&xGB,&yGB,&wGB,&hGB)
-    ControlGetPos(&xGB,&yGB,&wGB,&hGB, ogGB)
-    for index, oControl in ogGB.gui{
-        if !oControl.visible{
+    ControlGetPos(&xGB, &yGB, &wGB, &hGB, ogGB)
+    for index, oControl in ogGB.gui {
+        if !oControl.visible {
             continue
         }
-        if (ogGB.hwnd=oControl.hwnd){
+        if (ogGB.hwnd = oControl.hwnd) {
             continue
         }
-        oControl.GetPos(&xC,&yC,&wC,&hC)
-        ControlGetPos(&xC,&yC,&wC,&hC, oControl)
-        yMax := Max(yMax,yC+hC)
+        oControl.GetPos(&xC, &yC, &wC, &hC)
+        ControlGetPos(&xC, &yC, &wC, &hC, oControl)
+        yMax := Max(yMax, yC + hC)
     }
 
-    WinGetPos(&xWin,&yWin,&wWin,&hWin, ogGB.Gui)
+    WinGetPos(&xWin, &yWin, &wWin, &hWin, ogGB.Gui)
 
-    ControlMove(, , , yMax-yGB+5,ogGB)
+    ControlMove(, , , yMax - yGB + 5, ogGB)
     ogGB.gui.Show("Autosize")
 }
 
-Gui_About(){
+Gui_About() {
     MyGui.Opt("+Disabled")	; Disable main window.
     ogAbout := Gui(, "About wInspector")
-    ogAbout.Opt("-MaximizeBox -MinimizeBox AlwaysOnTop +OwnDialogs" )
+    ogAbout.Opt("-MaximizeBox -MinimizeBox AlwaysOnTop +OwnDialogs")
     ogAbout.Add("Picture", "x11 w32 h33 +0x40 +E0x4 Icon145", "imageres.dll")
     ogAbout.Add("Text", "x53 y10 w345 h16 +0x7 +0x4 +0x8 +0x5 +Wrap +0x80 +0x9 +0x6 +E0x4", "wInspector")
     ogAbout.Add("Text", "x15 y45 w426 h2 +0x12 +0x10 +0x11 +E0x4 +E0x20000", "") ; Line
     ogAbout.Add("Text", "x53 +0x80 +E0x4", "wInpector is a multifunctional tool to verify what data can be retrieved form windows.`n`nWritten by Ahk_user.`n© All rights reserved.")
     ButtonOK := ogAbout.Add("Button", "x375 w75 +0x3 +0x9 +Default +0x7 +E0x4", "OK")
     ogAbout.OnEvent("Close", About_Close)
-	ogAbout.OnEvent("Escape", About_Close)
+    ogAbout.OnEvent("Escape", About_Close)
     ButtonOK.OnEvent("Click", About_Close)
     ogAbout.Show()
     MyGui.Opt("+OwnDialogs")
     Return
 
-    About_Close(*){
+    About_Close(*) {
         MyGui.Opt("-Disabled")	; Re-enable the main window (must be done prior to the next step).
         ogAbout.Destroy()	; Destroy the about box.
     }
@@ -2761,12 +2824,12 @@ Gui_About(){
 
 #include Lib\Acc.ahk
 
-GuiAccViewer(Wintitle:="A", ControlHwnd:=""){
+GuiAccViewer(Wintitle := "A", ControlHwnd := "") {
 
     ; Setting the Icon seems not to work
-    hIcon := LoadPicture("shell32.dll", "Icon85 w32 h32" , &imgtype)
+    hIcon := LoadPicture("shell32.dll", "Icon85 w32 h32", &imgtype)
     ; Create the window:
-    myAccGui := Gui('+AlwaysOnTop',"Acc Viewer")
+    myAccGui := Gui('+AlwaysOnTop', "Acc Viewer")
     SendMessage(0x0080, 1, hIcon, myAccGui)
     myAccGui.Opt("+Resize")
     myAccGui.OnEvent("Size", GuiAcc_Size)
@@ -2776,13 +2839,13 @@ GuiAccViewer(Wintitle:="A", ControlHwnd:=""){
     ogButton_AccSelector.statusbar := "Click and drag to select a specific control or window"
 
     ; Create the ListView with two columns, Name and Size:
-    ogEditSearch := myAccGui.AddText("ym x+10","Search:")
+    ogEditSearch := myAccGui.AddText("ym x+10", "Search:")
     ogEditSearch := myAccGui.AddEdit("yp-2 x+10")
     ogEditSearch.SetCueText("Search")
-    ogEditSearch.OnEvent("Change",(*)=>(LVAcc_Update()))
+    ogEditSearch.OnEvent("Change", (*) => (LVAcc_Update()))
     ogEditSearch.Tooltip := "Filter the lines"
 
-    ogCB_Control := myAccGui.AddCheckbox("x+10 yp+3 " (ControlHwnd="" ? "" : "Checked"), "Control")
+    ogCB_Control := myAccGui.AddCheckbox("x+10 yp+3 " (ControlHwnd = "" ? "" : "Checked"), "Control")
     ogCB_Control.Tooltip := "Collect Acc data from control or from hole window"
     ogCB_Value := myAccGui.AddCheckbox("x+10 yp", "Value")
     ogCB_Value.Tooltip := "Filter lines with filled values"
@@ -2791,9 +2854,31 @@ GuiAccViewer(Wintitle:="A", ControlHwnd:=""){
     ogCB_Visible.Tooltip := "Filter visible lines"
     ogCB_Visible.OnEvent("Click", (*) => (LVAcc_Update()))
 
-    LVAcc := myAccGui.Add("ListView", "xm yp+21 r25 w800", ["Path","Name","RoleText","Role","x","y","w","h","Value", "StateText", "State", "Description", "KeyboardShortcut", "Help", "ChildId"])
+    LVAcc := myAccGui.Add("ListView", "xm yp+21 r25 w800", _ := ["Path", "Name", "RoleText", "Role", "x", "y", "w", "h", "Value", "StateText", "State", "Description", "KeyboardShortcut", "Help", "ChildId"])
+    LVAcc.columns := _
     LVAcc.OnNotify(NM_DBLCLK, CopyLVITEMText)
-    LVAcc.OnEvent("ContextMenu", LVAcc_ContextMenu)
+    ;LVAcc.OnEvent("ContextMenu", LVAcc_ContextMenu)
+    LVAcc.OnNotify(NM_RCLICK, LVAcc_NM_RCLICK)
+    LVAcc_NM_RCLICK(LV, lParam) {
+        idFrom := NumGet(lParam + A_PtrSize, 0, "Int")
+        rownumber := NumGet(lParam + (A_PtrSize * 3), 0, "Int") + 1
+        if idFrom = 0 || rownumber = 0
+            return
+        if NumGet(lParam + (A_PtrSize * 8), 0, "Int") & 0x0001 {
+            A_Clipboard := LV.GetText(rownumber, NumGet(lParam + (A_PtrSize * 3), 4, "Int") + 1)
+            Tooltip2('Copied')
+            return
+        }
+        myMenu := Menu()
+        for i, v in LV.columns {
+            if '' = (LVTx := LV.GetText(rownumber, i)) ;|| v ~= '^(?:Visible|.)$'
+                continue
+            LVMenuItemFunc(LVTx, ItemName, ItemPos, ItemMenu) => (A_Clipboard := LVTx, Tooltip2(LVTx))
+            myMenu.Add(v, LVMenuItemFunc.Bind(LVTx))
+            myMenu.SetIcon(v, "shell32.dll", 135)
+        }
+        myMenu.Show()
+    }
     ; Notify the script whenever the user double clicks a row:
     LVAcc.OnEvent("DoubleClick", LVAcc_DoubleClick)
 
@@ -2808,7 +2893,7 @@ GuiAccViewer(Wintitle:="A", ControlHwnd:=""){
 
     MyAccGui.Show
 
-    LVAcc_Copy(ThisHotkey){
+    LVAcc_Copy(ThisHotkey) {
         Headers := ""
         Loop LVAcc.GetCount("Column") {
             Headers .= ((A_Index = 1) ? "" : "`t") LVAcc.GetText(0, A_Index)
@@ -2816,7 +2901,7 @@ GuiAccViewer(Wintitle:="A", ControlHwnd:=""){
         A_Clipboard := Headers "`n" ListViewGetContent("Selected", LVAcc)
     }
 
-    LVAcc_Update(WinTitle:="", ControlID:=""){
+    LVAcc_Update(WinTitle := "", ControlID := "") {
         global Acc_Content
 
         LVAcc.Delete()
@@ -2824,13 +2909,13 @@ GuiAccViewer(Wintitle:="A", ControlHwnd:=""){
         LVAcc.Opt("-Redraw")
         SB.SetText("Reading acc data...")
 
-        TooltipTimer :=  Tooltip.Bind("Reading acc data...")
-        SetTimer(TooltipTimer,100)
+        TooltipTimer := Tooltip.Bind("Reading acc data...")
+        SetTimer(TooltipTimer, 100)
         if (WinTitle != "") {
 
             Title := WinGetTitle(Wintitle)
 
-            if (ControlID!="" and ogCB_Control.Value){
+            if (ControlID != "" and ogCB_Control.Value) {
                 ControlClass := ControlGetClassNN(ControlID)
                 Title := (ControlClass = "" ? "Control" : ControlClass) "] - [" Title
                 oAcc := Acc.ObjectFromWindow(ControlID)
@@ -2849,57 +2934,57 @@ GuiAccViewer(Wintitle:="A", ControlHwnd:=""){
         SB.SetText("Generating list...")
 
         Counter := 0
-        CounterTotal:=0
+        CounterTotal := 0
 
-        Loop Parse, Acc_Content, "`n","`r"
-            {
-                ; 4,1: RoleText: pane Role: 16 [Location: {x:3840,y:0,w:3840,h:2100}] [Name: ] [Value: ] [StateText: normal]
-                CounterTotal++
-                Path := RegExReplace(A_LoopField,"^([\d,]*):.*","$1", &OutputVarCount )
-                Path := OutputVarCount=0 ? "" : Path
-                RoleText := RegExReplace(A_LoopField,".*\QRoleText: \E(.*)\Q Role: \E.*","$1")
-                Role := RegExReplace(A_LoopField,".*\Q Role: \E(.*)\Q [Location: \E.*","$1")
-                x := RegExReplace(A_LoopField,".*\Q [Location: {x:\E(.*)\Q,y:\E.*","$1")
-                y := RegExReplace(A_LoopField,".*\Q,y:\E(.*)\Q,w:\E.*","$1")
-                w := RegExReplace(A_LoopField,".*\Q,w:\E(.*)\Q,h:\E.*","$1")
-                h := RegExReplace(A_LoopField,".*\Q,h:\E(.*)\Q}] \E.*","$1")
-                name := RegExReplace(A_LoopField,".*\Q}] [Name:\E(.*?)\Q] [\E.*","$1", &OutputVarCount)
-                name := OutputVarCount=0 ? "" : name
-                value := RegExReplace(A_LoopField,".*\Q] [Value:\E(.*?)\Q] [\E.*","$1", &OutputVarCount)
-                value := OutputVarCount=0 ? "" : value
-                description := RegExReplace(A_LoopField,".*\Q] [Description: \E(.*?)\Q]\E.*","$1", &OutputVarCount)
-                description := OutputVarCount=0 ? "" : description
-                StateText := RegExReplace(A_LoopField,".*\Q] [StateText: \E(.*?)(\Q] [\E.*|\Q]\E)$","$1", &OutputVarCount)
-                StateText := OutputVarCount=0 ? "" : StateText
-                State := RegExReplace(A_LoopField,".*\Q] [State: \E(.*?)(\Q] [\E.*|\Q]\E)$","$1", &OutputVarCount)
-                State := OutputVarCount=0 ? "" : State
-                KeyboardShortcut := RegExReplace(A_LoopField,".*\Q] [KeyboardShortcut: \E(.*?)(\Q] [\E.*|\Q]\E)$","$1", &OutputVarCount)
-                KeyboardShortcut := OutputVarCount=0 ? "" : KeyboardShortcut
-                Help := RegExReplace(A_LoopField,".*\Q] [Help: \E(.*?)(\Q] [\E.*|\Q]\E)$","$1", &OutputVarCount)
-                Help := OutputVarCount=0 ? "" : Help
-                ChildId := RegExReplace(A_LoopField,".*\Q ChildId: \E(.*?)(\Q [\E.*|\Q\E)$","$1", &OutputVarCount)
-                ChildId := OutputVarCount=0 ? "" : ChildId
+        Loop Parse, Acc_Content, "`n", "`r"
+        {
+            ; 4,1: RoleText: pane Role: 16 [Location: {x:3840,y:0,w:3840,h:2100}] [Name: ] [Value: ] [StateText: normal]
+            CounterTotal++
+            Path := RegExReplace(A_LoopField, "^([\d,]*):.*", "$1", &OutputVarCount)
+            Path := OutputVarCount = 0 ? "" : Path
+            RoleText := RegExReplace(A_LoopField, ".*\QRoleText: \E(.*)\Q Role: \E.*", "$1")
+            Role := RegExReplace(A_LoopField, ".*\Q Role: \E(.*)\Q [Location: \E.*", "$1")
+            x := RegExReplace(A_LoopField, ".*\Q [Location: {x:\E(.*)\Q,y:\E.*", "$1")
+            y := RegExReplace(A_LoopField, ".*\Q,y:\E(.*)\Q,w:\E.*", "$1")
+            w := RegExReplace(A_LoopField, ".*\Q,w:\E(.*)\Q,h:\E.*", "$1")
+            h := RegExReplace(A_LoopField, ".*\Q,h:\E(.*)\Q}] \E.*", "$1")
+            name := RegExReplace(A_LoopField, ".*\Q}] [Name:\E(.*?)\Q] [\E.*", "$1", &OutputVarCount)
+            name := OutputVarCount = 0 ? "" : name
+            value := RegExReplace(A_LoopField, ".*\Q] [Value:\E(.*?)\Q] [\E.*", "$1", &OutputVarCount)
+            value := OutputVarCount = 0 ? "" : value
+            description := RegExReplace(A_LoopField, ".*\Q] [Description: \E(.*?)\Q]\E.*", "$1", &OutputVarCount)
+            description := OutputVarCount = 0 ? "" : description
+            StateText := RegExReplace(A_LoopField, ".*\Q] [StateText: \E(.*?)(\Q] [\E.*|\Q]\E)$", "$1", &OutputVarCount)
+            StateText := OutputVarCount = 0 ? "" : StateText
+            State := RegExReplace(A_LoopField, ".*\Q] [State: \E(.*?)(\Q] [\E.*|\Q]\E)$", "$1", &OutputVarCount)
+            State := OutputVarCount = 0 ? "" : State
+            KeyboardShortcut := RegExReplace(A_LoopField, ".*\Q] [KeyboardShortcut: \E(.*?)(\Q] [\E.*|\Q]\E)$", "$1", &OutputVarCount)
+            KeyboardShortcut := OutputVarCount = 0 ? "" : KeyboardShortcut
+            Help := RegExReplace(A_LoopField, ".*\Q] [Help: \E(.*?)(\Q] [\E.*|\Q]\E)$", "$1", &OutputVarCount)
+            Help := OutputVarCount = 0 ? "" : Help
+            ChildId := RegExReplace(A_LoopField, ".*\Q ChildId: \E(.*?)(\Q [\E.*|\Q\E)$", "$1", &OutputVarCount)
+            ChildId := OutputVarCount = 0 ? "" : ChildId
 
-                if (ogEditSearch.text != "" and !InStrSuffled(Path "." RoleText "." Role "." Name "." value "." Description "." StateText "." State "." KeyboardShortcut "." Help ,ogEditSearch.text )){
-                    continue
-                }
-                if ((ogCB_Value.Value and value!="") or (ogCB_Visible.Value and x=0 and y=0 and w=0 and h=0)){
-                    continue
-                }
-                RowNumber := LVAcc.Add(, Path, name, RoleText, Role, x, y, w, h,  value, StateText, State, Description, KeyboardShortcut, Help, ChildId)
-                if (myAccGui.HasProp("ElID") and myAccGui.ElID = x "-" y "-" w "-" h "-" Role){
-                    LVAcc.Modify(RowNumber, "Select Focus Vis")
-                }
-                Counter++
+            if (ogEditSearch.text != "" and !InStrSuffled(Path "." RoleText "." Role "." Name "." value "." Description "." StateText "." State "." KeyboardShortcut "." Help, ogEditSearch.text)) {
+                continue
             }
+            if ((ogCB_Value.Value and value != "") or (ogCB_Visible.Value and x = 0 and y = 0 and w = 0 and h = 0)) {
+                continue
+            }
+            RowNumber := LVAcc.Add(, Path, name, RoleText, Role, x, y, w, h, value, StateText, State, Description, KeyboardShortcut, Help, ChildId)
+            if (myAccGui.HasProp("ElID") and myAccGui.ElID = x "-" y "-" w "-" h "-" Role) {
+                LVAcc.Modify(RowNumber, "Select Focus Vis")
+            }
+            Counter++
+        }
         SetTimer(TooltipTimer, 0)
         Tooltip("")
 
-        SB.SetText((Counter=Countertotal) ? "Found " Counter " elements." : "Filtered " Counter "/" CounterTotal)
+        SB.SetText((Counter = Countertotal) ? "Found " Counter " elements." : "Filtered " Counter "/" CounterTotal)
         LVAcc.Opt("+Redraw")
     }
 
-    LVAcc_DoubleClick(LVAcc, RowNumber){
+    LVAcc_DoubleClick(LVAcc, RowNumber) {
         RowText := LVAcc.GetText(RowNumber)  ; Get the text from the row's first field.
         ; ToolTip("You double-clicked row number " RowNumber ". Text: '" RowText "'")
         ChildPath := LVAcc.GetText(RowNumber)
@@ -2912,23 +2997,23 @@ GuiAccViewer(Wintitle:="A", ControlHwnd:=""){
             return
         DllCall("LockWindowUpdate", "Uint", thisGui.Hwnd)
         LVAcc.GetPos(&cX, &cY, &cWidth, &cHeight)
-        LVAcc.Move(, , Width - cX - 10, Height -cY -26)
+        LVAcc.Move(, , Width - cX - 10, Height - cY - 26)
         DllCall("LockWindowUpdate", "Uint", 0)
     }
 
-    LVAcc_ContextMenu(LVAcc, RowNumber, IsRightClick, X, Y){
+    LVAcc_ContextMenu(LVAcc, RowNumber, IsRightClick, X, Y) {
         RowNumber := 0  ; This causes the first loop iteration to start the search at the top of the list.
-        Counter:=0
-        Loop{
+        Counter := 0
+        Loop {
             RowNumber := LVAcc.GetNext(RowNumber)  ; Resume the search at the row after that found by the previous iteration.
             if not RowNumber
                 break
             Counter++
         }
-        if (Counter=1){
+        if (Counter = 1) {
             path := LVAcc.GetText(RowNumber)
             MyMenu := Menu()
-            MyMenu.add "Copy Path", (*) =>(A_Clipboard :=path, Tooltip2("Copied [" A_Clipboard "]"))
+            MyMenu.add "Copy Path", (*) => (A_Clipboard := path, Tooltip2(A_Clipboard))
             MyMenu.Show
         }
 
@@ -2945,7 +3030,7 @@ GuiAccViewer(Wintitle:="A", ControlHwnd:=""){
             While (GetKeyState("LButton")) {
                 MouseGetPos(&MouseX, &MouseY, &MouseWinHwnd, &MouseControlHwnd, 2)
                 Sleep(100)
-                if ( MouseControlHwnd != "") {
+                if (MouseControlHwnd != "") {
                     MouseGetPos(&MouseX, &MouseY, &MouseWinHwnd, &MouseControlHwnd, 2)
                     oAccp := Acc.ObjectFromPoint(MouseX, MouseY)
                     myAccGui.oAccp := oAccp
@@ -2972,16 +3057,16 @@ GuiAccViewer(Wintitle:="A", ControlHwnd:=""){
 
 }
 
-InStrSuffled(Haystack, Needles){
-	Arr_Needle := StrSplit(Needles, " ")
-	Value := "1"
-	loop Arr_Needle.Length
-	{
-        if (Arr_Needle[A_Index]!=""){
+InStrSuffled(Haystack, Needles) {
+    Arr_Needle := StrSplit(Needles, " ")
+    Value := "1"
+    loop Arr_Needle.Length
+    {
+        if (Arr_Needle[A_Index] != "") {
             Value := Value * InStr(Haystack, Arr_Needle[A_Index])
-		; Value := Value * RegExMatch(Haystack, "i)^(.*[^a-z]|)\Q" Arr_Needle[A_Index] "\E")
+            ; Value := Value * RegExMatch(Haystack, "i)^(.*[^a-z]|)\Q" Arr_Needle[A_Index] "\E")
         }
 
-	}
-	return Value
+    }
+    return Value
 }
