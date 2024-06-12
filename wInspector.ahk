@@ -13,6 +13,7 @@
 #Include lib\ObjectGui.ah2
 #Include lib\Toolbar.ah2
 #Include <JSON>
+#Include <Menu>
 
 
 DetectHiddenWindows true
@@ -473,8 +474,8 @@ Gui_wInspector(*) {
     }
 
     MyGui := Gui("+AlwaysOnTop +MinSize304x114", "wInspector")
-    oSet.WinResize=1 ? myGui.Opt("+Resize") : myGui.Opt("-Resize")
-    oSet.WinAlwaysOnTop=1 ? myGui.Opt("+AlwaysOnTop") : myGui.Opt("-AlwaysOnTop")
+    oSet.WinResize=1?myGui.Opt("+Resize") : myGui.Opt("-Resize")
+    oSet.WinAlwaysOnTop=1?myGui.Opt("+AlwaysOnTop") : myGui.Opt("-AlwaysOnTop")
     MyGui.MarginX := 2
     MyGui.MarginY := 2
     MyGui.Width := 1200
@@ -746,8 +747,7 @@ Gui_wInspector(*) {
     ogEdit_Process_search.statusbar := "Type to filter the Processes on specific words"
     ogEdit_Process_search.OnEvent("Change", UpdateProcessList)
 
-    ogLV_ProcessList := oGuiProcessList.AddListView("xm+4 y+2 r14 w" (myGui.Width - 8 * 3) / 2 " vProcessList section AltSubmit", _ := ["Process", "PID", "Path"])
-    ogLV_ProcessList.columns := _
+    ogLV_ProcessList := oGuiProcessList.AddListView("xm+4 y+2 r14 w" (myGui.Width - 8 * 3) / 2 " vProcessList section AltSubmit", ["Process", "PID", "Path"])
     ogLV_ProcessList.Opt("Count400 -Multi")
     ogLV_ProcessList.ModifyCol()
     ogLV_ProcessList.ModifyCol(1, 300)
@@ -783,8 +783,7 @@ Gui_wInspector(*) {
     ogCB_FilterWinPID := oGuiWindowList.AddCheckbox("xp+60 yp vfilter_win_PID", "Process PID")
     ogCB_FilterWinPID.OnEvent("Click", UpdateWinList)
     ogCB_FilterWinPID.Statusbar := "Filter on by selected PID in ProcessList"
-    ogLV_WinList := oGuiWindowList.AddListView("xm+4 y+7 r14 w" (myGui.Width - 8 * 3) / 2 " vWinList section AltSubmit", _ := ["Title", "Process", "ID", "Visible", "X", "Y", "W", "H", "Class"])
-    ogLV_WinList.columns := _
+    ogLV_WinList := oGuiWindowList.AddListView("xm+4 y+7 r14 w" (myGui.Width - 8 * 3) / 2 " vWinList section AltSubmit", ["Title", "Process", "ID", "Visible", "X", "Y", "W", "H", "Class"])
     ogLV_WinList.Opt("Count400 -Multi")
 
     ogLV_WinList.ModifyCol()
@@ -824,8 +823,7 @@ Gui_wInspector(*) {
         ogCB_FilterCtrlText := oGuiControlList.AddCheckbox("xp+60 yp vfilter_ctrl_text", "Text visible")
         ogCB_FilterCtrlText.OnEvent("Click", UpdateCtrlList)
         ogCB_FilterCtrlText.statusbar := "Filter on controls with text"
-        ogLV_CtrlList := oGuiControlList.AddListView("xm+4 y+7 r15 w" (myGui.Width - 8 * 3) / 2 " vCtrlList section AltSubmit", _ := ["Class(NN)", "Hwnd", "Text", "Type", "X", "Y", "W", "H", "Visible"])
-        ogLV_CtrlList.columns := _
+        ogLV_CtrlList := oGuiControlList.AddListView("xm+4 y+7 r15 w" (myGui.Width - 8 * 3) / 2 " vCtrlList section AltSubmit", ["Class(NN)", "Hwnd", "Text", "Type", "X", "Y", "W", "H", "Visible"])
         ogLV_CtrlList.Opt("Count100 -Multi")
         ogLV_CtrlList.OnNotify(NM_CLICK, DClickCtrlList)
         ogLV_CtrlList.OnNotify(NM_DBLCLK, DClickCtrlList)
@@ -838,22 +836,24 @@ Gui_wInspector(*) {
     SettingsMenu.Add("Options", Gui_Settings)
     SettingsMenu.Add()
     SettingsMenu.Add("Resize", (ItemName, ItemPos, ItemMenu) => (ItemMenu.ToggleCheck(ItemName), oSet.WinResize := !oSet.WinResize, oSet.WinResize ? myGui.Opt("+Resize") : myGui.Opt("-Resize")))
-    oSet.WinResize=1? SettingsMenu.Check("Resize") : ""
+    oSet.WinResize=1?SettingsMenu.Check("Resize") : ""
     SettingsMenu.Add("AlwaysOnTop", (ItemName, ItemPos, ItemMenu) => (ItemMenu.ToggleCheck(ItemName), oSet.WinAlwaysOnTop := !oSet.WinAlwaysOnTop, oSet.WinAlwaysOnTop ? myGui.Opt("+AlwaysOnTop") : myGui.Opt("-AlwaysOnTop")))
-    oSet.WinAlwaysOnTop=1? SettingsMenu.Check("AlwaysOnTop") : ""
+    oSet.WinAlwaysOnTop=1?SettingsMenu.Check("AlwaysOnTop") : ""
     SettingsMenu.Add("ID Hex", (ItemName, ItemPos, ItemMenu) => (ItemMenu.ToggleCheck(ItemName), oSet.IDHex := !oSet.IDHex))
-    oSet.IDHex=1? SettingsMenu.Check("ID Hex") : ""
+    oSet.IDHex=1?SettingsMenu.Check("ID Hex") : ""
     SettingsMenu.Add()
     SettingsMenu.Add("Highlight", (ItemName, ItemPos, ItemMenu) => (ItemMenu.ToggleCheck(ItemName), oSet.WinHighlight := !oSet.WinHighlight))
-    oSet.WinHighlight=1? SettingsMenu.Check("Highlight") : ""
+    oSet.WinHighlight=1?SettingsMenu.Check("Highlight") : ""
     SettingsMenu.Add()
     ControlMenu := Menu()
     ControlMenuItemFunc(ItemName, ItemPos, ItemMenu) {
         oSet.ControlPar := ItemName
-        for , vItemName in ItemMenu[]
+        loop (mm := _Menu(ItemMenu)).ItemCount {
+            vItemName := mm.GetItemInfo(A_Index).Name
             ItemMenu.%ItemName = vItemName ? '' : 'Un'%Check(vItemName)
+        }
     }
-    for , ItemName in ControlMenu.__Item := ['hwnd', 'Text', 'ClassNN'] {
+    for , ItemName in ['hwnd', 'Text', 'ClassNN'] {
         ControlMenu.Add(ItemName, ControlMenuItemFunc)
         ControlMenu.%oSet.ControlPar = ItemName ? '' : 'un'%Check(ItemName)
     }
@@ -1238,12 +1238,13 @@ RClickProcessList(LV, lParam) {
     }
 
     myMenu := Menu()
-    for i, v in LV.columns {
-        if '' = (LVTx := LV.GetText(rownumber, i)) ;|| v ~= '^(?:Visible|.)$'
+    loop LV.GetCount('Column') {
+        if '' = (column := LV.GetText(rownumber, A_Index))
             continue
-        LVMenuItemFunc(LVTx, ItemName, ItemPos, ItemMenu) => (A_Clipboard := LVTx, Tooltip2(LVTx))
-        myMenu.Add(v, LVMenuItemFunc.Bind(LVTx))
-        myMenu.SetIcon(v, "shell32.dll", 135)
+        LVMenuItemFunc(column, ItemName, ItemPos, ItemMenu) => (A_Clipboard := column, Tooltip2(column))
+        columnHeader := LV.GetText(0, A_Index)
+        myMenu.Add(columnHeader, LVMenuItemFunc.Bind(column))
+        myMenu.SetIcon(columnHeader, "shell32.dll", 135)
     }
 
     if ProcessExist(Process_PID := LV.GetText(rownumber, 2)) {
@@ -1279,12 +1280,12 @@ RClickWinList(LV, lParam) {
     }
     win_hwnd := LV.GetText(RowNumber, 3) + 0
     myMenu := Menu()
-    for i, v in LV.columns {
-        if '' = (LVTx := LV.GetText(rownumber, i)) || v ~= '^(?:Visible|.)$'
+    loop LV.GetCount('Column') {
+        if '' = (column := LV.GetText(rownumber, A_Index)) || (columnHeader := LV.GetText(0, A_Index)) ~= '^(?:Visible|.)$'
             continue
-        LVMenuItemFunc(LVTx, ItemName, ItemPos, ItemMenu) => (A_Clipboard := LVTx, Tooltip2(LVTx))
-        myMenu.Add(v, LVMenuItemFunc.Bind(LVTx))
-        myMenu.SetIcon(v, "shell32.dll", 135)
+        LVMenuItemFunc(column, ItemName, ItemPos, ItemMenu) => (A_Clipboard := column, Tooltip2(column))
+        myMenu.Add(columnHeader, LVMenuItemFunc.Bind(column))
+        myMenu.SetIcon(columnHeader, "shell32.dll", 135)
     }
     if WinExist(win_hwnd) {
         ;myMenu.Add("Copy Title", (*) => (A_Clipboard := WinGetTitle(win_hwnd), Tooltip2(A_Clipboard)))
@@ -1303,7 +1304,7 @@ RClickWinList(LV, lParam) {
         State_AlwaysOnTop := WinGetExStyle(win_hwnd) & 0x8
         myMenu.Add("AlwaysOnTop", (*) => (WinSetAlwaysOnTop(!State_AlwaysOnTop, win_hwnd), WinMoveTop(MyGui)))
         myMenu.%State_AlwaysOnTop ? '' : 'un'%Check("AlwaysOnTop")
-        myMenu.Add("Visible", (ItemName, *) => (Win%(vs := !(WinGetStyle(win_hwnd) & 0x10000000)) ? 'Show' : 'Hide'%(win_hwnd), ModifyLVcolumns(LV, rownumber, ItemName, vs), Tooltip2("Win" (vs ? "Show" : "Hide") "(" win_hwnd ")")))
+        myMenu.Add("Visible", (ItemName, *) => (Win%(vs := !(WinGetStyle(win_hwnd) & 0x10000000)) ? 'Show' : 'Hide'%(win_hwnd), ModifyLVcolumn(LV, ItemName, rownumber, vs), Tooltip2("Win" (vs ? "Show" : "Hide") "(" win_hwnd ")")))
         myMenu.%WinGetStyle(win_hwnd) & 0x10000000 ? '' : 'Un'%Check("Visible")
         myMenu.Add("Close", (*) => (WinClose(win_hwnd), Tooltip2("WinClose(" win_hwnd ")")))
         myMenu.SetIcon("Close", "shell32.dll", 132)
@@ -1328,12 +1329,13 @@ RClickCtrlList(LV, lParam) {
     ctrl_hwnd := LV.GetText(rownumber, 2) + 0
 
     myMenu := Menu()
-    for i, v in LV.columns {
-        if '' = (LVTx := LV.GetText(rownumber, i)) || v ~= '^(?:Visible|.)$'
+
+    loop LV.GetCount('Column') {
+        if '' = (column := LV.GetText(rownumber, A_Index)) || (columnHeader := LV.GetText(0, A_Index)) ~= '^(?:Visible|.)$'
             continue
-        LVMenuItemFunc(LVTx, ItemName, ItemPos, ItemMenu) => (A_Clipboard := LVTx, Tooltip2(LVTx))
-        myMenu.Add(v, LVMenuItemFunc.Bind(LVTx))
-        myMenu.SetIcon(v, "shell32.dll", 135)
+        LVMenuItemFunc(column, ItemName, ItemPos, ItemMenu) => (A_Clipboard := column, Tooltip2(column))
+        myMenu.Add(columnHeader, LVMenuItemFunc.Bind(column))
+        myMenu.SetIcon(columnHeader, "shell32.dll", 135)
     }
 
     if WinExist(ctrl_hwnd) {
@@ -1359,7 +1361,7 @@ RClickCtrlList(LV, lParam) {
         myMenu.SetIcon("ControlClick", "shell32.dll", 101)
         myMenu.Add("ControlFocus", (*) => (ControlFocus(ctrl_hwnd), Tooltip2("ControlFocus(" ctrl_hwnd ")")))
 
-        myMenu.Add("Visible", (ItemName, *) => (Control%(vs := !ControlGetVisible(ctrl_hwnd)) ? 'Show' : 'Hide'%(ctrl_hwnd), ModifyLVcolumns(LV, rownumber, ItemName, vs), Tooltip2("Control" (vs ? "Show" : "Hide") "(" ctrl_hwnd ")")))
+        myMenu.Add("Visible", (ItemName, *) => (Control%(vs := !ControlGetVisible(ctrl_hwnd)) ? 'Show' : 'Hide'%(ctrl_hwnd), ModifyLVcolumn(LV, ItemName, rownumber, vs), Tooltip2("Control" (vs ? "Show" : "Hide") "(" ctrl_hwnd ")")))
         myMenu.%Ctrl_Visible ? '' : 'Un'%Check("Visible")
 
         myMenu.Add("Enabled", (*) => (ControlSetEnabled(-1, ctrl_hwnd), Tooltip2("ControlSetEnabled(-1," ctrl_hwnd ")")))
@@ -1371,10 +1373,10 @@ RClickCtrlList(LV, lParam) {
     myMenu.Show()
 }
 
-ModifyLVcolumns(LV, rownumber, name, value?) {
-    for i, v in LV.columns {
-        if IsSet(v) && v = name
-            return IsSet(value) ? LV.Modify(rownumber, 'Col' i, value) : i
+ModifyLVcolumn(LV, name, rownumber, value) {
+    loop LV.GetCount('Column') {
+        if LV.GetText(0, A_Index) = name
+            return LV.Modify(rownumber, 'Col' A_Index, value)
     }
 }
 
@@ -2854,8 +2856,7 @@ GuiAccViewer(Wintitle := "A", ControlHwnd := "") {
     ogCB_Visible.Tooltip := "Filter visible lines"
     ogCB_Visible.OnEvent("Click", (*) => (LVAcc_Update()))
 
-    LVAcc := myAccGui.Add("ListView", "xm yp+21 r25 w800", _ := ["Path", "Name", "RoleText", "Role", "x", "y", "w", "h", "Value", "StateText", "State", "Description", "KeyboardShortcut", "Help", "ChildId"])
-    LVAcc.columns := _
+    LVAcc := myAccGui.Add("ListView", "xm yp+21 r25 w800", ["Path", "Name", "RoleText", "Role", "x", "y", "w", "h", "Value", "StateText", "State", "Description", "KeyboardShortcut", "Help", "ChildId"])
     LVAcc.OnNotify(NM_DBLCLK, CopyLVITEMText)
     ;LVAcc.OnEvent("ContextMenu", LVAcc_ContextMenu)
     LVAcc.OnNotify(NM_RCLICK, LVAcc_NM_RCLICK)
@@ -2870,12 +2871,13 @@ GuiAccViewer(Wintitle := "A", ControlHwnd := "") {
             return
         }
         myMenu := Menu()
-        for i, v in LV.columns {
-            if '' = (LVTx := LV.GetText(rownumber, i)) ;|| v ~= '^(?:Visible|.)$'
+        loop LV.GetCount('Column') {
+            if '' = (column := LV.GetText(rownumber, A_Index))
                 continue
-            LVMenuItemFunc(LVTx, ItemName, ItemPos, ItemMenu) => (A_Clipboard := LVTx, Tooltip2(LVTx))
-            myMenu.Add(v, LVMenuItemFunc.Bind(LVTx))
-            myMenu.SetIcon(v, "shell32.dll", 135)
+            LVMenuItemFunc(column, ItemName, ItemPos, ItemMenu) => (A_Clipboard := column, Tooltip2(column))
+            columnHeader := LV.GetText(0, A_Index)
+            myMenu.Add(columnHeader, LVMenuItemFunc.Bind(column))
+            myMenu.SetIcon(columnHeader, "shell32.dll", 135)
         }
         myMenu.Show()
     }
