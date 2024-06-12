@@ -234,21 +234,27 @@ Menu_ShowAligned(HMENU, HWND, X, Y, XAlign, YAlign) {
 
 Class _Menu {
     static _ := () {
-        this.Prototype.iCls := this
+        this.iCls := this
     }()
-    __New(HMENU) {
-        switch Type(HMENU) {
-            case 'Menu':
-                this.Handle := HMENU.Handle
-            case 'Integer':
-                this.Handle := HMENU
+    static SetBase() => ObjSetBase(Menu.Prototype, this.iCls.Prototype)
+    static __New() {
+        this.Prototype.Cls := this
+    }
+    __New(HMENU?) {
+        if Type(this) = this.Cls.Prototype.__Class {
+            switch Type(HMENU) {
+                case 'Menu':
+                    this.Handle := HMENU.Handle
+                case 'Integer':
+                    this.Handle := HMENU
+            }
         }
     }
     ShowAligned(params*) => Menu_ShowAligned(this.Handle, params*)
     RemoveCheckMarks(params*) => Menu_RemoveCheckMarks(this.Handle, params*)
-    IsSubmenu(params*) => Menu_IsSubmenu(this.Handle, params*)
-    IsSeparator(params*) => Menu_IsSeparator(this.Handle, params*)
-    IsItemChecked(params*) => Menu_IsItemChecked(this.Handle, params*)
+    IsSubmenu(ItemPos) => this.GetItemInfo(ItemPos).HMENU
+    IsSeparator(ItemPos) => this.GetItemInfo(ItemPos).Type & 0x0800
+    IsItemChecked(ItemPos) => this.GetItemInfo(ItemPos).Type & 0x08
     GetSubMenu(params*) => Menu_GetSubMenu(this.Handle, params*)
     GetItemName(params*) => Menu_GetItemName(this.Handle, params*)
     GetItemState(params*) => Menu_GetItemState(this.Handle, params*)
@@ -256,14 +262,16 @@ Class _Menu {
     ItemCount => Menu_GetItemCount(this.Handle)
     CheckRadioItem(params*) => Menu_CheckRadioItem(this.Handle, params*)
     GetItemInfo(ItemPos) {
-        MII := Buffer(this.iCls.MII.size, 0) ; MENUITEMINFO structure
-        NumPut("UInt", this.iCls.MII.size, MII, 0) ; cbSize
+        MII := Buffer(this.Cls.MII.size, 0) ; MENUITEMINFO structure
+        NumPut("UInt", this.Cls.MII.size, MII, 0) ; cbSize
         NumPut("UInt", 0x1EF, MII, 4) ; fMask
         String := Buffer(1024, 0)
-        NumPut("UPtr", String.Ptr, MII, this.iCls.MII.offs.String) ; dwTypeData
-        NumPut("UInt", 512, MII, this.iCls.MII.offs.cch) ; cch
-        If DllCall("User32.dll\GetMenuItemInfo", "Ptr", this.Handle, "UInt", ItemPos - 1, "UInt", 1, "Ptr", MII, "UInt")
-            Return this.iCls.MII(MII)
+        NumPut("UPtr", String.Ptr, MII, this.Cls.MII.offs.String) ; dwTypeData
+        NumPut("UInt", 512, MII, this.Cls.MII.offs.cch) ; cch
+        If DllCall("User32.dll\GetMenuItemInfo", "Ptr", this.Handle, "UInt", ItemPos - 1, "UInt", 1, "Ptr", MII, "UInt") {
+            (cMII := this.Cls.MII(MII)).String := String
+            Return cMII
+        }
         Return False
     }
     class MII {
@@ -271,12 +279,13 @@ Class _Menu {
         Static size := 4 * 6 + A_PtrSize * 6 + (A_PtrSize - 4) * 2
         Static offs := (A_PtrSize = 8) ? { Type: 8, State: 12, ID: 16, HMENU: 24, String: 56, cch: 64, HBITMAP: 72 } : { Type: 8, State: 12, ID: 16, HMENU: 20, String: 36, cch: 40, HBITMAP: 44 }
         static _ := () {
-            this.Prototype.iCls := this
+            this.Prototype.Cls := this
         }()
-        __New(MII) {
+        __New(MII, String?) {
             this.MII := MII
+            IsSet(String) && this.String := String
         }
-        Name => StrGet(this.String, NumGet(this.MII, this.iCls.offs.cch, "UInt"))
-        __Get(Key, Params) => NumGet(this.MII, this.iCls.offs.%Key%, Key = 'HMENU' || Key = 'HBITMAP' ? 'UPtr' : 'UInt')
+        Name => StrGet(this.String, NumGet(this.MII, this.Cls.offs.cch, "UInt"))
+        __Get(Key, Params) => NumGet(this.MII, this.Cls.offs.%Key%, Key ~= '^(?:String|HMENU|HBITMAP)$' ? 'UPtr' : 'UInt')
     }
 }
